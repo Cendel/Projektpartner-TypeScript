@@ -1,0 +1,83 @@
+@use "../../../../assets/scss/variables"as v;
+@use "../../../../assets/scss/mixins"as m;
+
+.appFooter {
+    div {
+        padding: 0;
+        margin: 0;
+    }
+
+    .footerRow {
+        padding: 0 3rem;
+
+    }
+
+    background-color: v.$color5;
+    padding: 2rem 0;
+
+
+    @media(max-width:991px) {
+        text-align: center;
+
+        h2 {
+            margin-top: 2rem;
+        }
+    }
+
+    img {
+        margin-bottom: 2rem;
+    }
+
+
+    ul {
+        @include m.reset-list();
+        @include m.flexbox($direction:column, $gap:1rem);
+
+        @media(max-width:991px) {
+            @include m.flexbox($direction:column, $align-items:center, $gap:1rem);
+
+
+        }
+
+        .active {
+            color: v.$color2;
+        }
+
+        a {
+            color: v.$color4;
+            text-decoration: none;
+            font-size: .8rem;
+
+            &:hover {
+                color: v.$color2;
+            }
+
+            svg {
+                font-size: 1.2rem;
+            }
+        }
+
+
+    }
+
+    h2 {
+        font-weight: 800;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: v.$color4;
+    }
+
+    .logo {
+        width: 10rem;
+        margin-top:-0.6rem;
+        margin-bottom: 1rem;
+
+    }
+
+    p {
+        color: v.$color4;
+        font-size: .8rem;
+    
+    }
+
+}

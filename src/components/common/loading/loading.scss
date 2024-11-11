@@ -1,0 +1,22 @@
+@use "../../../assets/scss/variables"as v;
+
+.loading {
+
+    height: 25rem;
+    position: relative;
+    padding: 2rem;
+    text-align: center;
+
+    .spinner-border {
+        color: v.$color2;
+
+    }
+
+
+
+
+
+
+
+
+}

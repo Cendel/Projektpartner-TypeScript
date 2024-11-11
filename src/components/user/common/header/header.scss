@@ -1,0 +1,158 @@
+@use "../../../../assets/scss/variables" as v;
+@use "../../../../assets/scss/mixins" as m;
+
+.offcanvas-body,
+.offcanvas-header {
+  background-color: v.$color6;
+}
+
+.navbar {
+  background-color: v.$color4;
+  color: v.$color3;
+
+  button {
+    border: none;
+  }
+}
+
+.navbar-toggler:focus {
+  color: v.$color4;
+}
+
+.navbar .toggle {
+  border: none;
+  color: v.$color4;
+
+  @media (min-width: 890px) {
+    display: none;
+  }
+}
+
+.offCanvas {
+  background-color: v.$color4;
+
+  .title {
+    color: v.$color5;
+  }
+
+  .active {
+    color: v.$color2;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    @include m.reset-list();
+    padding: 0.5rem 0 0.5rem 0.5rem;
+
+    &:hover {
+      background-color: v.$color4;
+
+      a {
+        color: v.$color6;
+      }
+    }
+  }
+
+  .separator {
+    padding-top: 2rem;
+    border-bottom: 1px solid v.$color4;
+    margin-bottom: 1rem;
+  }
+}
+
+.navbar .userName {
+  background-color: v.$color4;
+  color: v.$color5;
+  margin-left: 1rem;
+  margin-right: 3rem;
+  position: relative;
+
+  a {
+    padding-left: 1rem;
+  }
+}
+
+.dropdown .dropdown-menu {
+  padding-left: 0;
+  margin: 0;
+  background-color: v.$color4;
+  border-radius: 5px;
+
+  a:hover {
+    background-color: v.$color4;
+    color: v.$color6;
+  }
+}
+
+.logo_header {
+  width: 70%;
+  margin-top: -0.6rem;
+}
+
+.navbar {
+  .menubar {
+    @media (max-width: 890px) {
+      display: none;
+    }
+
+    flex: 1;
+
+    .navbar-nav a {
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-left: 3rem;
+
+      @media (max-width: 944px) {
+        margin-left: 2rem;
+      }
+    }
+
+    .project-form-button {
+      width: 9rem;
+
+      @media (max-width: 1129px) {
+        width: 10rem;
+      }
+
+      @media (max-width: 998px) {
+        width: 12rem;
+      }
+
+      @media (max-width: 930px) {
+        width: 12rem;
+      }
+
+      @media (max-width: 946px) {
+        width: 11rem;
+      }
+
+      button {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+        margin: 0;
+        color: v.$color4;
+        background-color: v.$color1;
+        transition: all 0.7s ease;
+        opacity: 1;
+
+        &:hover {
+          color: v.$color4;
+          background-color: v.$color5;
+        }
+      }
+    }
+  }
+}
+
+.project-form-button-navbar {
+  button {
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: v.$color2;
+    }
+  }
+}

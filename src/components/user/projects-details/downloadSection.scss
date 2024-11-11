@@ -1,0 +1,124 @@
+@use "../../../assets/scss/variables" as v;
+@use "../../../assets/scss/mixins" as m;
+
+.download-media {
+  div {
+    padding: 0;
+    margin: 0;
+  }
+
+  background-color: v.$color6;
+  padding: 3rem;
+  box-shadow: 0px 0px 5px 0.5px v.$color4;
+  border-radius: 0.3rem;
+  flex-wrap: no-wrap;
+
+  @include m.flexbox($gap: 2rem);
+  justify-content: flex-start;
+  align-items: center;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+
+    .head {
+      width: 100%;
+    }
+  }
+
+  .head {
+    @include m.flexbox($direction: column);
+    align-items: center;
+
+    background-color: v.$color6;
+    padding: 0 0.3rem 0.3rem 0.3rem;
+    box-shadow: 0px 0px 3px 0.1px v.$color2;
+    border-radius: 0.3rem;
+    color: v.$color5;
+
+    span {
+      color: v.$color1;
+      font-size: 2rem;
+    }
+
+    h5 {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .ul-div {
+    padding-left: 2rem;
+    @media (max-width: 510px) {
+      padding: 0;
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      @include m.reset-list();
+      @include m.flexbox(row, flex-start, space-around, 2rem);
+      text-align: center;
+      flex-wrap: wrap;
+      width: 100%;
+
+      @media (max-width: 510px) {
+        justify-content: center;
+      }
+
+      li {
+        flex: 0 0 50px;
+        @include m.flexbox(column, space-between, center, 1rem);
+        color: v.$color2;
+        min-width: 150px;
+        font-size: 0.7rem;
+        input[type="file"] {
+          display: none;
+        }
+
+        svg {
+          color: v.$color1;
+          font-size: 2rem;
+        }
+
+        a {
+          text-decoration: none;
+          color: v.$color1;
+
+          &:hover {
+            color: v.$color2;
+          }
+        }
+        .delete-button {
+          font-size: 0.5rem;
+          color: v.$color6;
+          background-color: v.$color2;
+          cursor: pointer;
+          transition: all 0.5s ease-in-out;
+          transform-style: preserve-3d;
+          border: none;
+          border-radius: 0.3rem;
+
+          &:hover {
+            box-shadow: 0 1px 5px v.$color2;
+
+            color: v.$color1;
+            background-color: v.$color3;
+          }
+        }
+        .upload-button {
+          @include m.custom-button;
+          border-radius: 0.3rem;
+          color: v.$color6;
+          background-color: v.$color2;
+          
+          &:hover {
+            box-shadow: 0 1px 5px v.$color1;
+
+            color: v.$color6;
+            background-color: v.$color1;
+          }
+        }
+        .add-button {
+          padding: .1rem;        }
+      }
+    }
+  }
+}

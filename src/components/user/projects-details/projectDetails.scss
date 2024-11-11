@@ -1,0 +1,408 @@
+@use "../../../assets/scss/variables" as v;
+@use "../../../assets/scss/mixins" as m;
+
+.project-details-main-component {
+  position: relative;
+  overflow: hidden;
+
+  .main-title {
+    width: 100%;
+    text-align: center;
+
+    h1 {
+      margin-top: 6rem;
+      font-size: 5rem;
+      color: v.$color1;
+      font-weight: 900;
+      opacity: 0.7;
+      text-transform: uppercase;
+
+      @media (max-width: 879px) {
+        font-size: 3rem;
+      }
+
+      @media (max-width: 450px) {
+        font-size: 2.7rem;
+      }
+
+      @media (max-width: 350px) {
+        font-size: 2rem;
+      }
+
+      @media (max-width: 300px) {
+        font-size: 1rem;
+      }
+    }
+
+    h4 {
+      padding: 0 2rem;
+      color: v.$color5;
+    }
+  }
+
+  .project-screen-image {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.3s ease;
+    z-index: -2;
+
+    @media (max-width: 790px) {
+      width: auto;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .project-details-container {
+    position: relative;
+    z-index: -2;
+
+    .imageRounded {
+      -webkit-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      transform: rotate(180deg);
+
+      position: static;
+      margin: -30px 0 0 0;
+
+      width: 100vw;
+      object-fit: fill;
+      max-width: 100%;
+
+      filter: invert(-89%) sepia(8%) saturate(9294%) hue-rotate(-552deg)
+        brightness(992%) contrast(87%);
+
+      opacity: 0.5;
+    }
+  }
+
+  .project-details {
+    margin-top: 100vh;
+
+    .title {
+      @include m.flexbox();
+
+      h5 {
+        background-color: v.$color5;
+        color: v.$color6;
+        font-size: 1rem;
+        width: auto;
+        padding: 0.3rem 1rem 0.3rem 1rem;
+        margin-bottom: 0;
+        box-shadow: -6px 0 0 1px v.$color1;
+      }
+
+      span {
+        flex: 3;
+      }
+    }
+
+    .details-box {
+      background-color: v.$color6;
+      padding: 3rem;
+      box-shadow: 0px 0px 5px 0.5px v.$color4;
+      border-radius: 0.3rem;
+      color: v.$color5;
+
+      .first-part {
+        @include m.flexbox($gap: 2rem);
+        padding-bottom: 1rem;
+        flex-wrap: nowrap;
+        position: relative;
+
+        @media (max-width: 879px) {
+          flex-direction: column;
+        }
+
+        .info-left {
+          text-align: justify;
+        }
+
+        .info-right {
+          text-align: right;
+          color: v.$color5;
+          @include m.flexbox($direction: column, $gap: 1rem);
+
+          @media (max-width: 879px) {
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+          }
+
+          a {
+            text-decoration: none;
+            cursor: pointer;
+          }
+
+          .location {
+            align-self: center;
+            overflow: auto;
+
+            svg {
+              font-size: 1.5rem;
+            }
+
+            svg,
+            h5 {
+              width: 100%;
+              color: v.$color2;
+            }
+
+            h5 {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      .second-part {
+        @include m.flexbox($gap: 2rem);
+        padding-bottom: 1rem;
+        flex-wrap: wrap;
+        position: relative;
+
+        .left {
+          flex: 1;
+          @include m.flexbox($direction: column, $gap: 1.2rem);
+
+          .progress {
+            width: 100%;
+          }
+
+          .numeric-info {
+            @include m.flexbox($gap: 2rem);
+            width: 100%;
+            justify-content: space-between;
+            position: relative;
+
+            @media (max-width: 879px) {
+              flex-direction: column;
+              align-items: center;
+            }
+
+            div {
+              @include m.flexbox($direction: column, $gap: 0.2rem);
+              align-items: center;
+
+              h4 {
+                font-size: 2rem;
+              }
+            }
+          }
+        }
+
+        .right {
+          @include m.flexbox($direction: column, $gap: 1rem);
+          align-items: flex-end;
+
+          @media (max-width: 879px) {
+            flex-direction: row;
+            width: 100%;
+          }
+
+          button {
+            @include m.custom-button();
+            &.followed {
+              background-color: v.$color2;
+              color: v.$color6;
+
+              &:hover {
+                color: v.$color6;
+                background-color: v.$color1;
+              }
+            }
+
+            @media (max-width: 879px) {
+              width: 100%;
+            }
+
+            @media (max-width: 300px) {
+              font-size: 0.5rem;
+              padding: 0.2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .support {
+    background-color: v.$color4;
+    padding: 3rem;
+    box-shadow: 0px 0px 5px 0.5px v.$color1;
+    border-radius: 0.3rem;
+    @include m.flexbox($gap: 2rem);
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+
+    .left {
+      flex: 1;
+      @include m.flexbox($direction: column, $gap: 1.2rem);
+
+      .progress {
+        width: 100%;
+      }
+
+      .numeric-info {
+        @include m.flexbox($gap: 2rem);
+        width: 100%;
+        justify-content: space-between;
+        position: relative;
+
+        @media (max-width: 879px) {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        div {
+          @include m.flexbox($direction: column, $gap: 0.2rem);
+          align-items: center;
+
+          h4 {
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+
+    .right {
+      @include m.flexbox($direction: column, $gap: 1rem);
+      align-items: flex-end;
+
+      @media (max-width: 879px) {
+        flex-direction: row;
+        width: 100%;
+      }
+
+      button {
+        @include m.custom-button();
+        &.participated {
+          background-color: v.$color2;
+          color: v.$color6;
+
+          &:hover {
+            color: v.$color6;
+            background-color: v.$color1;
+          }
+        }
+
+        @media (max-width: 879px) {
+          width: 100%;
+        }
+
+        @media (max-width: 300px) {
+          font-size: 0.5rem;
+          padding: 0.2rem;
+        }
+      }
+    }
+  }
+
+  .invest-container {
+    transition: all 0.5s ease-in-out;
+    transform-style: preserve-3d;
+
+    .invest {
+      background-color: v.$color4;
+      padding: 3rem;
+      box-shadow: 0px 0px 5px 0.5px v.$color1;
+      border-radius: 0.3rem;
+
+      p {
+        color: v.$color5;
+        width: 100%;
+        text-align: center;
+
+        span {
+          font-weight: 600;
+        }
+      }
+
+      .input {
+        form {
+          @include m.flexbox(
+            $justify-content: center,
+            $align-items: center,
+            $gap: 1rem
+          );
+
+          input[type="number"] {
+            padding: 0.5rem;
+            border: 2px solid #ccc;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+
+            &:focus {
+              outline: none;
+              border-color: v.$color1;
+            }
+          }
+
+          button[type="submit"] {
+            @include m.custom-button();
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 0.3rem;
+          }
+        }
+
+        p {
+          margin-top: 0.5rem;
+          font-size: 0.8rem;
+          color: v.$color5;
+        }
+      }
+    }
+  }
+
+  .accordion-info {
+    background-color: v.$color6;
+    padding: 3rem;
+    box-shadow: 0px 0px 5px 0.5px v.$color4;
+    border-radius: 0.3rem;
+  }
+
+  .project-details-edit-buttons {
+    @include m.flexbox($gap: 1rem);
+    justify-content: space-between;
+    margin-top: 3rem;
+
+    .edit-button {
+      @include m.custom-button();
+      width: 15rem;
+    }
+
+    button {
+      width: 15rem;
+
+      &:nth-child(1) {
+        @include m.custom-button();
+
+        &:hover {
+          background-color: v.$color3;
+          color: v.$color6;
+        }
+      }
+    }
+
+    @media (max-width: 515px) {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+
+      .edit-button {
+        width: 100%;
+      }
+    }
+  }
+}

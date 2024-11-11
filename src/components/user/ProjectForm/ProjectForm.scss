@@ -1,0 +1,107 @@
+@use "../../../assets/scss/variables" as v;
+@use "../../../assets/scss/mixins" as m;
+
+.project-form {
+  color: v.$color1;
+  padding: 4rem 1rem 6rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  div {
+    padding: 0;
+    margin: 0;
+  }
+
+  .first-row,
+  .second-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .worum,
+  .ziele,
+  .wer,
+  .kurz,
+  .lang {
+    textarea {
+      height: 200px;
+      resize: vertical;
+      color: v.$color5;
+    }
+  }
+
+  .projectImage {
+    padding-top: 1rem;
+  }
+
+  .projectImage,
+  .attachments {
+    input[type="file"] {
+      margin-top: 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+  }
+
+  .display {
+    margin-top: 1rem;
+
+    div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+
+      button {
+        margin-right: 0.5rem;
+        font-size: 0.6rem;
+        padding: 0.1rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+      }
+    }
+
+    label {
+      font-weight: 500;
+    }
+  }
+
+  .submit-button {
+    margin-top: 3rem;
+    font-weight: 600;
+    width: 100%;
+    @include m.custom-button();
+  }
+
+  .form-control:disabled,
+  .form-control[readonly] {
+    background-color: v.$color3;
+    opacity: 1;
+  }
+
+  .form-control:focus {
+    border-color: v.$color1;
+    box-shadow: 0 0 0.5rem 0.05rem v.$color6;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+  }
+
+  input[type="file"]::file-selector-button {
+    min-width: 12rem;
+    background-color: v.$color4;
+  }
+  .project-image-preview {
+    max-width: 15rem;
+    height: auto;
+  }
+}

@@ -1,0 +1,101 @@
+@use "../../../../assets/scss/variables" as v;
+@use "../../../../assets/scss/mixins" as m;
+
+.contact-contact-form {
+  min-height: 73vh;
+
+  div {
+    padding: 0;
+    margin: 0;
+  }
+
+  .logo_contact {
+    width: 20rem;
+    padding-left: 4rem;
+  }
+
+  margin: 0;
+  padding: 2rem 0 12rem 0;
+  box-shadow: 0 4px 8px v.$color1;
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 2rem 4rem 2rem 4rem;
+    color: v.$color1;
+    text-align: justify;
+  }
+
+  .contact-contact-info {
+    width: 100%;
+    padding: 3rem;
+
+    ul {
+      li {
+        @include m.reset-list();
+        margin-bottom: 0.5rem;
+      }
+
+      svg {
+        color: v.$color1;
+        padding-right: 0.1rem;
+      }
+
+      a {
+        text-decoration: none;
+        color: v.$color4;
+
+        &:hover {
+          color: v.$color2;
+        }
+      }
+    }
+  }
+
+  .form-group {
+    padding: 0rem 1rem;
+    position: relative;
+
+    label {
+      font-weight: bold;
+      font-size: 1rem;
+      color: v.$color5;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      border: none;
+      background-color: v.$color4;
+      padding: 1.5rem;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      box-shadow: 0 2px 4px v.$color5;
+      transition: all 0.01s ease;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 3px v.$color2, 0 2px 4px v.$color5;
+        background-color: v.$color6;
+      }
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      height: 3.2rem;
+    }
+
+    textarea {
+      resize: none;
+      height: 10rem;
+    }
+  }
+
+  button {
+    @include m.project-send-button();
+  }
+}

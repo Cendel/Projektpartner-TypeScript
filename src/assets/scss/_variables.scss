@@ -1,0 +1,31 @@
+$color1: #3d5a80;
+$color2: #9fad3c;
+$color3: #ee6c4d;
+$color4: #98c1d9;
+$color5: #293241;
+$color6: #e0fbfc;
+
+
+$font-family-sans-serif : "Roboto";
+
+//bootstrap color custom settings
+$primary : $color1;
+$secondary : $color2;
+$success:$color2;
+$danger:$color3;
+
+//bootstrap accordion custom settings
+$accordion-bg:$color6;
+$accordion-border-color:$color6;
+$accordion-border-width:1rem;
+$accordion-color:$color1;
+$accordion-button-active-bg:$color1;
+$accordion-button-active-color:$color6;
+$accordion-button-color:$color5;
+$accordion-inner-border-radius:0.5rem;
+$accordion-body-padding-y:2rem;
+
+/* SWEETALERT */
+$swal2-confirm-button-background-color : $color2;
+$swal2-cancel-button-background-color : $color3;
+$swal2-success : $color2;

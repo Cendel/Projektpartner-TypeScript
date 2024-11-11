@@ -1,0 +1,125 @@
+@use "../../../assets/scss/variables" as v;
+@use "../../../assets/scss/mixins" as m;
+
+.profile-user {
+  min-height: 73vh;
+  padding-bottom: 8rem;
+  overflow: hidden;
+
+  a {
+    text-decoration: none;
+  }
+
+  .profile-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem auto;
+    max-width: 800px;
+    padding-top: 2rem;
+
+    .profile-card {
+      background-color: v.$color6;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 45%;
+      color: v.$color1;
+
+      h2 {
+        color: v.$color1;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .short-info-fields,
+      .contact-info-fields {
+        @include m.flexbox($direction: column);
+
+        .field {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+
+          span {
+            color: v.$color5;
+            font-weight: 500;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      @include m.flexbox($direction: column);
+
+      .profile-card {
+        margin-bottom: 30px;
+        width: 100%;
+      }
+    }
+
+    .projects-button {
+      text-decoration: none;
+
+      text-align: center;
+      border-bottom: 1px solid v.$color5;
+      color: v.$color5;
+      transition: all 0.3s ease;
+
+      font-weight: 500;
+    }
+  }
+
+  .profile-about {
+    margin: auto;
+    max-width: 800px;
+    background-color: v.$color6;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    color: v.$color1;
+  }
+
+  .buttons {
+    margin: 3rem 10rem 3rem 10rem;
+
+    @media (max-width: 512px) {
+      margin: 2rem 1rem 3rem 1rem;
+    }
+    .active {
+      box-shadow: 0 1px 5px v.$color2;
+      background-color: v.$color2;
+      color: v.$color6;
+    }
+
+    button {
+      width: 100%;
+      @include m.custom-button();
+      background-color: v.$color4;
+      color: v.$color1;
+    }
+
+    .three-buttons,
+    .two-buttons {
+      margin-bottom: 1rem;
+      @include m.flexbox($gap: 1rem);
+
+      @media (max-width: 949px) {
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+.profile-edit {
+  margin: 0 10rem;
+
+  button {
+    @include m.custom-button();
+    text-align: center;
+    width: 100%;
+    margin-top: 2rem;
+  }
+}
