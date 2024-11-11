@@ -1,7 +1,4 @@
-import axios, { AxiosResponse } from "axios";
-import authHeader from "../helpers/functions/auth-header";
-
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+import apiRequest from "./apiRequest";
 
 interface Message {
   created_date: string;
@@ -11,28 +8,20 @@ interface Message {
 }
 
 // USER ENDPOINTS
-export const sendMessage = (message: Message): Promise<AxiosResponse> => {
-  return axios.post(`${API_URL}/messages/create/`, message, {
-    headers: authHeader(),
-  });
+export const sendMessage = (message: Message) => {
+  return apiRequest<Message>("post", "/messages/create/", message);
 };
 
 // ADMIN ENDPOINTS
 
-export const listMessages = (): Promise<AxiosResponse<Message[]>> => {
-  return axios.get(`${API_URL}/messages/`, {
-    headers: authHeader(),
-  });
+export const listMessages = () => {
+  return apiRequest<Message[]>("get", "/messages/");
 };
 
-export const getMessage = (id: number): Promise<AxiosResponse<Message>> => {
-  return axios.get(`${API_URL}/messages/${id}/`, {
-    headers: authHeader(),
-  });
+export const getMessage = (id: number) => {
+  return apiRequest<Message>("get", `/messages/${id}/`);
 };
 
-export const deleteMessage = (id: number): Promise<AxiosResponse> => {
-  return axios.delete(`${API_URL}/messages/${id}/`, {
-    headers: authHeader(),
-  });
+export const deleteMessage = (id: number) => {
+  return apiRequest<void>("delete", `/messages/${id}/`);
 };
