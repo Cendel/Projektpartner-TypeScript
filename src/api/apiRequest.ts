@@ -7,12 +7,13 @@ const apiRequest = <T>(
   method: "get" | "post" | "put" | "patch" | "delete",
   url: string,
   data?: T,
-  params?: Record<string, any>
+  params?: Record<string, any>,
+  useAuthHeader: boolean = true
 ): Promise<AxiosResponse<T>> => {
   const config = {
     method,
     url: `${API_URL}${url}`,
-    headers: authHeader(),
+    ...(useAuthHeader ? { headers: authHeader() } : {}),
     data: data || null,
     params: params || null,
   };

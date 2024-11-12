@@ -15,11 +15,11 @@ interface User {
 // USER ENDPOINTS
 
 export const register = (user: User) => {
-  return apiRequest<User>("post", "/register/", user);
+  return apiRequest<User>("post", "/register/", user, undefined, false);
 };
 
 export const login = (user: User) => {
-  return apiRequest<User>("post", "/login/", user);
+  return apiRequest<User>("post", "/login/", user, undefined, false);
 };
 
 export const getUser = () => {
