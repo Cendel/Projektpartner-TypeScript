@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Spacer from "../../../common/spacer/Spacer";
 import "./contactForm.scss";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { sendMessage } from "../../../../api/contact-service";
 import { toast } from "../../../../helpers/functions/swal";
@@ -11,6 +10,7 @@ import logo from "../../../../assets/img/logo/logo_contact.png";
 import { settings } from "../../../../helpers/settings";
 import SectionHeader from "../../common/section-header/SectionHeader";
 import { useAppSelector } from "../../../../store/hooks";
+import { contactFormValidationSchema } from "../../../../helpers/validationSchemass";
 
 const ContactForm = () => {
   const { name: senderName, id: senderId } = useAppSelector(
@@ -22,19 +22,6 @@ const ContactForm = () => {
     title: "",
     text: "",
   };
-
-  const validationSchema = Yup.object({
-    sender: Yup.string().required("Geben Sie Ihren Namen ein."),
-
-    title: Yup.string()
-      .max(50, "Der Betreff sollte maximal 50 Zeichen lang sein.")
-      .min(5, "Der Betreff sollte mindestens 5 Zeichen lang sein.")
-      .required("Geben Sie einen Betreff ein."),
-    text: Yup.string()
-      .max(200, "Die Nachricht sollte maximal 200 Zeichen lang sein.")
-      .min(20, "Die Nachricht sollte mindestens 20 Zeichen lang sein.")
-      .required("Geben Sie eine Nachricht ein."),
-  });
 
   const onSubmit = async (values, { resetForm }) => {
     setLoading(true);
@@ -52,7 +39,7 @@ const ContactForm = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: contactFormValidationSchema,
     onSubmit,
   });
 

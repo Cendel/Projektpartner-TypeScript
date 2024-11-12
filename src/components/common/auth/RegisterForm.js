@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
-import * as Yup from "yup";
 import { register } from "../../../api/user-service";
 import { toast } from "../../../helpers/functions/swal";
 import PasswordInput from "../password-input/PasswordInput";
+import { registerFormValidationSchema } from "../../../helpers/validationSchemass";
 
 const RegisterForm = ({ setKey }) => {
   const [loading, setLoading] = useState(false);
@@ -15,23 +15,6 @@ const RegisterForm = ({ setKey }) => {
     password: "",
     confirmPassword: "",
   };
-
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Bitte geben Sie Ihren Namen ein."),
-    email: Yup.string()
-      .email("Bitte geben Sie eine gültige E-Mail-Adresse ein.")
-      .required("Bitte geben Sie eine E-mail-Adresse ein."),
-    password: Yup.string()
-      .required("Bitte Passwort eingeben.")
-      .min(8, "Bitte geben Sie mindestens 8 Zeichen ein.")
-      .matches(/[a-z]+/, "Ein Kleinbuchstabe")
-      .matches(/[A-Z]+/, "Ein Großbuchstabe")
-      .matches(/[@$!%*#?&.]+/, "Ein besonderes Zeichen")
-      .matches(/\d+/, "Eine Nummer"),
-    confirmPassword: Yup.string()
-      .required("Bitte geben Sie Ihr Passwort erneut ein.")
-      .oneOf([Yup.ref("password")], "Passwortfelder stimmen nicht überein."),
-  });
 
   const onSubmit = async (values) => {
     setLoading(true);
@@ -59,7 +42,7 @@ const RegisterForm = ({ setKey }) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: registerFormValidationSchema,
     onSubmit,
   });
 

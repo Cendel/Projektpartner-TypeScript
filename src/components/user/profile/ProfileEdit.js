@@ -1,11 +1,11 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import * as Yup from "yup";
 import { toast } from "../../../helpers/functions/swal";
 import { updateUser } from "../../../api/user-service";
 import { useAppSelector } from "../../../store/hooks";
 import "./Profile.scss";
+import { profileEditValidationSchema } from "../../../helpers/validationSchemass";
 
 const ProfileEdit = (props) => {
   const [loading, setLoading] = useState(false);
@@ -20,10 +20,6 @@ const ProfileEdit = (props) => {
     phone,
     website,
   };
-
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Bitte geben Sie Ihren Namen ein."),
-  });
 
   const onSubmit = async (values) => {
     setLoading(true);
@@ -40,7 +36,7 @@ const ProfileEdit = (props) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: profileEditValidationSchema,
     onSubmit,
     enableReinitialize: true,
   });

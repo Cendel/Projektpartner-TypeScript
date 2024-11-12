@@ -15,11 +15,11 @@ import {
   createShare,
   deleteShare,
 } from "../../../api/project-service";
-import * as Yup from "yup";
 
 import { toast, question } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
+import { adminShareEditValidationSchema } from "../../../helpers/validationSchemass";
 
 const AdminShareEdit = () => {
   const { projectId } = useParams();
@@ -88,11 +88,6 @@ const AdminShareEdit = () => {
     project: projectId,
   };
 
-  const validationSchema = Yup.object({
-    user: Yup.string().required("Geben Sie die ID des Teilnehmers ein."),
-    shares: Yup.number().min(1).required("Geben Sie Anzahl der Aktien ein."),
-  });
-
   const onSubmit = async (values) => {
     const participantsIds = participants.map((obj) => obj.user);
     if (participantsIds.includes(values.user)) {
@@ -122,7 +117,7 @@ const AdminShareEdit = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: adminShareEditValidationSchema,
     onSubmit,
   });
   const isInvalid = (field) => {

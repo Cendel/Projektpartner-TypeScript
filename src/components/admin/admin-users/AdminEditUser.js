@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "../../../helpers/functions/swal";
 import { updateUserAdmin } from "../../../api/user-service";
+import { adminEditUserValidationSchema } from "../../../helpers/validationSchemass";
 
 const AdminEditUser = (props) => {
   const [updating, setUpdating] = useState(false);
@@ -17,10 +17,6 @@ const AdminEditUser = (props) => {
     website: props.website,
     about: props.about,
   };
-
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Bitte geben den Namen ein."),
-  });
 
   const onSubmit = async (values) => {
     setUpdating(true);
@@ -36,7 +32,7 @@ const AdminEditUser = (props) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: adminEditUserValidationSchema,
     onSubmit,
     enableReinitialize: true,
   });

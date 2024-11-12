@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Form, Spinner, FloatingLabel } from "react-bootstrap";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { getUser, login } from "../../../api/user-service";
 import { toast } from "../../../helpers/functions/swal";
@@ -9,6 +8,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { loginFailed, loginSuccess } from "../../../store/slices/auth-slice";
 import { useNavigate } from "react-router-dom";
 import "./auth.scss";
+import { loginFormValidationSchema } from "../../../helpers/validationSchemass";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -19,13 +19,6 @@ const LoginForm = () => {
     email: "",
     password: "",
   };
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email()
-      .required("Bitte geben Sie eine E-mail-Adresse ein."),
-    password: Yup.string().required("Bitte geben Sie Ihr Passwort erneut ein."),
-  });
 
   const onSubmit = async (values) => {
     setLoading(true);
@@ -57,7 +50,7 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: loginFormValidationSchema,
     onSubmit,
   });
 

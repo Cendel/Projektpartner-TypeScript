@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import "./ProjectForm.scss";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { toast } from "../../../helpers/functions/swal";
 import { createProject, updateProject } from "../../../api/project-service";
 import {
@@ -18,6 +17,7 @@ import {
 } from "../../../helpers/functions/date-time";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
+import { projectFormValidationSchema } from "../../../helpers/validationSchemass";
 
 const ProjectForm = (props) => {
   const [loading, setLoading] = useState(false);
@@ -49,49 +49,6 @@ const ProjectForm = (props) => {
     shareValue: props.shareValue,
     maxSharesPerPerson: props.maxSharesPerPerson,
   };
-  const validationSchema = Yup.object({
-    projectTitle: Yup.string().required(
-      "Geben Sie den Namen des Projekts ein."
-    ),
-    projectPlace: Yup.string().required("Geben Sie den Ort des Projekts ein."),
-    estimatedImplementationDate: Yup.string().required(
-      "Geben Sie das voraussichtliche Implementierungsdatum ein."
-    ),
-    slogan: Yup.string()
-      .max(50, "Der Slogan soll maximal 50 Zeichen lang sein.")
-      .required("Geben Sie einen Slogan für Ihr Projekt ein."),
-    about: Yup.string().required(
-      "Geben Sie ein, worum es in Ihrem Projekt geht."
-    ),
-    goal: Yup.string().required(
-      "Erzählen Sie von Ihren Projektzielen und Zielgruppen."
-    ),
-    support: Yup.string().required(
-      "Geben Sie ein, wer hinter Ihrem Projekt steht."
-    ),
-    shortDesc: Yup.string()
-      .max(200, "Die kurze Beschreibung soll maximal 200 Zeichen lang sein.")
-      .required(
-        "Geben Sie eine kurze Beschreibung ein, die maximal 200 Zeichen lang ist."
-      ),
-    longDesc: Yup.string()
-      .min(
-        200,
-        "Die detaillierte Beschreibung soll mindestens 200 Zeichen lang sein."
-      )
-      .required(
-        "Geben Sie eine detaillierte Beschreibung ein, die mindestens 200 Zeichen lang ist."
-      ),
-    projectValue: Yup.number().required(
-      "Geben Sie den Gesamtbetrag in Euro ein, der für das Projekt benötigt wird."
-    ),
-    totalShares: Yup.number().required(
-      "Geben Sie die Gesamtzahl der Anteile ein, die für das Projekt verfügbar sind."
-    ),
-    maxSharesPerPerson: Yup.number().required(
-      "Geben Sie die maximale Anzahl von Anteilen ein, die eine Person kaufen kann."
-    ),
-  });
 
   const onSubmit = async (values) => {
     console.log(values.projectValue);
@@ -142,7 +99,7 @@ const ProjectForm = (props) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: projectFormValidationSchema,
     onSubmit,
   });
 
