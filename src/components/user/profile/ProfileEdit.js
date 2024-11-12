@@ -28,7 +28,6 @@ const ProfileEdit = (props) => {
       toast("Ihr Profil wurde erfolgreich aktualisiert.", "success");
     } catch (err) {
       toast(err.response.data.message, "error");
-      console.log(err);
     } finally {
       setLoading(false);
     }

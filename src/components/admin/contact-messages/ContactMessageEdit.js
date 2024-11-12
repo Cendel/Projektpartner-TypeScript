@@ -17,7 +17,6 @@ const ContactMessageEdit = () => {
       const resp = await getMessage(messageId);
       setMessage(resp.data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

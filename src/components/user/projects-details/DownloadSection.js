@@ -22,7 +22,6 @@ const DownloadSection = ({ createdBy, projectId }) => {
   const [attachments, setAttachments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const isAdminOrOwner = user.id === createdBy || user.is_superuser;
-  console.log();
   const textExtensions = [
     ".doc",
     ".docx",
@@ -61,7 +60,6 @@ const DownloadSection = ({ createdBy, projectId }) => {
       const result = await listAttachments(projectId);
       setAttachments(result.data);
     } catch (err) {
-      console.log(err);
     } finally {
     }
   }, [projectId]);

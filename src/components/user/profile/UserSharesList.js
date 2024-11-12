@@ -33,7 +33,6 @@ const UserSharesList = (propsList) => {
       const result = await userListShares(propsList[0]);
       setShares(result.data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

@@ -18,7 +18,6 @@ const Projects = () => {
       const result = await getProjectsByStatus(true);
       setProjects(result.data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

@@ -22,7 +22,6 @@ const ProjectsUser = () => {
       const result = await getProjectsByIds(createdProjects);
       setProjects(result.data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

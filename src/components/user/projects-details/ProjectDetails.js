@@ -135,7 +135,6 @@ const ProjectDetails = () => {
       updateProjectFollowerList(project.id);
       setIsFollowing(!isFollowing);
     } catch (err) {
-      console.log(err);
     } finally {
     }
   };

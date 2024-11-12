@@ -27,7 +27,6 @@ function Profile() {
       const result = await getUserById(userId);
       setUser(result.data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

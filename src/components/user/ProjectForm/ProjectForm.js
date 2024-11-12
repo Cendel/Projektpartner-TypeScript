@@ -51,9 +51,6 @@ const ProjectForm = (props) => {
   };
 
   const onSubmit = async (values) => {
-    console.log(values.projectValue);
-    console.log(values.totalShares);
-    console.log((values.projectValue / values.totalShares).toFixed(2));
     values.shareValue = (values.projectValue / values.totalShares).toFixed(2);
     setLoading(true);
     if (props.mode === "edit") {

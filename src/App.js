@@ -25,7 +25,6 @@ const App = () => {
         dispatch(loginSuccess(resp.data)); //resp.data yi loginSuccess e gönderdik.
       }
     } catch (err) {
-      console.log(err);
       dispatch(loginFailed()); //hata olmasi, data nin alinmamasi durumuna karsin loginFailed fonksiyonumuzu burada cagirdik.
     } finally {
       setLoading(false);

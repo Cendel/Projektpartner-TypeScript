@@ -108,7 +108,6 @@ const AdminShareEdit = () => {
           `Fehler beim Erstellen der Aktie: ${err.response.data.message}`,
           "error"
         );
-        console.log(err);
       } finally {
         setLoading(false);
       }
