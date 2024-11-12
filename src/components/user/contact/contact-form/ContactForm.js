@@ -7,7 +7,6 @@ import { useFormik } from "formik";
 import { sendMessage } from "../../../../api/contact-service";
 import { toast } from "../../../../helpers/functions/swal";
 import ContactInfo from "../contact-info/ContactInfo";
-import { getCurrentDate } from "../../../../helpers/functions/date-time";
 import logo from "../../../../assets/img/logo/logo_contact.png";
 import { settings } from "../../../../helpers/settings";
 import SectionHeader from "../../common/section-header/SectionHeader";
@@ -19,7 +18,6 @@ const ContactForm = () => {
   );
   const [loading, setLoading] = useState(false);
   const initialValues = {
-    created_date: getCurrentDate(),
     sender: senderId,
     title: "",
     text: "",

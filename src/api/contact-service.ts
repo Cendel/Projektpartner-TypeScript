@@ -1,7 +1,6 @@
 import apiRequest from "./apiRequest";
 
 interface Message {
-  created_date: string;
   sender: number;
   title: string;
   text: string;
