@@ -4,7 +4,7 @@ import { Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { register } from "../../../api/user-service";
 import { toast } from "../../../helpers/functions/swal";
 import PasswordInput from "../password-input/PasswordInput";
-import { registerFormValidationSchema } from "../../../helpers/validationSchemass";
+import { registerFormValidationSchema } from "../../../helpers/validationSchemas";
 
 const RegisterForm = ({ setKey }) => {
   const [loading, setLoading] = useState(false);

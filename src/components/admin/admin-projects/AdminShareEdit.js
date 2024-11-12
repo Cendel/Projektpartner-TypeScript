@@ -19,7 +19,7 @@ import {
 import { toast, question } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
-import { adminShareEditValidationSchema } from "../../../helpers/validationSchemass";
+import { adminShareEditValidationSchema } from "../../../helpers/validationSchemas";
 
 const AdminShareEdit = () => {
   const { projectId } = useParams();

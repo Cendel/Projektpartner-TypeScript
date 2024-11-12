@@ -5,7 +5,7 @@ import { toast } from "../../../helpers/functions/swal";
 import { updateUser } from "../../../api/user-service";
 import { useAppSelector } from "../../../store/hooks";
 import "./Profile.scss";
-import { profileEditValidationSchema } from "../../../helpers/validationSchemass";
+import { profileEditValidationSchema } from "../../../helpers/validationSchemas";
 
 const ProfileEdit = (props) => {
   const [loading, setLoading] = useState(false);

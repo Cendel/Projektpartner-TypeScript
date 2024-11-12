@@ -10,7 +10,7 @@ import logo from "../../../../assets/img/logo/logo_contact.png";
 import { settings } from "../../../../helpers/settings";
 import SectionHeader from "../../common/section-header/SectionHeader";
 import { useAppSelector } from "../../../../store/hooks";
-import { contactFormValidationSchema } from "../../../../helpers/validationSchemass";
+import { contactFormValidationSchema } from "../../../../helpers/validationSchemas";
 
 const ContactForm = () => {
   const { name: senderName, id: senderId } = useAppSelector(

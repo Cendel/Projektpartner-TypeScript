@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { loginFailed, loginSuccess } from "../../../store/slices/auth-slice";
 import { useNavigate } from "react-router-dom";
 import "./auth.scss";
-import { loginFormValidationSchema } from "../../../helpers/validationSchemass";
+import { loginFormValidationSchema } from "../../../helpers/validationSchemas";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);

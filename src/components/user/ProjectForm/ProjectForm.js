@@ -17,7 +17,7 @@ import {
 } from "../../../helpers/functions/date-time";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
-import { projectFormValidationSchema } from "../../../helpers/validationSchemass";
+import { projectFormValidationSchema } from "../../../helpers/validationSchemas";
 
 const ProjectForm = (props) => {
   const [loading, setLoading] = useState(false);
