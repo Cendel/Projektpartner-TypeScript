@@ -41,7 +41,6 @@ const AdminShareEdit = () => {
     setLoading,
     setRefreshComponent,
   });
-
   const columns = [
     {
       name: "Benutzer-ID",
