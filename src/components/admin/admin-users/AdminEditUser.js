@@ -4,7 +4,7 @@ import useAdminEditUserFormik from "./useAdminEditUserFormik";
 
 const AdminEditUser = (props) => {
   const { formik, updating } = useAdminEditUserFormik(props);
-  for (const x in props) console.log(typeof x);
+  
   return (
     <Form
       noValidate
