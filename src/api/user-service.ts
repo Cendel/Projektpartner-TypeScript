@@ -1,16 +1,5 @@
+import User from "../entities/User";
 import apiRequest from "./apiRequest";
-
-interface User {
-  name?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  job?: string;
-  location?: string;
-  about?: string;
-  phone?: string;
-  website?: string;
-}
 
 // USER ENDPOINTS
 
