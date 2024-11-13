@@ -1,10 +1,5 @@
+import { Message } from "../entities/Message";
 import apiRequest from "./apiRequest";
-
-interface Message {
-  sender: number;
-  title: string;
-  text: string;
-}
 
 // USER ENDPOINTS
 export const sendMessage = (message: Message) => {

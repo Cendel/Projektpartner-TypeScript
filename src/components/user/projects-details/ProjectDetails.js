@@ -15,10 +15,7 @@ import {
 import { question, toast } from "../../../helpers/functions/swal";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import Loading from "../../common/loading/Loading";
-import {
-  convertCurrentDateToUserFormat,
-  getCurrentDate,
-} from "../../../helpers/functions/date-time";
+import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
 import { sendMessage } from "../../../api/contact-service";
 import { useAppSelector } from "../../../store/hooks";
 import SectionHeader from "../common/section-header/SectionHeader";
@@ -155,7 +152,6 @@ const ProjectDetails = () => {
       setFeedback("Bitte geben Sie eine gültige Nummer ein.");
     } else {
       const values = {
-        createdDate: getCurrentDate(),
         sender: user.id,
         title: "KAUFANFRAGE",
         text: `
