@@ -10,16 +10,10 @@ import {
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useParams } from "react-router-dom";
-import {
-  projectListShares,
-  createShare,
-  deleteShare,
-} from "../../../api/project-service";
-
+import { projectListShares, deleteShare } from "../../../api/project-service";
 import { toast, question } from "../../../helpers/functions/swal";
-import { useFormik } from "formik";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
-import { adminShareEditValidationSchema } from "../../../helpers/validationSchemas";
+import useAdminShareEditFormik from "./useAdminShareEditFormik";
 
 const AdminShareEdit = () => {
   const { projectId } = useParams();
@@ -40,6 +34,13 @@ const AdminShareEdit = () => {
   useEffect(() => {
     loadData();
   }, [loadData, refreshComponent]);
+
+  const { formik, isValid, isInvalid } = useAdminShareEditFormik({
+    projectId,
+    participants,
+    setLoading,
+    setRefreshComponent,
+  });
 
   const columns = [
     {
@@ -81,51 +82,6 @@ const AdminShareEdit = () => {
       ),
     },
   ];
-
-  const initialValues = {
-    user: "",
-    shares: "",
-    project: projectId,
-  };
-
-  const onSubmit = async (values) => {
-    const participantsIds = participants.map((obj) => obj.user);
-    if (participantsIds.includes(values.user)) {
-      toast(
-        "Dieses Projekt hat bereits Anteile des Benutzers. Wenn Sie die Anteile des Benutzers aktualisieren möchten, können Sie die aktuellen Anteile löschen und eine Aktualisierung vornehmen.",
-        "warning",
-        100000,
-        true
-      );
-    } else {
-      setLoading(true);
-      try {
-        await createShare(values);
-        toast("Die Aktie wurde erfolgreich erstellt.", "success");
-        setRefreshComponent((prevValue) => !prevValue);
-      } catch (err) {
-        toast(
-          `Fehler beim Erstellen der Aktie: ${err.response.data.message}`,
-          "error"
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: adminShareEditValidationSchema,
-    onSubmit,
-  });
-  const isInvalid = (field) => {
-    return formik.touched[field] && formik.errors[field];
-  };
-
-  const isValid = (field) => {
-    return formik.touched[field] && !formik.errors[field];
-  };
 
   const removeShare = async (row) => {
     question(
