@@ -1,5 +1,5 @@
 export default interface User {
-  id: number;
+  id?: number;
   name?: string;
   email?: string;
   password?: string;
@@ -13,4 +13,5 @@ export default interface User {
   followed_projects?: number[];
   participated_projects?: number[];
   is_superuser?: boolean;
+  token?: string;
 }

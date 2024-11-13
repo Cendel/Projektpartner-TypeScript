@@ -6,8 +6,12 @@ import { loginFailed, loginSuccess } from "../../../store/slices/auth-slice";
 import { toast } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import { loginFormValidationSchema } from "../../../helpers/validationSchemas";
+import User from "../../../entities/User";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
-const useLoginFormFormik = (setLoading) => {
+const useLoginFormFormik = (
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const initialValues = {
     email: "",
     password: "",
@@ -16,7 +20,7 @@ const useLoginFormFormik = (setLoading) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: User) => {
     setLoading(true);
 
     try {
@@ -30,14 +34,12 @@ const useLoginFormFormik = (setLoading) => {
       formik.resetForm();
       toast("Sie haben sich erfolgreich angemeldet.", "success");
     } catch (err) {
-      if (err.response.status === 401) {
-        toast("EMail oder Passwort ist falsch.", "error");
-      } else {
-        toast(
-          "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
-          "error"
-        );
-      }
+      const error = handleAxiosError(err);
+      const errorMessage =
+        error === "unauthorized"
+          ? "EMail oder Passwort ist falsch."
+          : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
+      toast(errorMessage, "error");
       dispatch(loginFailed());
     } finally {
       setLoading(false);
