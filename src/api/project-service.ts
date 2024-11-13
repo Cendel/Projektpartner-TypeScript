@@ -1,47 +1,7 @@
+import { Project } from "../entities/Project";
+import { ProjectAttachment } from "../entities/ProjectAttachment";
+import { ShareOwnership } from "../entities/ShareOwnership";
 import apiRequest from "./apiRequest";
-
-interface Project {
-  id?: number;
-  projectStatus?: boolean;
-  adminAdvice?: boolean;
-  projectTitle?: string;
-  projectPlace?: string;
-  estimatedImplementationDate?: string;
-  slogan?: string;
-  about?: string;
-  goal?: string;
-  support?: string;
-  shortDesc?: string;
-  longDesc?: string;
-  projectImage?: File | string;
-  createdBy?: number;
-  createdByName?: string;
-  createdDate?: string;
-  projectValue?: string;
-  totalShares?: number;
-  shareValue?: string;
-  maxSharesPerPerson?: number;
-  sharesTaken?: number;
-  followerList?: number[];
-}
-
-interface ShareOwnership {
-  id?: number;
-  user?: number;
-  user_name?: string;
-  project?: number;
-  project_title?: string;
-  shares?: number;
-  share_value?: string;
-}
-
-interface ProjectAttachment {
-  id?: number;
-  file?: string | FormData;
-  file_name?: string;
-  file_extension?: string;
-  project?: number;
-}
 
 // USER ENDPOINTS
 
@@ -152,11 +112,7 @@ export const deleteShare = (shareId: ShareOwnership) => {
 // PROJECT ATTACHMENT ENDPOINTS
 
 export const createAttachment = (file: FormData) => {
-  return apiRequest<FormData>(
-    "post",
-    "/project_attachments/create/",
-    file
-  );
+  return apiRequest<FormData>("post", "/project_attachments/create/", file);
 }; //OK
 
 export const listAttachments = (projectId: number) => {
