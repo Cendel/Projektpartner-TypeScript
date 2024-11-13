@@ -4,7 +4,7 @@ import { updateUserAdmin } from "../../../api/user-service";
 import { adminEditUserValidationSchema } from "../../../helpers/validationSchemas";
 import { toast } from "../../../helpers/functions/swal";
 import User from "../../../entities/User";
-import { ApiError } from "../../../types/ApiError";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
 const useAdminEditUserFormik = (props: User) => {
   const [updating, setUpdating] = useState(false);
@@ -26,12 +26,8 @@ const useAdminEditUserFormik = (props: User) => {
       await updateUserAdmin(props.id, values);
       toast("Das Profil wurde erfolgreich aktualisiert.", "success");
     } catch (err: unknown) {
-      const error = err as ApiError;
-      if (error.response?.data?.message) {
-        toast(error.response.data.message, "error");
-      } else {
-        toast("An unexpected error occurred.", "error");
-      }
+      const errorMessage = handleAxiosError(err);
+      toast(errorMessage, "error");
     } finally {
       setUpdating(false);
     }
