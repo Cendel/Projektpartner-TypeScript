@@ -2,8 +2,13 @@ import { useFormik } from "formik";
 import { updateUser } from "../../../api/user-service";
 import { toast } from "../../../helpers/functions/swal";
 import { profileEditValidationSchema } from "../../../helpers/validationSchemas";
+import User from "../../../entities/User";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
-const useProfileEditFormik = (setLoading, user) => {
+const useProfileEditFormik = (
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  user: User
+) => {
   const initialValues = {
     name: user.name,
     job: user.job,
@@ -13,13 +18,14 @@ const useProfileEditFormik = (setLoading, user) => {
     website: user.website,
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: User) => {
     setLoading(true);
     try {
       await updateUser(values);
       toast("Ihr Profil wurde erfolgreich aktualisiert.", "success");
     } catch (err) {
-      toast(err.response.data.message, "error");
+      const { message, type } = handleAxiosError(err);
+      toast(message, type);
     } finally {
       setLoading(false);
     }
