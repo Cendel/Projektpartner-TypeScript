@@ -1,11 +1,28 @@
 import { isAxiosError } from "axios";
 
-export const handleAxiosError = (error: unknown): string => {
+export const handleAxiosError = (
+  error: unknown
+): { message: string; type?: string } => {
   if (isAxiosError(error)) {
     if (error.response?.status === 401) {
-      return "unauthorized";
+      return { message: "unauthorized" };
     }
-    return error.message || "Ein unbekannter Fehler ist aufgetreten.";
+    if (error.response?.data.message === "Name taken") {
+      return {
+        message: "Der Benutzername ist bereits vergeben.",
+        type: "warning",
+      };
+    }
+    if (error.response?.data.message === "Email taken") {
+      return {
+        message: "Die E-Mail-Adresse ist bereits vergeben.",
+        type: "warning",
+      };
+    }
+    return {
+      message: error.message || "Ein Fehler ist aufgetreten.",
+      type: "error",
+    };
   }
-  return "Ein Fehler ist aufgetreten.";
+  return { message: "Ein unbekannter Fehler ist aufgetreten.", type: "error" };
 };

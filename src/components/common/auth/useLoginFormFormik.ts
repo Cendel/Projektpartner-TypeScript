@@ -36,7 +36,7 @@ const useLoginFormFormik = (
     } catch (err) {
       const error = handleAxiosError(err);
       const errorMessage =
-        error === "unauthorized"
+        error.message === "unauthorized"
           ? "EMail oder Passwort ist falsch."
           : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.";
       toast(errorMessage, "error");

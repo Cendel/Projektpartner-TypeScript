@@ -3,9 +3,9 @@ import { Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import PasswordInput from "../password-input/PasswordInput";
 import useRegisterFormFormik from "./useRegisterFormFormik";
 
-const RegisterForm = ({ setKey }) => {
+const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
-  const formik = useRegisterFormFormik(setKey, setLoading);
+  const formik = useRegisterFormFormik( setLoading);
 
   return (
     <Form noValidate onSubmit={formik.handleSubmit} className="">
