@@ -2,46 +2,20 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Spacer from "../../../common/spacer/Spacer";
 import "./contactForm.scss";
-import { useFormik } from "formik";
-import { sendMessage } from "../../../../api/contact-service";
-import { toast } from "../../../../helpers/functions/swal";
 import ContactInfo from "../contact-info/ContactInfo";
 import logo from "../../../../assets/img/logo/logo_contact.png";
 import { settings } from "../../../../helpers/settings";
 import SectionHeader from "../../common/section-header/SectionHeader";
 import { useAppSelector } from "../../../../store/hooks";
-import { contactFormValidationSchema } from "../../../../helpers/validationSchemas";
+import useContactFormFormik from "./useContactFormFormik";
 
 const ContactForm = () => {
   const { name: senderName, id: senderId } = useAppSelector(
     (state) => state.auth.user
   );
   const [loading, setLoading] = useState(false);
-  const initialValues = {
-    sender: senderId,
-    title: "",
-    text: "",
-  };
 
-  const onSubmit = async (values, { resetForm }) => {
-    setLoading(true);
-
-    try {
-      await sendMessage(values);
-      toast("Ihre Nachricht wurde erfolgreich gesendet.", "success");
-      resetForm();
-    } catch (err) {
-      alert(err.response.data.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: contactFormValidationSchema,
-    onSubmit,
-  });
+  const formik = useContactFormFormik(setLoading, senderId);
 
   return (
     <Container className="contact-contact-form">
