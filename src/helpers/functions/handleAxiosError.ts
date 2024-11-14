@@ -7,13 +7,13 @@ export const handleAxiosError = (
     if (error.response?.status === 401) {
       return { message: "unauthorized" };
     }
-    if (error.response?.data.message === "Name taken") {
+    if (error.response?.data?.message === "Name taken") {
       return {
         message: "Der Benutzername ist bereits vergeben.",
         type: "warning",
       };
     }
-    if (error.response?.data.message === "Email taken") {
+    if (error.response?.data?.message === "Email taken") {
       return {
         message: "Die E-Mail-Adresse ist bereits vergeben.",
         type: "warning",

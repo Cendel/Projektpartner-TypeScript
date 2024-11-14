@@ -1,16 +1,25 @@
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
 import { toast } from "../../../../helpers/functions/swal";
 import { sendMessage } from "../../../../api/contact-service";
 import { contactFormValidationSchema } from "../../../../helpers/validationSchemas";
+import { Message } from "../../../../entities/Message";
+import { handleAxiosError } from "../../../../helpers/functions/handleAxiosError";
 
-const useContactFormFormik = (setLoading, senderId) => {
+const useContactFormFormik = (
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  senderId: number
+) => {
   const initialValues = {
     sender: senderId,
     title: "",
     text: "",
   };
 
-  const onSubmit = async (values, { resetForm }) => {
+  const onSubmit = async (
+    values: Message,
+    { resetForm }: FormikHelpers<Message>
+  ) => {
+    console.log(typeof resetForm);
     setLoading(true);
 
     try {
@@ -18,7 +27,8 @@ const useContactFormFormik = (setLoading, senderId) => {
       toast("Ihre Nachricht wurde erfolgreich gesendet.", "success");
       resetForm();
     } catch (err) {
-      alert(err.response.data.message);
+      const { message, type } = handleAxiosError(err);
+      toast(message, type);
     } finally {
       setLoading(false);
     }
