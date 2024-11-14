@@ -8,105 +8,19 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./ProjectForm.scss";
-import { useFormik } from "formik";
-import { toast } from "../../../helpers/functions/swal";
-import { createProject, updateProject } from "../../../api/project-service";
-import {
-  formatDateToYYYYMMDD,
-  getCurrentDate,
-} from "../../../helpers/functions/date-time";
-import { useParams, useNavigate } from "react-router-dom";
+import { getCurrentDate } from "../../../helpers/functions/date-time";
 import { useAppSelector } from "../../../store/hooks";
-import { projectFormValidationSchema } from "../../../helpers/validationSchemas";
+import useProjectFormFormik from "./useProjectFormFormik";
 
 const ProjectForm = (props) => {
   const [loading, setLoading] = useState(false);
-  const { projectId } = useParams();
-  const navigate = useNavigate();
-  const [image, setImage] = useState(null);
   const user = useAppSelector((state) => state.auth.user);
 
-  const handleImage = (e) => {
-    setImage(e.target.files[0]);
-  };
-
-  const initialValues = {
-    projectTitle: props.projectTitle,
-    projectPlace: props.projectPlace,
-    estimatedImplementationDate:
-      props.mode === "edit"
-        ? formatDateToYYYYMMDD(props.estimatedImplementationDate)
-        : "",
-    slogan: props.slogan,
-    about: props.about,
-    goal: props.goal,
-    support: props.support,
-    shortDesc: props.shortDesc,
-    longDesc: props.longDesc,
-    createdBy: props.mode === "edit" ? props.createdBy : user.id,
-    projectValue: props.projectValue,
-    totalShares: props.totalShares,
-    shareValue: props.shareValue,
-    maxSharesPerPerson: props.maxSharesPerPerson,
-  };
-
-  const onSubmit = async (values) => {
-    values.shareValue = (values.projectValue / values.totalShares).toFixed(2);
-    setLoading(true);
-    if (props.mode === "edit") {
-      try {
-        const formData = new FormData();
-        for (const key in values) {
-          formData.append(key, values[key]);
-        }
-        if (image) {
-          formData.append("projectImage", image);
-        }
-        await updateProject(projectId, formData);
-        toast("Ihr Projekt wurde erfolgreich aktualisiert.", "success");
-        navigate(`/projects/${projectId}`);
-      } catch (err) {
-        alert(err.response.data.message);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      try {
-        const formData = new FormData();
-        for (const key in values) {
-          formData.append(key, values[key]);
-          formData.append("projectImage", image);
-        }
-        await createProject(formData);
-        formik.resetForm();
-        toast(
-          "Ihr Projekt wurde erfolgreich erstellt. Bitte warten Sie auf die Genehmigung durch den Administrator, um Ihr Projekt zu veröffentlichen. In der Zwischenzeit können Sie auf der Projekt-Detailseite Änderungen an Ihrem Projekt vornehmen und Dateien hinzufügen, die Sie zu Ihrem Projekt teilen möchten.",
-          "success",
-          100000,
-          true
-        );
-        navigate(`/`);
-      } catch (err) {
-        alert(err.response.data.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: projectFormValidationSchema,
-    onSubmit,
-  });
-
-  const isInvalid = (field) => {
-    return formik.touched[field] && formik.errors[field];
-  };
-
-  const isValid = (field) => {
-    return formik.touched[field] && !formik.errors[field];
-  };
+  const { formik, isValid, isInvalid, handleImage } = useProjectFormFormik(
+    props,
+    setLoading,
+    user
+  );
 
   return (
     <>
