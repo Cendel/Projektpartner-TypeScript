@@ -1,44 +1,14 @@
-import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { toast } from "../../../helpers/functions/swal";
-import { updateUser } from "../../../api/user-service";
 import { useAppSelector } from "../../../store/hooks";
 import "./Profile.scss";
-import { profileEditValidationSchema } from "../../../helpers/validationSchemas";
+import useProfileEditFormik from "./useProfileEditFormik";
 
-const ProfileEdit = (props) => {
+const ProfileEdit = () => {
   const [loading, setLoading] = useState(false);
   const user = useAppSelector((state) => state.auth.user);
-  const { name, job, location, about, phone, website } = user;
 
-  const initialValues = {
-    name,
-    job,
-    location,
-    about,
-    phone,
-    website,
-  };
-
-  const onSubmit = async (values) => {
-    setLoading(true);
-    try {
-      await updateUser(values);
-      toast("Ihr Profil wurde erfolgreich aktualisiert.", "success");
-    } catch (err) {
-      toast(err.response.data.message, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: profileEditValidationSchema,
-    onSubmit,
-    enableReinitialize: true,
-  });
+  const formik = useProfileEditFormik(setLoading, user);
 
   return (
     <div className="profile-edit">
