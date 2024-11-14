@@ -441,7 +441,6 @@ const ProjectDetails = () => {
                     className="edit-button"
                     as={Link}
                     to={`/project-edit/${project.id}`}
-                    mode="edit"
                   >
                     PROJEKT AKTUALISIEREN
                   </Button>
