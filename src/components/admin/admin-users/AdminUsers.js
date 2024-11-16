@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
-//import { useNavigate } from "react-router-dom";
 import {
   getUsersAdmin,
   getUserAdmin,
@@ -11,9 +10,8 @@ import { question, toast } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import AdminEditUser from "./AdminEditUser";
 
-const AdminProjects = () => {
+const AdminUsers = () => {
   const [users, setUsers] = useState([]);
-  //const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [showEditUser, setshowEditUser] = useState(false);
@@ -86,10 +84,6 @@ const AdminProjects = () => {
     fetchUsers();
   }, []);
 
-  //const handleRowClicked = (row) => {
-  //navigate(`/profile/${row.id}`);
-  //};
-
   const handleDelete = (idToDelete) => {
     question(
       "Sind Sie sicher, dass Sie löschen möchten?",
@@ -142,4 +136,4 @@ const AdminProjects = () => {
   );
 };
 
-export default AdminProjects;
+export default AdminUsers;
