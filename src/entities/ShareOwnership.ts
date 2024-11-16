@@ -1,9 +1,6 @@
-export interface ShareOwnership {
-  id?: number;
-  user?: number | string;
-  user_name?: string;
-  project?: number | string;
-  project_title?: string;
-  shares?: number | string;
-  share_value?: string;
+export default interface ShareOwnership {
+  id: number;
+  shares: number;
+  user: number;
+  project: number;
 }

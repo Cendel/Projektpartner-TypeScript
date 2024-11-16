@@ -1,17 +1,14 @@
 export default interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  job?: string;
-  location?: string;
-  about?: string;
-  phone?: string;
-  website?: string;
-  created_projects?: number[];
-  followed_projects?: number[];
-  participated_projects?: number[];
-  is_superuser?: boolean;
-  token?: string;
+  id: string;
+  email: string;
+  name: string;
+  job?: string; // Nullable
+  location?: string; // Nullable
+  about?: string; // Nullable
+  phone?: string; // Nullable
+  website?: string; // Nullable
+  is_superuser: string;
+  followed_projects: string;
+  participated_projects: string;
+  created_projects: string;
 }
