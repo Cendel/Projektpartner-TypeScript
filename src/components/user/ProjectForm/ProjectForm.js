@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,17 +9,28 @@ import {
 } from "react-bootstrap";
 import "./ProjectForm.scss";
 import { getCurrentDate } from "../../../helpers/functions/date-time";
-import { useAppSelector } from "../../../store/hooks";
 import useProjectFormFormik from "./useProjectFormFormik";
+import { getProject } from "../../../api/project-service";
 
-const ProjectForm = (props) => {
+const ProjectForm = ({ edit = false, projectId = 0 }) => {
   const [loading, setLoading] = useState(false);
-  const user = useAppSelector((state) => state.auth.user);
+  const [project, setProject] = useState({});
+
+  useEffect(() => {
+    if (edit && projectId) {
+      const fetchProject = async () => {
+        const result = await getProject(projectId);
+        setProject(result.data);
+      };
+      fetchProject();
+    }
+  }, [edit, projectId]);
 
   const { formik, isValid, isInvalid, handleImage } = useProjectFormFormik(
-    props,
-    setLoading,
-    user
+    project,
+    projectId,
+    edit,
+    setLoading
   );
 
   return (
@@ -220,15 +231,15 @@ const ProjectForm = (props) => {
           </Row>
           {/* image file input field */}
           <Form.Group className="mb-3 projectImage" controlId="formImage">
-            {props.projectImage && (
+            {project.projectImage && (
               <img
-                src={props.projectImage} // displays existing project image
+                src={project.projectImage} // displays existing project image
                 alt="Project"
                 className="project-image-preview"
               />
             )}
             <Form.Label>
-              {props.projectImage
+              {project.projectImage
                 ? "Wenn Sie das aktuelle Bild Ihres Projekts ändern möchten, können Sie unten das neue Bild hochladen."
                 : "Laden Sie ein Bild hoch, das Ihr Projekt am besten beschreibt."}
               <Form.Control
@@ -245,15 +256,10 @@ const ProjectForm = (props) => {
             variant="primary"
             type="submit"
             className="submit-button"
-            disabled={
-              !((formik.dirty && formik.isValid) || props.mode === "edit") ||
-              loading
-            }
+            disabled={!((formik.dirty && formik.isValid) || edit) || loading}
           >
             {loading && <Spinner animation="border" size="sm" />}
-            {props.mode === "edit"
-              ? "PROJEKT AKTUALISIEREN"
-              : "PROJEKT ERSTELLEN"}
+            {edit ? "PROJEKT AKTUALISIEREN" : "PROJEKT ERSTELLEN"}
           </Button>
         </Form>
       </div>

@@ -1,14 +1,15 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createProject, updateProject } from "../../../api/project-service";
 import { formatDateToYYYYMMDD } from "../../../helpers/functions/date-time";
 import { toast } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import { projectFormValidationSchema } from "../../../helpers/validationSchemas";
 import { useState } from "react";
+import { useAppSelector } from "../../../store/hooks";
 
-const useProjectFormFormik = (props, setLoading, user) => {
+const useProjectFormFormik = (project, projectId, edit, setLoading) => {
+  const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
-  const { projectId } = useParams();
   const [image, setImage] = useState(null);
 
   const handleImage = (e) => {
@@ -16,29 +17,28 @@ const useProjectFormFormik = (props, setLoading, user) => {
   };
 
   const initialValues = {
-    projectTitle: props.projectTitle,
-    projectPlace: props.projectPlace,
-    estimatedImplementationDate:
-      props.mode === "edit"
-        ? formatDateToYYYYMMDD(props.estimatedImplementationDate)
-        : "",
-    slogan: props.slogan,
-    about: props.about,
-    goal: props.goal,
-    support: props.support,
-    shortDesc: props.shortDesc,
-    longDesc: props.longDesc,
-    createdBy: props.mode === "edit" ? props.createdBy : user.id,
-    projectValue: props.projectValue,
-    totalShares: props.totalShares,
-    shareValue: props.shareValue,
-    maxSharesPerPerson: props.maxSharesPerPerson,
+    projectTitle: project.projectTitle || "",
+    projectPlace: project.projectPlace || "",
+    estimatedImplementationDate: edit
+      ? formatDateToYYYYMMDD(project.estimatedImplementationDate)
+      : "",
+    slogan: project.slogan || "",
+    about: project.about || "",
+    goal: project.goal || "",
+    support: project.support || "",
+    shortDesc: project.shortDesc || "",
+    longDesc: project.longDesc || "",
+    projectValue: project.projectValue || "",
+    totalShares: project.totalShares || "",
+    shareValue: project.shareValue || "",
+    maxSharesPerPerson: project.maxSharesPerPerson || "",
+    createdBy: edit ? project.createdBy : user.id,
   };
 
   const onSubmit = async (values) => {
     values.shareValue = (values.projectValue / values.totalShares).toFixed(2);
     setLoading(true);
-    if (props.mode === "edit") {
+    if (edit) {
       try {
         const formData = new FormData();
         for (const key in values) {
@@ -80,6 +80,7 @@ const useProjectFormFormik = (props, setLoading, user) => {
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues,
     validationSchema: projectFormValidationSchema,
     onSubmit,

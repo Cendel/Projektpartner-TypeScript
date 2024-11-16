@@ -19,7 +19,6 @@ const useContactFormFormik = (
     values: Message,
     { resetForm }: FormikHelpers<Message>
   ) => {
-    console.log(typeof resetForm);
     setLoading(true);
 
     try {

@@ -22,7 +22,6 @@ const useRegisterFormFormik = (
       formik.resetForm();
       toast("Sie sind registriert.", "success");
     } catch (err) {
-      console.log("hata detayi", err);
       const { message, type } = handleAxiosError(err);
       toast(message, type);
     } finally {
