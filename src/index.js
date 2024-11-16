@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import { Provider as StoreProvider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import store from "./store";
+
 import "./assets/scss/styles.scss";
+import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
