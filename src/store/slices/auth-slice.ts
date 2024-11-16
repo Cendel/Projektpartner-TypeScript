@@ -1,13 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import User from "../../entities/User";
+
+interface AuthState {
+  isUserLogin: boolean;
+  user: User;
+}
+
+const initialState: AuthState = {
+  isUserLogin: false,
+  user: {},
+};
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    isUserLogin: false,
-    user: {},
-  },
+  initialState,
   reducers: {
-    loginSuccess: (state, action) => {
+    loginSuccess: (state, action: PayloadAction<Record<string, any>>) => {
       state.isUserLogin = true;
       state.user = action.payload;
     },
