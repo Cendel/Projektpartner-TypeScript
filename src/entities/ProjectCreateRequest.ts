@@ -10,7 +10,7 @@ export default interface ProjectCreateRequest {
   longDesc: string;
   projectImage: File;
   createdBy: number;
-  projectValue: string;
+  projectValue: number;
   totalShares: number;
   shareValue: string;
   maxSharesPerPerson: number;

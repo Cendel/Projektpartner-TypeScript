@@ -96,8 +96,8 @@ export const deleteProject = (id: number) => {
   return apiRequest<void, void>("delete", `/projects/auth/${id}/`);
 }; // OK
 
-export const updateProject = (id: number, project: Project) => {
-  return apiRequest<Project, Project>(
+export const updateProject = (id: number, project: FormData) => {
+  return apiRequest<FormData, Project>(
     "patch",
     `/projects/auth/${id}/`,
     project
