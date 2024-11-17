@@ -4,9 +4,10 @@ import { toast } from "../../../helpers/functions/swal";
 import { adminShareEditValidationSchema } from "../../../helpers/validationSchemas";
 import ShareOwnership from "../../../entities/ShareOwnership";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import ShareOwnershipRequest from "../../../entities/ShareOwnershipRequest";
 
 interface UseAdminShareEditFormikProps {
-  projectId: string;
+  projectId: number;
   participants: ShareOwnership[];
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRefreshComponent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,12 +20,12 @@ const useAdminShareEditFormik = ({
   setRefreshComponent,
 }: UseAdminShareEditFormikProps) => {
   const initialValues = {
-    user: "",
-    shares: "",
+    user: 0,
+    shares: 0,
     project: projectId,
   };
 
-  const onSubmit = async (values: ShareOwnership) => {
+  const onSubmit = async (values: ShareOwnershipRequest) => {
     const participantsIds = participants.map((obj) => obj.user);
     if (participantsIds.includes(values.user)) {
       toast(
@@ -48,16 +49,16 @@ const useAdminShareEditFormik = ({
     }
   };
 
-  const formik = useFormik<ShareOwnership>({
+  const formik = useFormik<ShareOwnershipRequest>({
     initialValues,
     validationSchema: adminShareEditValidationSchema,
     onSubmit,
   });
-  const isInvalid = (field: keyof ShareOwnership) => {
+  const isInvalid = (field: keyof ShareOwnershipRequest) => {
     return formik.touched[field] && formik.errors[field];
   };
 
-  const isValid = (field: keyof ShareOwnership) => {
+  const isValid = (field: keyof ShareOwnershipRequest) => {
     return formik.touched[field] && !formik.errors[field];
   };
 

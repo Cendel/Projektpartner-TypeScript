@@ -16,7 +16,8 @@ import SectionHeader from "../../user/common/section-header/SectionHeader";
 import useAdminShareEditFormik from "./useAdminShareEditFormik";
 
 const AdminShareEdit = () => {
-  const { projectId } = useParams();
+  const { stringProjectId } = useParams();
+  const projectId = Number(stringProjectId);
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshComponent, setRefreshComponent] = useState(false);
