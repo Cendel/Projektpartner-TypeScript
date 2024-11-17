@@ -51,7 +51,7 @@ export const getProjectsByIds = (project_ids: number[]) => {
     "get",
     "/projects/listprojectsbyids/",
     undefined,
-    { project_ids }
+    { ...project_ids }
   );
 }; //OK
 

@@ -7,7 +7,7 @@ import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 import ShareOwnershipRequest from "../../../entities/ShareOwnershipRequest";
 
 interface UseAdminShareEditFormikProps {
-  projectId: number;
+  projectId: string;
   participants: ShareOwnership[];
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRefreshComponent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +22,7 @@ const useAdminShareEditFormik = ({
   const initialValues = {
     user: 0,
     shares: 0,
-    project: projectId,
+    project: Number(projectId),
   };
 
   const onSubmit = async (values: ShareOwnershipRequest) => {
