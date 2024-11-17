@@ -51,7 +51,7 @@ export const getUserAdmin = (id: number) => {
   return apiRequest<void, User>("get", `/user/${id}/`);
 };
 
-export const updateUserAdmin = (id: number, userUpdate: UserUpdateRequest) => {
+export const updateUserAdmin = (id: string, userUpdate: UserUpdateRequest) => {
   return apiRequest<UserUpdateRequest, User>(
     "put",
     `/user/${id}/update/`,

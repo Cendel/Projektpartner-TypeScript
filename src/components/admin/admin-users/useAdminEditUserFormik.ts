@@ -5,6 +5,7 @@ import { adminEditUserValidationSchema } from "../../../helpers/validationSchema
 import { toast } from "../../../helpers/functions/swal";
 import User from "../../../entities/User";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import UserUpdateRequest from "../../../entities/UserUpdateRequest";
 
 const useAdminEditUserFormik = (props: User) => {
   const [updating, setUpdating] = useState(false);
@@ -20,7 +21,7 @@ const useAdminEditUserFormik = (props: User) => {
     about: props.about,
   };
 
-  const onSubmit = async (values: User) => {
+  const onSubmit = async (values: UserUpdateRequest) => {
     setUpdating(true);
     try {
       await updateUserAdmin(props.id, values);
