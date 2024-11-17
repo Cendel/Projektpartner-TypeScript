@@ -1,6 +1,6 @@
-import Swal from "sweetalert2";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 
-export const question = (title, text) => {
+export const question = (title: string, text: string) => {
   return Swal.fire({
     title,
     text,
@@ -10,12 +10,11 @@ export const question = (title, text) => {
 };
 
 export const toast = (
-  title,
-  icon = "info",
+  title: string,
+  icon = "info" as SweetAlertIcon,
   timer = 4000,
   showConfirmButton = false
 ) => {
-  //
   Swal.fire({
     position: "top-end",
     icon, //success, warning, question, error, info, etc.

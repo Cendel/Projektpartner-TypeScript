@@ -1,6 +1,4 @@
 export const settings = {
-  /*apiURL: "http://127.0.0.1:8000",*/
-  /*apiURL: "http://85.215.62.70/api",*/
   siteName: "Projektpartner",
   siteUrl: "",
   email: "info@projektpartner.com",
