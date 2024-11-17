@@ -2,11 +2,11 @@ export default interface User {
   id: string;
   email: string;
   name: string;
-  job?: string; // Nullable
-  location?: string; // Nullable
-  about?: string; // Nullable
-  phone?: string; // Nullable
-  website?: string; // Nullable
+  job: string;
+  location: string;
+  about: string;
+  phone: string;
+  website: string;
   is_superuser: string;
   followed_projects: string;
   participated_projects: string;

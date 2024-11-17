@@ -1,42 +1,64 @@
+import LoginRequest from "../entities/LoginRequest";
+import LoginResponse from "../entities/LoginResponse";
+import RegisterRequest from "../entities/RegisterRequest";
+import RegisterResponse from "../entities/RegisterResponse";
 import User from "../entities/User";
+import UserOverview from "../entities/UserOverview";
+import UserUpdateRequest from "../entities/UserUpdateRequest";
 import apiRequest from "./apiRequest";
 
 // USER ENDPOINTS
 
-export const register = (user: User) => {
-  return apiRequest<User>("post", "/register/", user, undefined, false);
+export const register = (user: RegisterRequest) => {
+  return apiRequest<RegisterRequest, RegisterResponse>(
+    "post",
+    "/register/",
+    user,
+    undefined,
+    false
+  );
 };
 
-export const login = (user: User) => {
-  return apiRequest<User>("post", "/login/", user, undefined, false);
+export const login = (user: LoginRequest) => {
+  return apiRequest<LoginRequest, LoginResponse>(
+    "post",
+    "/login/",
+    user,
+    undefined,
+    false
+  );
 };
 
 export const getUser = () => {
-  return apiRequest<User>("get", "/user/");
+  return apiRequest<void, User>("get", "/user/");
 };
 
 export const getUserById = (id: number) => {
-  return apiRequest<User>("get", `/user/${id}/`);
+  return apiRequest<void, User>("get", `/user/${id}/`);
 };
 
-export const updateUser = (user: User) => {
-  return apiRequest<User>("put", "/user/", user);
+export const updateUser = (userUpdate: UserUpdateRequest) => {
+  return apiRequest<UserUpdateRequest, User>("put", "/user/", userUpdate);
 };
 
 // ADMIN ENDPOINTS
 
 export const getUsersAdmin = () => {
-  return apiRequest<User>("get", "/auth/users/");
+  return apiRequest<void, UserOverview[]>("get", "/auth/users/");
 };
 
 export const getUserAdmin = (id: number) => {
-  return apiRequest<User>("get", `/user/${id}/`);
+  return apiRequest<void, User>("get", `/user/${id}/`);
 };
 
-export const updateUserAdmin = (id: number, user: User) => {
-  return apiRequest<User>("put", `/user/${id}/update/`, user);
+export const updateUserAdmin = (id: number, userUpdate: UserUpdateRequest) => {
+  return apiRequest<UserUpdateRequest, User>(
+    "put",
+    `/user/${id}/update/`,
+    userUpdate
+  );
 };
 
 export const deleteUserAdmin = (id: number) => {
-  return apiRequest<User>("delete", `/user/${id}/delete/`);
+  return apiRequest<void, void>("delete", `/user/${id}/delete/`);
 };
