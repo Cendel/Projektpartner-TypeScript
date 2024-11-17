@@ -1,4 +1,4 @@
-export default interface MessageList {
+export default interface MessageOverview {
   id: number;
   sender: number;
   senderName: string;
