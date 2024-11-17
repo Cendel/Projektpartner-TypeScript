@@ -1,4 +1,3 @@
-import React from "react";
 import { Col, Row } from "react-bootstrap";
 import "./footer.scss";
 import { settings } from "../../../../helpers/settings";

@@ -1,7 +1,9 @@
-import React from "react";
 import "./SectionHeader.scss";
 
-const SectionHeader = ({title}) => {
+interface Props {
+  title: string;
+}
+const SectionHeader = ({ title }: Props) => {
   return (
     <div className="section-title">
       <h2>{title}</h2>

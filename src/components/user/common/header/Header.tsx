@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import logo from "../../../../assets/img/logo/logo_header.png";
 import "./header.scss";

@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import "./header.scss";

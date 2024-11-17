@@ -1,13 +1,13 @@
-import React from "react";
 import { NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { question } from "../../../../helpers/functions/swal";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { logOut } from "../../../../store/slices/auth-slice";
 import { encryptedLocalStorage } from "../../../../helpers/functions/encrypt-storage";
+import LoadingPage from "../../../../pages/common/LoadingPage";
 
 const MenuDropdown = () => {
-  const { user } = useAppSelector((state) => state.auth); //useAppSelector bizim hooks.js de useSelector yerine tanimladigimiz hook umuzdu. Merkezi state imizde olusturdugumuz auth grubunun isUserLogin vs verilerine ulasmakta kullanacagiz bunu.
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -22,6 +22,10 @@ const MenuDropdown = () => {
       }
     );
   };
+
+  if (!user) {
+    return <LoadingPage />;
+  }
 
   return (
     <NavDropdown title={user.name.substring(0, 10)} className="userName">

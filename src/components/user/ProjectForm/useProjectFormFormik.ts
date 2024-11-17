@@ -71,7 +71,7 @@ const useProjectFormFormik = ({
         navigate(`/projects/${projectId}`);
       } catch (err) {
         const errorMessage = handleAxiosError(err);
-        toast(errorMessage, "error");
+        toast(errorMessage.message, "error");
       } finally {
         setLoading(false);
       }
@@ -96,7 +96,7 @@ const useProjectFormFormik = ({
         navigate(`/`);
       } catch (err) {
         const errorMessage = handleAxiosError(err);
-        toast(errorMessage, "error");
+        toast(errorMessage.message, "error");
       } finally {
         setLoading(false);
       }
