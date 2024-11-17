@@ -1,4 +1,4 @@
-export default interface ProjectAttachment {
+export default interface Attachment {
   id: number;
   file: string;
   file_name: string;

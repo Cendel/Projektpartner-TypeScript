@@ -3,13 +3,13 @@ import authHeader from "../helpers/functions/auth-header";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
-const apiRequest = <T>(
+const apiRequest = <ReqType, ResType>(
   method: "get" | "post" | "put" | "patch" | "delete",
   url: string,
-  data?: T,
+  data?: ReqType,
   params?: Record<string, any>,
   useAuthHeader: boolean = true
-): Promise<AxiosResponse<T>> => {
+): Promise<AxiosResponse<ResType>> => {
   const config = {
     method,
     url: `${API_URL}${url}`,
