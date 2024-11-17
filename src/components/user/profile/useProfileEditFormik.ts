@@ -4,6 +4,7 @@ import { toast } from "../../../helpers/functions/swal";
 import { profileEditValidationSchema } from "../../../helpers/validationSchemas";
 import User from "../../../entities/User";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import UserUpdateRequest from "../../../entities/UserUpdateRequest";
 
 const useProfileEditFormik = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -18,7 +19,7 @@ const useProfileEditFormik = (
     website: user.website,
   };
 
-  const onSubmit = async (values: User) => {
+  const onSubmit = async (values: UserUpdateRequest) => {
     setLoading(true);
     try {
       await updateUser(values);
