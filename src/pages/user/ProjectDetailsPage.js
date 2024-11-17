@@ -1,12 +1,11 @@
 import React from "react";
 import ProjectDetails from "../../components/user/projects-details/ProjectDetails";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const ProjectDetailPage = () => {
   return (
     <UserTemplate>
       <ProjectDetails />
-      
     </UserTemplate>
   );
 };

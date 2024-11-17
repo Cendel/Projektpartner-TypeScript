@@ -1,6 +1,6 @@
 import React from "react";
 import AdminProjects from "../../components/admin/admin-projects/AdminProjects";
-import AdminTemplate from "../../templates/AdminTemplate";
+import AdminTemplate from "../../views/AdminTemplate";
 
 const AdminProjectsPage = () => {
   return (

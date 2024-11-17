@@ -1,6 +1,6 @@
 import React from "react";
 import AdminUsers from "../../components/admin/admin-users/AdminUsers";
-import AdminTemplate from "../../templates/AdminTemplate";
+import AdminTemplate from "../../views/AdminTemplate";
 
 const AdminUsersPage = () => {
   return (

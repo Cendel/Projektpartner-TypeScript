@@ -1,6 +1,6 @@
 import React from "react";
 import Profile from "../../components/user/profile/Profile";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const ProfilePage = () => {
   return (

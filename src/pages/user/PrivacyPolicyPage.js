@@ -1,5 +1,5 @@
 import React from "react";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const PrivacyPolicyPage = () => {
   return (

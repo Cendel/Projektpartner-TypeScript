@@ -1,6 +1,6 @@
 import React from "react";
 import ContactForm from "../../components/user/contact/contact-form/ContactForm";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const ContactPage = () => {
   return (

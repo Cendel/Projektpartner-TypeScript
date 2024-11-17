@@ -1,6 +1,6 @@
 import React from "react";
 import NotFound from "../../components/common/not-found/NotFound";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const NotFoundPage = () => {
   return (

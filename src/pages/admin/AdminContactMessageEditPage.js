@@ -1,6 +1,6 @@
 import React from "react";
 import ContactMessageEdit from "../../components/admin/contact-messages/ContactMessageEdit";
-import AdminTemplate from "../../templates/AdminTemplate";
+import AdminTemplate from "../../views/AdminTemplate";
 
 const AdminContactMessageEditPage = () => {
   return (

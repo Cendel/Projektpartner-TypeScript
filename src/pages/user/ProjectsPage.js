@@ -1,6 +1,6 @@
 import React from "react";
 import Projects from "../../components/user/projects/Projects";
-import UserTemplate from "../../templates/UserTemplate";
+import UserTemplate from "../../views/UserTemplate";
 
 const ProjectsPage = () => {
   return (
