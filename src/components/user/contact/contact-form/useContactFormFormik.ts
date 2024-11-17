@@ -2,8 +2,8 @@ import { FormikHelpers, useFormik } from "formik";
 import { toast } from "../../../../helpers/functions/swal";
 import { sendMessage } from "../../../../api/contact-service";
 import { contactFormValidationSchema } from "../../../../helpers/validationSchemas";
-import { Message } from "../../../../entities/Message";
 import { handleAxiosError } from "../../../../helpers/functions/handleAxiosError";
+import MessageRequest from "../../../../entities/MessageRequest";
 
 const useContactFormFormik = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -16,8 +16,8 @@ const useContactFormFormik = (
   };
 
   const onSubmit = async (
-    values: Message,
-    { resetForm }: FormikHelpers<Message>
+    values: MessageRequest,
+    { resetForm }: FormikHelpers<MessageRequest>
   ) => {
     setLoading(true);
 
