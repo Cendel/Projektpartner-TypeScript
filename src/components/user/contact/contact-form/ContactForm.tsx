@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Spacer from "../../../common/spacer/Spacer";
 import "./contactForm.scss";
@@ -10,12 +10,13 @@ import { useAppSelector } from "../../../../store/hooks";
 import useContactFormFormik from "./useContactFormFormik";
 
 const ContactForm = () => {
-  const { name: senderName, id: senderId } = useAppSelector(
-    (state) => state.auth.user
-  );
+  const user = useAppSelector((state) => state.auth.user);
+
+  const { name: senderName, id: senderId } = user!; // Non-null Assertion Operator
+
   const [loading, setLoading] = useState(false);
 
-  const formik = useContactFormFormik(setLoading, senderId);
+  const formik = useContactFormFormik(setLoading, Number(senderId));
 
   return (
     <Container className="contact-contact-form">
@@ -69,7 +70,7 @@ const ContactForm = () => {
               <Form.Label>Nachricht</Form.Label>
               <Form.Control
                 as="textarea"
-                rows="5"
+                rows={5}
                 {...formik.getFieldProps("text")}
                 isInvalid={formik.touched.text && !!formik.errors.text}
                 isValid={formik.touched.text && !formik.errors.text}
