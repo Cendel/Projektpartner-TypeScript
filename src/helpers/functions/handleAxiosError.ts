@@ -5,7 +5,7 @@ export const handleAxiosError = (
 ): { message: string; type?: string } => {
   if (isAxiosError(error)) {
     if (error.response?.status === 401) {
-      return { message: "unauthorized" };
+      return { message: "unauthorized", type: "warning" };
     }
     if (error.response?.data?.message === "Name taken") {
       return {

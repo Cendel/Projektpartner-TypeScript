@@ -26,8 +26,8 @@ const useContactFormFormik = (
       toast("Ihre Nachricht wurde erfolgreich gesendet.", "success");
       resetForm();
     } catch (err) {
-      const { message, type } = handleAxiosError(err);
-      toast(message, type);
+      const { message } = handleAxiosError(err);
+      toast(message);
     } finally {
       setLoading(false);
     }
