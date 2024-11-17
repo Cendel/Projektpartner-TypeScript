@@ -4,16 +4,34 @@ import { formatDateToYYYYMMDD } from "../../../helpers/functions/date-time";
 import { toast } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import { projectFormValidationSchema } from "../../../helpers/validationSchemas";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useAppSelector } from "../../../store/hooks";
+import Project from "../../../entities/Project";
+import ProjectCreateRequest from "../../../entities/ProjectCreateRequest";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
-const useProjectFormFormik = (project, projectId, edit, setLoading) => {
+interface UseProjectFormFormikProps {
+  project: Project;
+  projectId: number;
+  edit: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const useProjectFormFormik = ({
+  project,
+  projectId,
+  edit,
+  setLoading,
+}: UseProjectFormFormikProps) => {
   const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
-  const [image, setImage] = useState(null);
 
-  const handleImage = (e) => {
-    setImage(e.target.files[0]);
+  const [image, setImage] = useState<File | null>(null);
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
   };
 
   const initialValues = {
@@ -28,21 +46,22 @@ const useProjectFormFormik = (project, projectId, edit, setLoading) => {
     support: project.support || "",
     shortDesc: project.shortDesc || "",
     longDesc: project.longDesc || "",
-    projectValue: project.projectValue || "",
-    totalShares: project.totalShares || "",
+    createdBy: edit ? project.createdBy : Number(user?.id) || 0,
+    projectValue: Number(project.projectValue) || 0,
+    totalShares: project.totalShares || 0,
     shareValue: project.shareValue || "",
-    maxSharesPerPerson: project.maxSharesPerPerson || "",
-    createdBy: edit ? project.createdBy : user.id,
+    maxSharesPerPerson: project.maxSharesPerPerson || 0,
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: ProjectCreateRequest) => {
     values.shareValue = (values.projectValue / values.totalShares).toFixed(2);
     setLoading(true);
     if (edit) {
       try {
         const formData = new FormData();
         for (const key in values) {
-          formData.append(key, values[key]);
+          const value = values[key as keyof ProjectCreateRequest];
+          formData.append(key, String(value));
         }
         if (image) {
           formData.append("projectImage", image);
@@ -51,7 +70,8 @@ const useProjectFormFormik = (project, projectId, edit, setLoading) => {
         toast("Ihr Projekt wurde erfolgreich aktualisiert.", "success");
         navigate(`/projects/${projectId}`);
       } catch (err) {
-        alert(err.response.data.message);
+        const errorMessage = handleAxiosError(err);
+        toast(errorMessage, "error");
       } finally {
         setLoading(false);
       }
@@ -59,8 +79,11 @@ const useProjectFormFormik = (project, projectId, edit, setLoading) => {
       try {
         const formData = new FormData();
         for (const key in values) {
-          formData.append(key, values[key]);
-          formData.append("projectImage", image);
+          const value = values[key as keyof ProjectCreateRequest];
+          formData.append(key, String(value));
+          if (image) {
+            formData.append("projectImage", image);
+          }
         }
         await createProject(formData);
         formik.resetForm();
@@ -72,7 +95,8 @@ const useProjectFormFormik = (project, projectId, edit, setLoading) => {
         );
         navigate(`/`);
       } catch (err) {
-        alert(err.response.data.message);
+        const errorMessage = handleAxiosError(err);
+        toast(errorMessage, "error");
       } finally {
         setLoading(false);
       }
@@ -86,11 +110,11 @@ const useProjectFormFormik = (project, projectId, edit, setLoading) => {
     onSubmit,
   });
 
-  const isInvalid = (field) => {
+  const isInvalid = (field: keyof ProjectCreateRequest) => {
     return formik.touched[field] && formik.errors[field];
   };
 
-  const isValid = (field) => {
+  const isValid = (field: keyof ProjectCreateRequest) => {
     return formik.touched[field] && !formik.errors[field];
   };
 

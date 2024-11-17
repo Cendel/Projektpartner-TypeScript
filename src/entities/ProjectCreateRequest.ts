@@ -8,7 +8,6 @@ export default interface ProjectCreateRequest {
   support: string;
   shortDesc: string;
   longDesc: string;
-  projectImage: File;
   createdBy: number;
   projectValue: number;
   totalShares: number;

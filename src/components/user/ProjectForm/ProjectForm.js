@@ -26,12 +26,12 @@ const ProjectForm = ({ edit = false, projectId = 0 }) => {
     }
   }, [edit, projectId]);
 
-  const { formik, isValid, isInvalid, handleImage } = useProjectFormFormik(
+  const { formik, isValid, isInvalid, handleImage } = useProjectFormFormik({
     project,
     projectId,
     edit,
-    setLoading
-  );
+    setLoading,
+  });
 
   return (
     <>
