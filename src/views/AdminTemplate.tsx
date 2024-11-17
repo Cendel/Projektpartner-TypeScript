@@ -1,8 +1,12 @@
-import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Sidebar from "../components/admin/common/sidebar";
+import { ReactNode } from "react";
 
-const AdminTemplate = ({ children }) => {
+interface props {
+  children: ReactNode;
+}
+
+const AdminTemplate = ({ children }: props) => {
   return (
     <Container fluid>
       <Row>
