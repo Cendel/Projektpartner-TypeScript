@@ -6,8 +6,8 @@ import { loginFailed, loginSuccess } from "../../../store/slices/auth-slice";
 import { toast } from "../../../helpers/functions/swal";
 import { useFormik } from "formik";
 import { loginFormValidationSchema } from "../../../helpers/validationSchemas";
-import User from "../../../entities/User";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import LoginRequest from "../../../entities/LoginRequest";
 
 const useLoginFormFormik = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +20,7 @@ const useLoginFormFormik = (
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (values: User) => {
+  const onSubmit = async (values: LoginRequest) => {
     setLoading(true);
 
     try {

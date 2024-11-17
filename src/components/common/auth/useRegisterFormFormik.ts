@@ -1,4 +1,4 @@
-import User from "../../../entities/User";
+import RegisterRequest from "../../../entities/RegisterRequest";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 import { registerFormValidationSchema } from "../../../helpers/validationSchemas";
 const { useFormik } = require("formik");
@@ -15,7 +15,7 @@ const useRegisterFormFormik = (
     confirmPassword: "",
   };
 
-  const onSubmit = async (values: User) => {
+  const onSubmit = async (values: RegisterRequest) => {
     setLoading(true);
     try {
       await register(values);
