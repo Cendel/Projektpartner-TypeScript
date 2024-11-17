@@ -1,4 +1,3 @@
-import React from "react";
 import NotFound from "../../components/common/not-found/NotFound";
 import UserTemplate from "../../views/UserTemplate";
 

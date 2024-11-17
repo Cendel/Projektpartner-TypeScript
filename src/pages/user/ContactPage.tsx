@@ -1,4 +1,3 @@
-import React from "react";
 import ContactForm from "../../components/user/contact/contact-form/ContactForm";
 import UserTemplate from "../../views/UserTemplate";
 

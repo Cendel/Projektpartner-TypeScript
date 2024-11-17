@@ -1,4 +1,3 @@
-import React from "react";
 import Projects from "../../components/user/projects/Projects";
 import UserTemplate from "../../views/UserTemplate";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import AdminRequestedProjects from "../../components/admin/admin-projects/AdminRequestedProjects";
 import AdminTemplate from "../../views/AdminTemplate";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import AdminUsers from "../../components/admin/admin-users/AdminUsers";
 import AdminTemplate from "../../views/AdminTemplate";
 

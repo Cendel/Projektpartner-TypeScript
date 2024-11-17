@@ -1,4 +1,3 @@
-import React from "react";
 import ContactMessages from "../../components/admin/contact-messages/ContactMessages";
 import AdminTemplate from "../../views/AdminTemplate";
 
