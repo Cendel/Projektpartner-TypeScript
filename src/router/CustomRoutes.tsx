@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "../components/common/scroll-to-top/ScrollToTop";
 import AdminContactMessageEditPage from "../pages/admin/AdminContactMessageEditPage";
