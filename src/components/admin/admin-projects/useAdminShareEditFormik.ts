@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { createShare } from "../../../api/project-service";
 import { toast } from "../../../helpers/functions/swal";
 import { adminShareEditValidationSchema } from "../../../helpers/validationSchemas";
-import { ShareOwnership } from "../../../entities/ShareOwnership";
+import ShareOwnership from "../../../entities/ShareOwnership";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
 interface UseAdminShareEditFormikProps {

@@ -6,6 +6,7 @@ import ProjectListForTables from "../entities/ProjectListForTables";
 import ProjectStatus from "../entities/ProjectStatus";
 import ShareOwnership from "../entities/ShareOwnership";
 import ShareOwnershipList from "../entities/ShareOwnershipList";
+import ShareOwnershipRequest from "../entities/ShareOwnershipRequest";
 import apiRequest from "./apiRequest";
 
 // USER ENDPOINTS
@@ -105,8 +106,8 @@ export const updateProject = (id: number, project: Project) => {
 
 // ADMIN SHARE ENDPOINTS
 
-export const createShare = (share: ShareOwnership) => {
-  return apiRequest<ShareOwnership, ShareOwnership>(
+export const createShare = (share: ShareOwnershipRequest) => {
+  return apiRequest<ShareOwnershipRequest, ShareOwnership>(
     "post",
     "/share_ownership/create/",
     share
