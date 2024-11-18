@@ -2,7 +2,7 @@ import Attachment from "../entities/Attachment";
 import Project from "../entities/Project";
 import ProjectAdminAdvice from "../entities/ProjectAdminAdvice";
 import ProjectFollowerUpdate from "../entities/ProjectFollowerUpdate";
-import ProjectListForTables from "../entities/ProjectListForTables";
+import ProjectsListForTables from "../entities/ProjectsListForTables";
 import ProjectStatus from "../entities/ProjectStatus";
 import ShareOwnership from "../entities/ShareOwnership";
 import ShareOwnershipList from "../entities/ShareOwnershipList";
@@ -38,7 +38,7 @@ export const getProjectsByAdminAdvice = (status: boolean) => {
 }; //OK
 
 export const getProjectsForTables = (project_ids: number[]) => {
-  return apiRequest<void, ProjectListForTables[]>(
+  return apiRequest<void, ProjectsListForTables[]>(
     "get",
     "/projects/listforusertables/",
     undefined,

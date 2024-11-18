@@ -174,9 +174,15 @@ const Profile = () => {
               </div>
             )}
           </div>
-          {showCreatedList && <UserProjectsList {...listToBeShowed} />}
-          {showParticipatedList && <UserProjectsList {...listToBeShowed} />}
-          {showFollowedList && <UserProjectsList {...listToBeShowed} />}
+          {showCreatedList && (
+            <UserProjectsList listToBeShowed={listToBeShowed} />
+          )}
+          {showParticipatedList && (
+            <UserProjectsList listToBeShowed={listToBeShowed} />
+          )}
+          {showFollowedList && (
+            <UserProjectsList listToBeShowed={listToBeShowed} />
+          )}
           {showProfileEdit && <ProfileEdit />}
           {showSharesList && <UserSharesList userId={user.id} />}
         </div>
