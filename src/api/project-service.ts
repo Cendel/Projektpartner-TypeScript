@@ -114,15 +114,15 @@ export const createShare = (share: ShareOwnershipRequest) => {
   );
 }; //OK
 
-export const projectListShares = (projectId: number) => {
-  return apiRequest<void, ShareOwnershipList>(
+export const listSharesForProject = (projectId: number) => {
+  return apiRequest<void, ShareOwnershipList[]>(
     "get",
     `/share_ownership/list/?projectId=${projectId}`
   );
 }; //OK
 
-export const userListShares = (userId: number) => {
-  return apiRequest<void, ShareOwnershipList>(
+export const listSharesForUser = (userId: number) => {
+  return apiRequest<void, ShareOwnershipList[]>(
     "get",
     `/share_ownership/list/user/?userId=${userId}`
   );

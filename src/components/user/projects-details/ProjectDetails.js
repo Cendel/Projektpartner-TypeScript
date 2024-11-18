@@ -10,7 +10,7 @@ import {
   deleteProject,
   getProject,
   updateProjectFollowerList,
-  projectListShares,
+  listSharesForProject,
 } from "../../../api/project-service";
 import { question, toast } from "../../../helpers/functions/swal";
 import { useNavigate, Link, useParams } from "react-router-dom";
@@ -177,7 +177,7 @@ const ProjectDetails = () => {
 
   const participantsListHandleClick = async () => {
     try {
-      const result = await projectListShares(projectId);
+      const result = await listSharesForProject(projectId);
       setParticipantsList(result.data);
       window.scrollBy(0, 100);
       setShowParticipantsList(true);

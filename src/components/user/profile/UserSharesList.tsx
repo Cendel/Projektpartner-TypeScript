@@ -1,15 +1,25 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import { userListShares } from "../../../api/project-service";
+import { listSharesForUser } from "../../../api/project-service";
+import ShareOwnershipList from "../../../entities/ShareOwnershipList";
 
-const UserSharesList = ({ userId }) => {
-  const [shares, setShares] = useState([]);
+interface Column {
+  name: string;
+  selector: (row: ShareOwnershipList) => string | number;
+  sortable: boolean;
+}
+interface Props {
+  userId: number;
+}
+
+const UserSharesList = ({ userId }: Props) => {
+  const [sharesList, setSharesList] = useState<ShareOwnershipList[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  const columns = [
+  const columns: Column[] = [
     {
       name: "Projekttitle",
       selector: (row) => row.project_title,
@@ -23,15 +33,16 @@ const UserSharesList = ({ userId }) => {
     {
       name: "Wert der Aktien",
       selector: (row) => {
-        return (row.shares * row.share_value).toLocaleString() + " €";
+        return (row.shares * Number(row.share_value)).toLocaleString() + " €";
       },
+      sortable: true,
     },
   ];
 
   const loadData = useCallback(async () => {
     try {
-      const result = await userListShares(userId);
-      setShares(result.data);
+      const result = await listSharesForUser(userId);
+      setSharesList(result.data);
     } catch (err) {
     } finally {
       setLoading(false);
@@ -42,7 +53,7 @@ const UserSharesList = ({ userId }) => {
     loadData();
   }, [loadData]);
 
-  const handleRowClicked = (row) => {
+  const handleRowClicked = (row: ShareOwnershipList) => {
     navigate(`/projects/${row.project}`);
   };
 
@@ -52,7 +63,7 @@ const UserSharesList = ({ userId }) => {
         <Col>
           <DataTable
             columns={columns}
-            data={shares}
+            data={sharesList}
             progressPending={loading}
             pagination
             paginationPerPage={10}

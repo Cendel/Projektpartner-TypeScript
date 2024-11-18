@@ -184,7 +184,7 @@ const Profile = () => {
             <UserProjectsList listToBeShowed={listToBeShowed} />
           )}
           {showProfileEdit && <ProfileEdit />}
-          {showSharesList && <UserSharesList userId={user.id} />}
+          {showSharesList && <UserSharesList userId={Number(user.id)} />}
         </div>
       )}
     </>

@@ -10,7 +10,10 @@ import {
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useParams } from "react-router-dom";
-import { projectListShares, deleteShare } from "../../../api/project-service";
+import {
+  listSharesForProject,
+  deleteShare,
+} from "../../../api/project-service";
 import { toast, question } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import useAdminShareEditFormik from "./useAdminShareEditFormik";
@@ -23,7 +26,7 @@ const AdminShareEdit = () => {
 
   const loadData = useCallback(async () => {
     try {
-      const result = await projectListShares(projectId);
+      const result = await listSharesForProject(projectId);
       setParticipants(result.data);
     } catch (err) {
     } finally {
