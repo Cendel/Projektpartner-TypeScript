@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { useAppSelector } from "../../../store/hooks";
 import "./Profile.scss";
@@ -6,7 +6,7 @@ import useProfileEditFormik from "./useProfileEditFormik";
 
 const ProfileEdit = () => {
   const [loading, setLoading] = useState(false);
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
 
   const formik = useProfileEditFormik(setLoading, user);
 
