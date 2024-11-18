@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { userListShares } from "../../../api/project-service";
 
-const UserSharesList = (propsList) => {
+const UserSharesList = ({ userId }) => {
   const [shares, setShares] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -30,13 +30,13 @@ const UserSharesList = (propsList) => {
 
   const loadData = useCallback(async () => {
     try {
-      const result = await userListShares(propsList[0]);
+      const result = await userListShares(userId);
       setShares(result.data);
     } catch (err) {
     } finally {
       setLoading(false);
     }
-  }, [propsList]);
+  }, [userId]);
 
   useEffect(() => {
     loadData();

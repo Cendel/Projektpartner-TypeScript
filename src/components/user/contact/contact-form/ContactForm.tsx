@@ -12,7 +12,7 @@ import useContactFormFormik from "./useContactFormFormik";
 const ContactForm = () => {
   const user = useAppSelector((state) => state.auth.user);
 
-  const { name: senderName, id: senderId } = user!; // Non-null Assertion Operator
+  const { name: senderName, id: senderId } = user!; // Non-null Assertion
 
   const [loading, setLoading] = useState(false);
 

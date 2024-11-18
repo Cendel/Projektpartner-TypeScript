@@ -33,8 +33,8 @@ export const getUser = () => {
   return apiRequest<void, User>("get", "/user/");
 };
 
-export const getUserById = (id: number) => {
-  return apiRequest<void, User>("get", `/user/${id}/`);
+export const getUserById = (userId: number) => {
+  return apiRequest<void, User>("get", `/user/${userId}/`);
 };
 
 export const updateUser = (userUpdate: UserUpdateRequest) => {
@@ -47,8 +47,8 @@ export const getUsersAdmin = () => {
   return apiRequest<void, UserOverview[]>("get", "/auth/users/");
 };
 
-export const getUserAdmin = (id: number) => {
-  return apiRequest<void, User>("get", `/user/${id}/`);
+export const getUserAdmin = (userId: number) => {
+  return apiRequest<void, User>("get", `/user/${userId}/`);
 };
 
 export const updateUserAdmin = (id: string, userUpdate: UserUpdateRequest) => {

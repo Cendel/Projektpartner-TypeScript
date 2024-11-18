@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getUserById } from "../../../api/user-service";
 import { Button } from "react-bootstrap";
 import SectionHeader from "../common/section-header/SectionHeader";
@@ -9,18 +9,20 @@ import UserSharesList from "./UserSharesList";
 import { useParams } from "react-router-dom";
 import Loading from "../../common/loading/Loading";
 import { useAppSelector } from "../../../store/hooks";
+import User from "../../../entities/User";
 
-function Profile() {
-  const { userId } = useParams();
-  const [user, setUser] = useState([]);
+const Profile = () => {
+  const { userId: userIdString } = useParams();
+  const userId = Number(userIdString);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreatedList, setshowCreatedList] = useState(false);
   const [showParticipatedList, setShowParticipatedList] = useState(false);
   const [showFollowedList, setShowFollowedList] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showSharesList, setShowSharesList] = useState(false);
-  const [listToBeShowed, setListToBeShowed] = useState([]);
-  const visitor = useAppSelector((state) => state.auth.user.id);
+  const [listToBeShowed, setListToBeShowed] = useState<number[]>([]);
+  const visitor = useAppSelector((state) => state.auth.user!.id); // Non-null Assertion
 
   const loadData = async () => {
     try {
@@ -36,37 +38,42 @@ function Profile() {
     loadData();
   }, []);
 
-  const handleClick = (projectType) => {
+  type SectionType =
+    | "projectsCreated"
+    | "projectsParticipated"
+    | "projectsFollowed"
+    | "profile-edit"
+    | "shares";
+
+  const handleClick = (sectionType: SectionType) => {
+    if (!user) return;
     setshowCreatedList(false);
     setShowParticipatedList(false);
     setShowFollowedList(false);
     setShowProfileEdit(false);
     setShowSharesList(false);
-    if (projectType === "projectsCreated") {
+    if (sectionType === "projectsCreated") {
       setListToBeShowed(user.created_projects);
       setshowCreatedList(true);
     }
-    if (projectType === "projectsParticipated") {
+    if (sectionType === "projectsParticipated") {
       setListToBeShowed(user.participated_projects);
       setShowParticipatedList(true);
     }
-    if (projectType === "projectsFollowed") {
+    if (sectionType === "projectsFollowed") {
       setListToBeShowed(user.followed_projects);
       setShowFollowedList(true);
     }
-    if (projectType === "profile-edit") {
-      setListToBeShowed(userId);
+    if (sectionType === "profile-edit") {
       setShowProfileEdit(true);
     }
-    if (projectType === "shares") {
-      setListToBeShowed(userId);
+    if (sectionType === "shares") {
       setShowSharesList(true);
     }
     const buttons = document.querySelectorAll("buttons");
     buttons.forEach((button) => button.classList.remove("active"));
 
-    // Add 'active' class to the clicked button
-    const clickedButton = document.getElementById(projectType);
+    const clickedButton = document.getElementById(sectionType);
     if (clickedButton) {
       clickedButton.classList.add("active");
     }
@@ -74,7 +81,7 @@ function Profile() {
 
   return (
     <>
-      {loading ? (
+      {loading || !user ? (
         <Loading />
       ) : (
         <div className="profile-user">
@@ -110,7 +117,7 @@ function Profile() {
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://${user.website}`}
+                    href={user.website}
                   >
                     {user.website}
                   </a>
@@ -170,12 +177,12 @@ function Profile() {
           {showCreatedList && <UserProjectsList {...listToBeShowed} />}
           {showParticipatedList && <UserProjectsList {...listToBeShowed} />}
           {showFollowedList && <UserProjectsList {...listToBeShowed} />}
-          {showProfileEdit && <ProfileEdit {...listToBeShowed} />}
-          {showSharesList && <UserSharesList {...listToBeShowed} />}
+          {showProfileEdit && <ProfileEdit />}
+          {showSharesList && <UserSharesList userId={user.id} />}
         </div>
       )}
     </>
   );
-}
+};
 
 export default Profile;

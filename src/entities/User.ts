@@ -8,7 +8,7 @@ export default interface User {
   phone: string;
   website: string;
   is_superuser: string;
-  followed_projects: string;
-  participated_projects: string;
-  created_projects: string;
+  followed_projects: number[];
+  participated_projects: number[];
+  created_projects: number[];
 }
