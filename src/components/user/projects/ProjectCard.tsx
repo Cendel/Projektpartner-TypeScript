@@ -1,9 +1,22 @@
-import React from "react";
 import { Button, ProgressBar } from "react-bootstrap";
 import { TiLocationOutline } from "react-icons/ti";
 import "./projects.scss";
 
-const ProjectCard = (props) => {
+interface ProjectCardProps {
+  projectPlace: string;
+  estimatedImplementationDate: string;
+  slogan: string;
+  shortDesc: string;
+  projectImage: string;
+  createdByName: string;
+  createdDate: string;
+  sharesTaken: number;
+  shareValue: string;
+  projectValue: number;
+  totalShares: number;
+}
+
+const ProjectCard = (props: ProjectCardProps) => {
   const {
     projectPlace,
     estimatedImplementationDate,
@@ -19,11 +32,14 @@ const ProjectCard = (props) => {
   } = props;
 
   const daysUntilImplementation = Math.round(
-    (new Date(estimatedImplementationDate) - new Date()) / 86400000
+    (new Date(estimatedImplementationDate).getTime() - new Date().getTime()) /
+      86400000
   );
 
   const totalDays = Math.round(
-    (new Date(estimatedImplementationDate) - new Date(createdDate)) / 86400000
+    (new Date(estimatedImplementationDate).getTime() -
+      new Date(createdDate).getTime()) /
+      86400000
   );
 
   return (
@@ -44,8 +60,8 @@ const ProjectCard = (props) => {
           <ProgressBar
             striped={false}
             variant="success"
-            now={new Date(totalDays - daysUntilImplementation)}
-            max={new Date(totalDays)}
+            now={new Date(totalDays - daysUntilImplementation).getTime()}
+            max={new Date(totalDays).getTime()}
             label={""}
             className="progress-bar-card"
           />
@@ -76,7 +92,7 @@ const ProjectCard = (props) => {
         </div>
         <div className="progress-info">
           <h5 className="under-progress" style={{ textAlign: "left" }}>
-            {(sharesTaken * shareValue).toLocaleString()} €
+            {(sharesTaken * Number(shareValue)).toLocaleString()} €
           </h5>
 
           <h5 className="under-progress">{projectValue.toLocaleString()} €</h5>
