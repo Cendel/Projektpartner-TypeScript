@@ -1,19 +1,20 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Spacer from "../../common/spacer/Spacer";
-import ProjectCard from "./ProjectCard";
+import ProjectCard, { mapProjectToCardProps } from "./ProjectCard";
 import "./projects.scss";
 import { Link } from "react-router-dom";
 import { getProjectsByIds } from "../../../api/project-service";
 import Loading from "../../common/loading/Loading";
 import SectionHeader from "../common/section-header/SectionHeader";
 import { useAppSelector } from "../../../store/hooks";
+import Project from "../../../entities/Project";
 
 const ProjectsUser = () => {
   const createdProjects = useAppSelector(
-    (state) => state.auth.user.created_projects
+    (state) => state.auth.user!.created_projects // Non-null Assertion
   );
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleProjects, setVisibleProjects] = useState(6);
 
@@ -61,7 +62,7 @@ const ProjectsUser = () => {
                   to={`/projects/${project.id}`}
                   className="groupCol"
                 >
-                  <ProjectCard {...project} />
+                  <ProjectCard {...mapProjectToCardProps(project)} />
                 </Col>
               ))}
             </Row>
