@@ -22,17 +22,3 @@ export default interface Project {
   sharesTaken: number;
   followerList: number[];
 }
-
-interface ProjectCardProps {
-  projectPlace: string;
-  estimatedImplementationDate: string;
-  slogan: string;
-  shortDesc: string;
-  projectImage: string;
-  createdByName: string;
-  createdDate: string;
-  sharesTaken: number;
-  shareValue: string;
-  projectValue: number;
-  totalShares: number;
-}
