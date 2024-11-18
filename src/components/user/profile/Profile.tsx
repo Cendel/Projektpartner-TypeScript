@@ -175,13 +175,13 @@ const Profile = () => {
             )}
           </div>
           {showCreatedList && (
-            <UserProjectsList listToBeShowed={listToBeShowed} />
+            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
           )}
           {showParticipatedList && (
-            <UserProjectsList listToBeShowed={listToBeShowed} />
+            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
           )}
           {showFollowedList && (
-            <UserProjectsList listToBeShowed={listToBeShowed} />
+            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
           )}
           {showProfileEdit && <ProfileEdit />}
           {showSharesList && <UserSharesList userId={Number(user.id)} />}
