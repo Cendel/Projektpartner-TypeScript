@@ -15,7 +15,7 @@ export default interface Project {
   createdBy: number;
   createdByName?: string;
   createdDate: string;
-  projectValue: string;
+  projectValue: number;
   totalShares: number;
   shareValue: string;
   maxSharesPerPerson: number;

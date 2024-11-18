@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,12 +9,18 @@ import {
 } from "react-bootstrap";
 import "./ProjectForm.scss";
 import { getCurrentDate } from "../../../helpers/functions/date-time";
-import useProjectFormFormik from "./useProjectFormFormik";
+import useProjectFormFormik, {
+  mapProjectToCreateUpdateRequest,
+} from "./useProjectFormFormik";
 import { getProject } from "../../../api/project-service";
+import ProjectCreateUpdateRequest from "../../../entities/ProjectCreateUpdateRequest";
+import Project from "../../../entities/Project";
 
 const ProjectForm = ({ edit = false, projectId = 0 }) => {
   const [loading, setLoading] = useState(false);
-  const [project, setProject] = useState({});
+  const [project, setProject] = useState<Project | ProjectCreateUpdateRequest>(
+    mapProjectToCreateUpdateRequest({} as Project)
+  );
 
   useEffect(() => {
     if (edit && projectId) {
@@ -231,15 +237,15 @@ const ProjectForm = ({ edit = false, projectId = 0 }) => {
           </Row>
           {/* image file input field */}
           <Form.Group className="mb-3 projectImage" controlId="formImage">
-            {project.projectImage && (
+            {edit && (project as Project).projectImage && (
               <img
-                src={project.projectImage} // displays existing project image
+                src={(project as Project).projectImage} // displays existing project image
                 alt="Project"
                 className="project-image-preview"
               />
             )}
             <Form.Label>
-              {project.projectImage
+              {(project as Project).projectImage
                 ? "Wenn Sie das aktuelle Bild Ihres Projekts ändern möchten, können Sie unten das neue Bild hochladen."
                 : "Laden Sie ein Bild hoch, das Ihr Projekt am besten beschreibt."}
               <Form.Control

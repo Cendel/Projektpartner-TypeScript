@@ -7,34 +7,15 @@ import { projectFormValidationSchema } from "../../../helpers/validationSchemas"
 import { ChangeEvent, useState } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import Project from "../../../entities/Project";
-import ProjectCreateRequest from "../../../entities/ProjectCreateRequest";
+import ProjectCreateUpdateRequest from "../../../entities/ProjectCreateUpdateRequest";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
-interface UseProjectFormFormikProps {
-  project: Project;
-  projectId: number;
-  edit: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const useProjectFormFormik = ({
-  project,
-  projectId,
-  edit,
-  setLoading,
-}: UseProjectFormFormikProps) => {
-  const user = useAppSelector((state) => state.auth.user);
-  const navigate = useNavigate();
-
-  const [image, setImage] = useState<File | null>(null);
-  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-    }
-  };
-
-  const initialValues = {
+export const mapProjectToCreateUpdateRequest = (
+  project: Project | ProjectCreateUpdateRequest,
+  edit?: boolean,
+  userId?: String
+): ProjectCreateUpdateRequest => {
+  return {
     projectTitle: project.projectTitle || "",
     projectPlace: project.projectPlace || "",
     estimatedImplementationDate: edit
@@ -46,21 +27,50 @@ const useProjectFormFormik = ({
     support: project.support || "",
     shortDesc: project.shortDesc || "",
     longDesc: project.longDesc || "",
-    createdBy: edit ? project.createdBy : Number(user?.id) || 0,
-    projectValue: Number(project.projectValue) || 0,
+    createdBy: (edit && project.createdBy) || Number(userId),
+    projectValue: project.projectValue || 0,
     totalShares: project.totalShares || 0,
     shareValue: project.shareValue || "",
     maxSharesPerPerson: project.maxSharesPerPerson || 0,
   };
+};
 
-  const onSubmit = async (values: ProjectCreateRequest) => {
+interface UseProjectFormFormikProps {
+  project: Project | ProjectCreateUpdateRequest;
+  projectId: number;
+  edit: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const useProjectFormFormik = ({
+  project,
+  projectId,
+  edit,
+  setLoading,
+}: UseProjectFormFormikProps) => {
+  const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
+  const navigate = useNavigate();
+
+  const [image, setImage] = useState<File | null>(null);
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  const initialValues: ProjectCreateUpdateRequest = edit
+    ? mapProjectToCreateUpdateRequest(project, edit, user.id)
+    : project;
+
+  const onSubmit = async (values: ProjectCreateUpdateRequest) => {
     values.shareValue = (values.projectValue / values.totalShares).toFixed(2);
     setLoading(true);
     if (edit) {
       try {
         const formData = new FormData();
         for (const key in values) {
-          const value = values[key as keyof ProjectCreateRequest];
+          const value = values[key as keyof ProjectCreateUpdateRequest];
           formData.append(key, String(value));
         }
         if (image) {
@@ -79,7 +89,7 @@ const useProjectFormFormik = ({
       try {
         const formData = new FormData();
         for (const key in values) {
-          const value = values[key as keyof ProjectCreateRequest];
+          const value = values[key as keyof ProjectCreateUpdateRequest];
           formData.append(key, String(value));
           if (image) {
             formData.append("projectImage", image);
@@ -110,12 +120,12 @@ const useProjectFormFormik = ({
     onSubmit,
   });
 
-  const isInvalid = (field: keyof ProjectCreateRequest) => {
-    return formik.touched[field] && formik.errors[field];
+  const isInvalid = (field: keyof ProjectCreateUpdateRequest): boolean => {
+    return Boolean(formik.touched[field] && formik.errors[field]);
   };
 
-  const isValid = (field: keyof ProjectCreateRequest) => {
-    return formik.touched[field] && !formik.errors[field];
+  const isValid = (field: keyof ProjectCreateUpdateRequest): boolean => {
+    return Boolean(formik.touched[field] && !formik.errors[field]);
   };
 
   return { formik, isValid, isInvalid, handleImage };

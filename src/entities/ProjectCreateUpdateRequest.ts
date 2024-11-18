@@ -1,4 +1,4 @@
-export default interface ProjectCreateRequest {
+export default interface ProjectCreateUpdateRequest {
   projectTitle: string;
   projectPlace: string;
   estimatedImplementationDate: string;
