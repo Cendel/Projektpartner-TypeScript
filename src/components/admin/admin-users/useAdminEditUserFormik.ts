@@ -26,9 +26,9 @@ const useAdminEditUserFormik = (props: User) => {
     try {
       await updateUserAdmin(props.id, values);
       toast("Das Profil wurde erfolgreich aktualisiert.", "success");
-    } catch (err: unknown) {
+    } catch (err) {
       const errorMessage = handleAxiosError(err);
-      toast(errorMessage, "error");
+      toast(errorMessage.message, "error");
     } finally {
       setUpdating(false);
     }

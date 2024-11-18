@@ -1,8 +1,10 @@
 import { isAxiosError } from "axios";
 
+type SweetAlertIcon = "success" | "error" | "warning";
+
 export const handleAxiosError = (
   error: unknown
-): { message: string; type?: string } => {
+): { message: string; type?: SweetAlertIcon } => {
   if (isAxiosError(error)) {
     if (error.response?.status === 401) {
       return { message: "unauthorized", type: "warning" };
