@@ -1,6 +1,7 @@
 import { Button, ProgressBar } from "react-bootstrap";
 import { TiLocationOutline } from "react-icons/ti";
 import "./projects.scss";
+import Project from "../../../entities/Project";
 
 interface ProjectCardProps {
   projectPlace: string;
@@ -16,7 +17,21 @@ interface ProjectCardProps {
   totalShares: number;
 }
 
-const ProjectCard = (props: ProjectCardProps) => {
+export const mapProjectToCardProps = (project: Project): ProjectCardProps => ({
+  projectPlace: project.projectPlace,
+  estimatedImplementationDate: project.estimatedImplementationDate,
+  slogan: project.slogan,
+  shortDesc: project.shortDesc,
+  projectImage: project.projectImage,
+  createdByName: project.createdByName,
+  createdDate: project.createdDate,
+  sharesTaken: project.sharesTaken,
+  shareValue: project.shareValue,
+  projectValue: project.projectValue,
+  totalShares: project.totalShares,
+});
+
+const ProjectCard = ({ ...ProjectCardProps }: ProjectCardProps) => {
   const {
     projectPlace,
     estimatedImplementationDate,
@@ -29,7 +44,7 @@ const ProjectCard = (props: ProjectCardProps) => {
     shareValue,
     projectValue,
     totalShares,
-  } = props;
+  } = ProjectCardProps;
 
   const daysUntilImplementation = Math.round(
     (new Date(estimatedImplementationDate).getTime() - new Date().getTime()) /
@@ -60,8 +75,8 @@ const ProjectCard = (props: ProjectCardProps) => {
           <ProgressBar
             striped={false}
             variant="success"
-            now={new Date(totalDays - daysUntilImplementation).getTime()}
-            max={new Date(totalDays).getTime()}
+            now={totalDays - daysUntilImplementation}
+            max={totalDays}
             label={""}
             className="progress-bar-card"
           />

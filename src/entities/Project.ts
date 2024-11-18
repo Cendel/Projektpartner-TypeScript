@@ -13,7 +13,7 @@ export default interface Project {
   longDesc: string;
   projectImage: string;
   createdBy: number;
-  createdByName?: string;
+  createdByName: string;
   createdDate: string;
   projectValue: number;
   totalShares: number;
@@ -21,4 +21,18 @@ export default interface Project {
   maxSharesPerPerson: number;
   sharesTaken: number;
   followerList: number[];
+}
+
+interface ProjectCardProps {
+  projectPlace: string;
+  estimatedImplementationDate: string;
+  slogan: string;
+  shortDesc: string;
+  projectImage: string;
+  createdByName: string;
+  createdDate: string;
+  sharesTaken: number;
+  shareValue: string;
+  projectValue: number;
+  totalShares: number;
 }

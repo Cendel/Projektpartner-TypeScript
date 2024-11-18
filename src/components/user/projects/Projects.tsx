@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Spacer from "../../common/spacer/Spacer";
-import ProjectCard from "./ProjectCard";
+import ProjectCard, { mapProjectToCardProps } from "./ProjectCard";
 import "./projects.scss";
 import { Link } from "react-router-dom";
 import { getProjectsByStatus } from "../../../api/project-service";
 import Loading from "../../common/loading/Loading";
 import SectionHeader from "../common/section-header/SectionHeader";
+import Project from "../../../entities/Project";
 
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleProjects, setVisibleProjects] = useState(6);
 
@@ -57,7 +58,7 @@ const Projects = () => {
                   to={`/projects/${project.id}`}
                   className="groupCol"
                 >
-                  <ProjectCard {...project} />
+                  <ProjectCard {...mapProjectToCardProps(project)} />
                 </Col>
               ))}
             </Row>
