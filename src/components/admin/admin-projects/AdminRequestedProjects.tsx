@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Container, Row, Col, Form, Button, Nav } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -9,16 +9,28 @@ import {
 import { toast } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
+import Project from "../../../entities/Project";
+
+const paginationConfig = {
+  paginationPerPage: 10,
+  paginationRowsPerPageOptions: [10, 20, 30],
+};
+
+interface Column {
+  name: string;
+  selector?: (row: Project) => string | number;
+  sortable?: boolean;
+  cell?: (row: Project) => JSX.Element;
+}
 
 const AdminRequestedProjects = () => {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  const handleStatusChange = async (projectId, checked) => {
+  const handleStatusChange = async (projectId: number, checked: boolean) => {
     try {
       await updateProjectStatus(projectId, checked);
-      // Update the project status in the local state
       const updatedProjects = projects.map((project) =>
         project.id === projectId
           ? { ...project, projectStatus: checked }
@@ -30,7 +42,7 @@ const AdminRequestedProjects = () => {
     }
   };
 
-  const columns = [
+  const columns: Column[] = [
     {
       name: "Projekttitle",
       selector: (row) => row.projectTitle,
@@ -43,15 +55,15 @@ const AdminRequestedProjects = () => {
     },
     {
       name: "Erstellungsdatum",
-      selector: (row, i) => convertCurrentDateToUserFormat(row.createdDate),
+      selector: (row) => convertCurrentDateToUserFormat(row.createdDate),
       sortable: true,
     },
     {
       name: "Projektstatus",
-      selector: (row, i) => (
+      cell: (row) => (
         <Form.Check
           type="switch"
-          id={row.id}
+          id={row.id.toString()}
           label=""
           checked={row.projectStatus}
           onChange={(e) => handleStatusChange(row.id, e.target.checked)}
@@ -60,14 +72,14 @@ const AdminRequestedProjects = () => {
     },
     {
       name: "Aktien",
-      selector: (row) => (
-        <Button
-          as={Link}
-          to={`/admin-share-edit/${row.id}`}
-          style={{ width: "2rem", padding: "0.1rem", fontSize: "0.7rem" }}
-        >
-          {row.sharesTaken}
-        </Button>
+      cell: (row) => (
+        <Nav.Link as={Link} to={`/admin-share-edit/${row.id}`}>
+          <Button
+            style={{ width: "2rem", padding: "0.1rem", fontSize: "0.7rem" }}
+          >
+            {row.sharesTaken}
+          </Button>
+        </Nav.Link>
       ),
     },
   ];
@@ -86,7 +98,7 @@ const AdminRequestedProjects = () => {
     fetchProjects();
   }, []);
 
-  const handleRowClicked = (row) => {
+  const handleRowClicked = (row: Project) => {
     navigate(`/projects/${row.id}`);
   };
 
@@ -100,8 +112,10 @@ const AdminRequestedProjects = () => {
             data={projects}
             progressPending={loading}
             pagination
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[10, 20, 30]}
+            paginationPerPage={paginationConfig.paginationPerPage}
+            paginationRowsPerPageOptions={
+              paginationConfig.paginationRowsPerPageOptions
+            }
             onRowClicked={handleRowClicked}
           />
         </Col>
