@@ -23,6 +23,10 @@ import DataTable from "react-data-table-component";
 import Project from "../../../entities/Project";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 import ShareOwnershipList from "../../../entities/ShareOwnershipList";
+import {
+  calculateDaysUntilImplementation,
+  calculateTotalDays,
+} from "../../../helpers/functions/date-calculations";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -94,11 +98,17 @@ const ProjectDetails = () => {
         scrollPos < 450 ? 999 - scrollPos : 549
       }`;
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const daysUntilImplementation = calculateDaysUntilImplementation(
+    project?.estimatedImplementationDate ?? ""
+  );
+  const totalDays = calculateTotalDays(
+    project?.estimatedImplementationDate ?? "",
+    project?.createdDate ?? ""
+  );
 
   const removeProject = async () => {
     question(
@@ -129,22 +139,6 @@ const ProjectDetails = () => {
       }
     });
   };
-
-  const daysUntilImplementation = project
-    ? Math.round(
-        (new Date(project.estimatedImplementationDate).getTime() -
-          new Date().getTime()) /
-          86400000
-      )
-    : 0;
-
-  const totalDays = project
-    ? Math.round(
-        (new Date(project.estimatedImplementationDate).getTime() -
-          new Date(project.createdDate).getTime()) /
-          86400000
-      )
-    : 0;
 
   const handleFollowClick = async () => {
     if (project)

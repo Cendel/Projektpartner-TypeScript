@@ -2,6 +2,10 @@ import { Button, ProgressBar } from "react-bootstrap";
 import { TiLocationOutline } from "react-icons/ti";
 import "./projects.scss";
 import Project from "../../../entities/Project";
+import {
+  calculateDaysUntilImplementation,
+  calculateTotalDays,
+} from "../../../helpers/functions/date-calculations";
 
 interface ProjectCardProps {
   projectPlace: string;
@@ -46,15 +50,12 @@ const ProjectCard = ({ ...ProjectCardProps }: ProjectCardProps) => {
     totalShares,
   } = ProjectCardProps;
 
-  const daysUntilImplementation = Math.round(
-    (new Date(estimatedImplementationDate).getTime() - new Date().getTime()) /
-      86400000
+  const daysUntilImplementation = calculateDaysUntilImplementation(
+    estimatedImplementationDate
   );
-
-  const totalDays = Math.round(
-    (new Date(estimatedImplementationDate).getTime() -
-      new Date(createdDate).getTime()) /
-      86400000
+  const totalDays = calculateTotalDays(
+    estimatedImplementationDate,
+    createdDate
   );
 
   return (
