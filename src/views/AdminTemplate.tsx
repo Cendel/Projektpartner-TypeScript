@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import Sidebar from "../components/admin/common/sidebar";
+import Sidebar from "../components/admin/common/Sidebar";
 import { ReactNode } from "react";
 
 interface props {

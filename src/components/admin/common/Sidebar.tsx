@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import "./sidebar.scss";
 
@@ -12,39 +11,43 @@ const Sidebar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Button
+            <Nav.Link
               as={Link}
               to="/admin-projects"
               active={pathname.startsWith("/admin-projects")}
+              className="m-auto"
             >
               Aktuelle Projekte
-            </Button>
-            <Button
+            </Nav.Link>
+            <Nav.Link
               as={Link}
               to="/admin-requested-projects"
               active={pathname.startsWith("/admin-requested-projects")}
+              className="m-auto"
             >
               Projektvorschläge
-            </Button>
+            </Nav.Link>
 
-            <Button
+            <Nav.Link
               as={Link}
               to="/admin-messages"
               active={pathname.startsWith("/admin-messages")}
+              className="m-auto"
             >
               Nachrichten
-            </Button>
-            <Button
+            </Nav.Link>
+            <Nav.Link
               as={Link}
               to="/admin-users"
               active={pathname.startsWith("/admin-users")}
+              className="m-auto"
             >
               Benutzer
-            </Button>
+            </Nav.Link>
 
-            <Button as={Link} to="/">
+            <Nav.Link as={Link} to="/" className="m-auto">
               Verlassen
-            </Button>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
