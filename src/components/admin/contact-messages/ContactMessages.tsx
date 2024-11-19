@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,21 @@ import { listMessages } from "../../../api/contact-service";
 import { toast } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
+import MessageOverview from "../../../entities/MessageOverview";
+import Loading from "../../common/loading/Loading";
 
-const columns = [
+const paginationConfig = {
+  paginationPerPage: 10,
+  paginationRowsPerPageOptions: [10, 20, 30],
+};
+
+interface Column {
+  name: string;
+  selector: (row: MessageOverview) => string;
+  sortable: boolean;
+}
+
+const columns: Column[] = [
   {
     name: "Name",
     selector: (row) => row.senderName,
@@ -26,7 +39,7 @@ const columns = [
 ];
 
 const ContactMessages = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<MessageOverview[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +57,7 @@ const ContactMessages = () => {
     fetchMessages();
   }, []);
 
-  const handleRowClicked = (row) => {
+  const handleRowClicked = (row: MessageOverview) => {
     navigate(`${row.id}`);
   };
 
@@ -53,15 +66,21 @@ const ContactMessages = () => {
       <SectionHeader title="Nachrichten" />
       <Row>
         <Col>
-          <DataTable
-            columns={columns}
-            data={messages}
-            progressPending={loading}
-            pagination
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[10, 20, 30]}
-            onRowClicked={handleRowClicked}
-          />
+          {loading ? (
+            <Loading />
+          ) : (
+            <DataTable
+              columns={columns}
+              data={messages}
+              progressPending={loading}
+              pagination
+              paginationPerPage={paginationConfig.paginationPerPage}
+              paginationRowsPerPageOptions={
+                paginationConfig.paginationRowsPerPageOptions
+              }
+              onRowClicked={handleRowClicked}
+            />
+          )}
         </Col>
       </Row>
     </Container>
