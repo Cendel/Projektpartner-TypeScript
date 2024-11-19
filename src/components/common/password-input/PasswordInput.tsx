@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-const PasswordInput = (props) => {
+interface Props {
+  error: string;
+}
+const PasswordInput = (props: Props) => {
   const [type, setType] = useState("password");
 
   const handleType = () => {
