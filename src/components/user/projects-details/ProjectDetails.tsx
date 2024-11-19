@@ -164,8 +164,7 @@ const ProjectDetails = () => {
     window.scrollBy(0, 250);
   };
 
-  const handleInputSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleInputSubmit = async () => {
     if (project)
       if (
         Number(inputValue) <= 0 ||
@@ -399,7 +398,12 @@ const ProjectDetails = () => {
                   </p>
                   <div>
                     <div className="input">
-                      <form onSubmit={handleInputSubmit}>
+                      <form
+                        onSubmit={(event) => {
+                          handleInputSubmit();
+                          event.preventDefault();
+                        }}
+                      >
                         <input
                           type="number"
                           value={inputValue}
