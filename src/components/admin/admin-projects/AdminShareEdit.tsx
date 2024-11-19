@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Container,
   Row,
@@ -17,16 +17,29 @@ import {
 import { toast, question } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import useAdminShareEditFormik from "./useAdminShareEditFormik";
+import ShareOwnershipList from "../../../entities/ShareOwnershipList";
+
+const paginationConfig = {
+  paginationPerPage: 10,
+  paginationRowsPerPageOptions: [10, 20, 30],
+};
+
+interface Column {
+  name: string;
+  selector?: (row: ShareOwnershipList) => string | number;
+  sortable?: boolean;
+  cell?: (row: ShareOwnershipList) => JSX.Element;
+}
 
 const AdminShareEdit = () => {
   const { projectId } = useParams();
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState<ShareOwnershipList[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshComponent, setRefreshComponent] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
-      const result = await listSharesForProject(projectId);
+      const result = await listSharesForProject(Number(projectId));
       setParticipants(result.data);
     } catch (err) {
     } finally {
@@ -39,12 +52,12 @@ const AdminShareEdit = () => {
   }, [loadData, refreshComponent]);
 
   const { formik, isValid, isInvalid } = useAdminShareEditFormik({
-    projectId,
+    projectId: projectId || "",
     participants,
     setLoading,
     setRefreshComponent,
   });
-  const columns = [
+  const columns: Column[] = [
     {
       name: "Benutzer-ID",
       selector: (row) => row.user,
@@ -63,12 +76,12 @@ const AdminShareEdit = () => {
     {
       name: "Wert der Aktien",
       selector: (row) => {
-        return (row.shares * row.share_value).toLocaleString() + " €";
+        return (row.shares * Number(row.share_value)).toLocaleString() + " €";
       },
     },
     {
       name: "",
-      selector: (row) => (
+      cell: (row) => (
         <Button
           onClick={() => removeShare(row)}
           style={{
@@ -85,9 +98,10 @@ const AdminShareEdit = () => {
     },
   ];
 
-  const removeShare = async (row) => {
+  const removeShare = async (row: ShareOwnershipList) => {
     question(
-      `Die ${row.shares} Aktie(n) von ${row.user_name} in diesem Projekt werden gelöscht. Möchten Sie fortfahren?`
+      "Möchten Sie fortfahren?",
+      `Die ${row.shares} Aktie(n) von ${row.user_name} in diesem Projekt werden gelöscht.`
     ).then((result) => {
       if (result.isConfirmed) {
         try {
@@ -117,7 +131,7 @@ const AdminShareEdit = () => {
               <Form.Control
                 type="number"
                 {...formik.getFieldProps("user")}
-                isInvalid={isInvalid("user")}
+                isInvalid={Boolean(isInvalid("user"))}
                 isValid={isValid("user")}
               />
               <Form.Control.Feedback type="invalid">
@@ -131,7 +145,7 @@ const AdminShareEdit = () => {
               <Form.Control
                 type="number"
                 {...formik.getFieldProps("shares")}
-                isInvalid={isInvalid("shares")}
+                isInvalid={Boolean(isInvalid("shares"))}
                 isValid={isValid("shares")}
               />
               <Form.Control.Feedback type="invalid">
@@ -159,8 +173,10 @@ const AdminShareEdit = () => {
             data={participants}
             progressPending={loading}
             pagination
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[10, 20, 30]}
+            paginationPerPage={paginationConfig.paginationPerPage}
+            paginationRowsPerPageOptions={
+              paginationConfig.paginationRowsPerPageOptions
+            }
           />
         </Col>
       </Row>
