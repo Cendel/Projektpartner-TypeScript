@@ -1,17 +1,25 @@
-import React from "react";
-import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import useAdminEditUserFormik from "./useAdminEditUserFormik";
+import User from "../../../entities/User";
+import { useEffect } from "react";
 
-const AdminEditUser = (props) => {
+const AdminEditUser = (props: User) => {
   const { formik, updating } = useAdminEditUserFormik(props);
-  
+
+  useEffect(() => {
+    document.documentElement.scrollTo({
+      top: 250,
+      behavior: "smooth",
+    });
+  }, [props]);
+
   return (
     <Form
       noValidate
       onSubmit={formik.handleSubmit}
       style={{ marginTop: "2rem" }}
     >
-      <fieldset disabled={formik.values.builtIn}>
+      <fieldset>
         <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
           <Form.Group as={Col} className="mb-3">
             <Form.Label>Name</Form.Label>
@@ -70,23 +78,15 @@ const AdminEditUser = (props) => {
           />
         </Form.Group>
       </fieldset>
-      {formik.values.builtIn && (
-        <Alert variant="warning">
-          Built-in accounts cannot be deleted or updated
-        </Alert>
-      )}
+
       <div className="text-end">
-        {!formik.values.builtIn && (
-          <>
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={!(formik.dirty && formik.isValid) || updating}
-            >
-              {updating && <Spinner animation="border" size="sm" />} Update
-            </Button>
-          </>
-        )}
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={!(formik.dirty && formik.isValid) || updating}
+        >
+          {updating && <Spinner animation="border" size="sm" />} Update
+        </Button>
       </div>
     </Form>
   );

@@ -58,7 +58,7 @@ const AdminUsers = () => {
         <Button
           style={buttonStyle("delete")}
           onClick={() => handleDelete(row.id)}
-          disabled={deleting}
+          disabled={deleting || row.id === 1}
         >
           {deleting && <Spinner animation="border" size="sm" />}Löschen
         </Button>
@@ -110,10 +110,10 @@ const AdminUsers = () => {
     });
   };
 
-  const handleEditButton = async (userToBeEdited: UserOverview) => {
+  const handleEditButton = async (row: UserOverview) => {
     setShowEditUser(false);
     try {
-      const response = await getUserAdmin(userToBeEdited.id);
+      const response = await getUserAdmin(row.id);
       setUserToBeEdited(response.data);
       setShowEditUser(true);
     } catch (err) {
@@ -138,7 +138,7 @@ const AdminUsers = () => {
           />
         </Col>
       </Row>
-      {showEditUser && <AdminEditUser {...userToBeEdited} />}
+      {showEditUser && userToBeEdited && <AdminEditUser {...userToBeEdited} />}
     </Container>
   );
 };
