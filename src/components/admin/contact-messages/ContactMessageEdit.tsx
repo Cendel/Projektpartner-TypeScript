@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, ButtonGroup, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteMessage, getMessage } from "../../../api/contact-service";
 import { question, toast } from "../../../helpers/functions/swal";
 import Loading from "../../common/loading/Loading";
+import Message from "../../../entities/Message";
 
 const ContactMessageEdit = () => {
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState<Message>();
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-  const { messageId } = useParams();
+  const { messageId: messageIdString } = useParams();
+  const messageId = Number(messageIdString);
   const navigate = useNavigate();
 
   const loadData = async () => {
@@ -48,7 +50,7 @@ const ContactMessageEdit = () => {
 
   return (
     <div>
-      {loading ? (
+      {loading || !message ? (
         <Loading />
       ) : (
         <>
