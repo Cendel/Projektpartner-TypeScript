@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import PasswordInput from "../password-input/PasswordInput";
 import useRegisterFormFormik from "./useRegisterFormFormik";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
-  const formik = useRegisterFormFormik( setLoading);
+  const formik = useRegisterFormFormik(setLoading);
 
   return (
-    <Form noValidate onSubmit={formik.handleSubmit} className="">
+    <Form noValidate onSubmit={formik.handleSubmit}>
       <h3>Registrieren</h3>
-      <Form.Group className="">
-        <FloatingLabel label="Name" className="">
+      <Form.Group>
+        <FloatingLabel label="Name">
           <Form.Control
             type="text"
             {...formik.getFieldProps("name")}
@@ -24,8 +24,8 @@ const RegisterForm = () => {
         </FloatingLabel>
       </Form.Group>
 
-      <Form.Group className="">
-        <FloatingLabel label="E-Mail" className="">
+      <Form.Group>
+        <FloatingLabel label="E-Mail">
           <Form.Control
             type="email"
             {...formik.getFieldProps("email")}
@@ -41,8 +41,8 @@ const RegisterForm = () => {
         </FloatingLabel>
       </Form.Group>
 
-      <Form.Group className="" style={{ marginBottom: "1rem" }}>
-        <FloatingLabel label="Passwort" className="">
+      <Form.Group style={{ marginBottom: "1rem" }}>
+        <FloatingLabel label="Passwort">
           <PasswordInput
             {...formik.getFieldProps("password")}
             isValid={formik.touched.password && !formik.errors.password}
@@ -53,8 +53,8 @@ const RegisterForm = () => {
         </FloatingLabel>
       </Form.Group>
 
-      <Form.Group className="" style={{ marginBottom: "1rem" }}>
-        <FloatingLabel label="Passwort bestätigen" className="">
+      <Form.Group style={{ marginBottom: "1rem" }}>
+        <FloatingLabel label="Passwort bestätigen">
           <PasswordInput
             {...formik.getFieldProps("confirmPassword")}
             isValid={
@@ -65,7 +65,7 @@ const RegisterForm = () => {
             }
             error={formik.errors.confirmPassword}
             style={{ padding: "1rem", margin: "0" }}
-          />{" "}
+          />
         </FloatingLabel>
       </Form.Group>
 
