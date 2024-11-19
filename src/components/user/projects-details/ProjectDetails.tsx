@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./projectDetails.scss";
 import imageRounded from "../../../assets/img/rounded-bottom.svg";
-import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Nav, Row } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
@@ -20,36 +20,47 @@ import { sendMessage } from "../../../api/contact-service";
 import { useAppSelector } from "../../../store/hooks";
 import SectionHeader from "../common/section-header/SectionHeader";
 import DataTable from "react-data-table-component";
+import Project from "../../../entities/Project";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import ShareOwnershipList from "../../../entities/ShareOwnershipList";
+
+const paginationConfig = {
+  paginationPerPage: 10,
+  paginationRowsPerPageOptions: [10, 20, 30],
+};
 
 const ProjectDetails = () => {
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
   const { projectId } = useParams();
-  const [project, setProject] = useState([]);
+  const [project, setProject] = useState<Project>();
   const [loading, setLoading] = useState(true);
   const followed_projects = Object.values(user.followed_projects).map(
     (value) => value
   );
-  const isFollowedProjectsIncludes = followed_projects.includes(project.id);
   const participated_projects = Object.values(user.participated_projects).map(
     (value) => value
   );
-  const isParticipatedProjectsIncludes = participated_projects.includes(
-    project.id
-  );
+
+  const isFollowedProjectsIncludes =
+    project && followed_projects.includes(project.id);
+  const isParticipatedProjectsIncludes =
+    project && participated_projects.includes(project.id);
 
   const [isFollowing, setIsFollowing] = useState(isFollowedProjectsIncludes);
   const [inputValue, setInputValue] = useState(""); //for the input field in invest class
   const [feedback, setFeedback] = useState(""); //for the input field in invest class
   const navigate = useNavigate();
   const [showParticipantsList, setShowParticipantsList] = useState(false);
-  const [participantsList, setParticipantsList] = useState([]);
+  const [participantsList, setParticipantsList] = useState<
+    ShareOwnershipList[]
+  >([]);
 
   const loadData = useCallback(async () => {
     try {
-      const result = await getProject(projectId);
+      const result = await getProject(Number(projectId));
       setProject(result.data);
     } catch (err) {
-      toast(err, "error");
+      toast(handleAxiosError(err).message, "error");
     } finally {
       setLoading(false);
     }
@@ -67,10 +78,12 @@ const ProjectDetails = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY;
-      const detailsEl = document.querySelector(".project-details");
+      const detailsEl = document.querySelector(
+        ".project-details"
+      ) as HTMLElement;
       const detailsContainerEl = document.querySelector(
         ".project-screen-image"
-      );
+      ) as HTMLElement;
 
       if (window.innerHeight >= scrollPos) {
         detailsEl.style.marginTop = `${window.innerHeight - scrollPos}px`;
@@ -99,7 +112,7 @@ const ProjectDetails = () => {
         ).then((secondResult) => {
           if (secondResult.isConfirmed) {
             try {
-              deleteProject(projectId);
+              deleteProject(Number(projectId));
               toast(
                 "Das Projekt wurde erfolgreich gelöscht.",
                 "success",
@@ -117,72 +130,84 @@ const ProjectDetails = () => {
     });
   };
 
-  const daysUntilImplementation = Math.round(
-    (new Date(project.estimatedImplementationDate) - new Date()) / 86400000
-  );
+  const daysUntilImplementation = project
+    ? Math.round(
+        (new Date(project.estimatedImplementationDate).getTime() -
+          new Date().getTime()) /
+          86400000
+      )
+    : 0;
 
-  const totalDays = Math.round(
-    (new Date(project.estimatedImplementationDate) -
-      new Date(project.createdDate)) /
-      86400000
-  );
+  const totalDays = project
+    ? Math.round(
+        (new Date(project.estimatedImplementationDate).getTime() -
+          new Date(project.createdDate).getTime()) /
+          86400000
+      )
+    : 0;
 
   const handleFollowClick = async () => {
-    try {
-      updateProjectFollowerList(project.id);
-      setIsFollowing(!isFollowing);
-    } catch (err) {
-    } finally {
-    }
+    if (project)
+      try {
+        updateProjectFollowerList(project.id);
+        setIsFollowing(!isFollowing);
+      } catch (err) {
+      } finally {
+      }
   };
 
-  const handleSupportClick = (ada) => {
-    const investContainer = document.querySelector(".invest-container");
+  const handleSupportClick = () => {
+    const investContainer = document.querySelector(
+      ".invest-container"
+    ) as HTMLElement;
     investContainer.style.display = "block";
     window.scrollBy(0, 250);
   };
 
-  const handleInputSubmit = async (event) => {
+  const handleInputSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      inputValue <= 0 ||
-      inputValue > project.totalShares - project.sharesTaken ||
-      inputValue > project.maxSharesPerPerson
-    ) {
-      setFeedback("Bitte geben Sie eine gültige Nummer ein.");
-    } else {
-      const values = {
-        sender: user.id,
-        title: "KAUFANFRAGE",
-        text: `
+    if (project)
+      if (
+        Number(inputValue) <= 0 ||
+        Number(inputValue) > project.totalShares - project.sharesTaken ||
+        Number(inputValue) > project.maxSharesPerPerson
+      ) {
+        setFeedback("Bitte geben Sie eine gültige Nummer ein.");
+      } else {
+        const values = {
+          sender: user.id,
+          title: "KAUFANFRAGE",
+          text: `
         Der Benutzer ${user.name} mit der ID-Nummer ${user.id} fordert ${inputValue} Anteile an dem Projekt  ${project.projectTitle} mit der ID ${project.id} an.
 
         Projektinformationen:
         - Projekttitel: ${project.projectTitle}
         - Projekt-ID: ${project.id}
       `,
-      };
-      setInputValue("");
-      try {
-        await sendMessage(values);
-        const investContainer = document.querySelector(".invest-container");
-        investContainer.style.display = "none";
-        toast("Ihre Anfrage wurde erfolgreich gesendet.", "success");
-      } catch (err) {
-        alert(err.response.data.message);
+        };
+        setInputValue("");
+        try {
+          await sendMessage(values);
+          const investContainer = document.querySelector(
+            ".invest-container"
+          ) as HTMLElement;
+          investContainer.style.display = "none";
+          toast("Ihre Anfrage wurde erfolgreich gesendet.", "success");
+        } catch (err) {
+          alert(handleAxiosError(err));
+        }
+        setFeedback("");
       }
-      setFeedback("");
-    }
   };
 
   const participantsListHandleClick = async () => {
     try {
-      const result = await listSharesForProject(projectId);
+      const result = await listSharesForProject(Number(projectId));
       setParticipantsList(result.data);
       window.scrollBy(0, 100);
       setShowParticipantsList(true);
     } catch (err) {
-      toast(err, "error");
+      toast(handleAxiosError(err).message, "error");
     } finally {
     }
   };
@@ -190,28 +215,28 @@ const ProjectDetails = () => {
   const columns = [
     {
       name: "Name",
-      selector: (row) => row.user_name,
+      selector: (row: ShareOwnershipList) => row.user_name,
       sortable: true,
     },
     {
       name: "Aktien in diesem Projekt",
-      selector: (row) => row.shares,
+      selector: (row: ShareOwnershipList) => row.shares,
       sortable: true,
     },
     {
       name: "Wert der Aktien",
-      selector: (row) => {
-        return (row.shares * row.share_value).toLocaleString() + " €";
+      selector: (row: ShareOwnershipList) => {
+        return (row.shares * Number(row.share_value)).toLocaleString() + " €";
       },
     },
   ];
-  const handleRowClicked = (row) => {
+  const handleRowClicked = (row: ShareOwnershipList) => {
     navigate(`/profile/${row.user}`);
   };
 
   return (
     <>
-      {loading ? (
+      {loading || !project ? (
         <Loading />
       ) : (
         <div className="project-details-main-component">
@@ -260,8 +285,8 @@ const ProjectDetails = () => {
                   <ProgressBar
                     className="progress"
                     animated={false}
-                    now={new Date(totalDays - daysUntilImplementation)}
-                    max={new Date(totalDays)}
+                    now={totalDays - daysUntilImplementation - 0}
+                    max={totalDays}
                     label={""}
                     variant={"success"}
                   />
@@ -271,16 +296,6 @@ const ProjectDetails = () => {
                         {convertCurrentDateToUserFormat(project.createdDate)}
                       </h5>
                       <span>Startdatum</span>
-                    </div>
-                    <div>
-                      {project.participantCount ? (
-                        <>
-                          <h5>{project.participantCount}</h5>
-                          <span>Projektbeteiligte</span>
-                        </>
-                      ) : (
-                        ""
-                      )}
                     </div>
                     <div>
                       <h5>
@@ -321,7 +336,7 @@ const ProjectDetails = () => {
                   <div>
                     <h5>
                       {(
-                        project.sharesTaken * project.shareValue
+                        project.sharesTaken * Number(project.shareValue)
                       ).toLocaleString()}
                       €
                     </h5>
@@ -437,13 +452,11 @@ const ProjectDetails = () => {
                   <Button onClick={() => participantsListHandleClick()}>
                     PROJEKTTEILNEHMER
                   </Button>
-                  <Button
-                    className="edit-button"
-                    as={Link}
-                    to={`/project-edit/${project.id}`}
-                  >
-                    PROJEKT AKTUALISIEREN
-                  </Button>
+                  <Nav.Link as={Link} to={`/project-edit/${project.id}`}>
+                    <Button className="edit-button">
+                      PROJEKT AKTUALISIEREN
+                    </Button>
+                  </Nav.Link>
                 </div>
               </>
             )}
@@ -459,8 +472,10 @@ const ProjectDetails = () => {
                     data={participantsList}
                     progressPending={loading}
                     pagination
-                    paginationPerPage={10}
-                    paginationRowsPerPageOptions={[10, 20, 30]}
+                    paginationPerPage={paginationConfig.paginationPerPage}
+                    paginationRowsPerPageOptions={
+                      paginationConfig.paginationRowsPerPageOptions
+                    }
                     onRowClicked={handleRowClicked}
                   />
                 </Col>

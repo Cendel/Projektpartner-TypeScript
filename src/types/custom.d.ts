@@ -19,6 +19,11 @@ declare module "*.gif" {
 }
 
 declare module "*.svg" {
-  const value: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  const value: string; // SVG dosyasını string olarak alıyoruz
   export default value;
+
+  // Aynı zamanda React bileşeni olarak kullanmak isterseniz:
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement>
+  >;
 }

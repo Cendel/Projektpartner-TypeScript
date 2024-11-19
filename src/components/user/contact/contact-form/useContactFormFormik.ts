@@ -7,7 +7,7 @@ import MessageRequest from "../../../../entities/MessageRequest";
 
 const useContactFormFormik = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  senderId: number
+  senderId: string
 ) => {
   const initialValues = {
     sender: senderId,

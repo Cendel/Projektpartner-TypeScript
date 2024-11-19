@@ -55,16 +55,10 @@ export const getProjectsByIds = (project_ids: number[]) => {
   );
 }; //OK
 
-export const updateProjectFollowerList = (
-  id: number,
-  followerList: number[]
-) => {
-  return apiRequest<ProjectFollowerUpdate, ProjectFollowerUpdate>(
+export const updateProjectFollowerList = (id: number) => {
+  return apiRequest<void, ProjectFollowerUpdate>(
     "put",
-    `/projects/follow/${id}/`,
-    {
-      followerList,
-    }
+    `/projects/follow/${id}/`
   );
 }; //OK
 
