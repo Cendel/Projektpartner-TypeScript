@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Col, Container } from "react-bootstrap";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import logo from "../../../assets/img/logo/logo_auth.png";
 import "./auth.scss";
 import { settings } from "../../../helpers/settings";
-import { MdEmail, MdOutlinePhone } from "react-icons/md";
 
 const Auth = () => {
   const [register, setRegister] = useState(false);
