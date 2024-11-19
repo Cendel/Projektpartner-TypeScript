@@ -65,10 +65,11 @@ const ProjectDetails = () => {
       setProject(result.data);
     } catch (err) {
       toast(handleAxiosError(err).message, "error");
+      navigate("/page-not-found");
     } finally {
       setLoading(false);
     }
-  }, [projectId]);
+  }, [navigate, projectId]);
 
   useEffect(() => {
     loadData();
