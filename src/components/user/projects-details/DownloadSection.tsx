@@ -18,6 +18,11 @@ import {
 } from "../../../api/project-service";
 import Attachment from "../../../entities/Attachment";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import {
+  imageExtensions,
+  textExtensions,
+  zipExtensions,
+} from "../../../helpers/attachmentExtensions";
 
 interface Props {
   createdBy: number;
@@ -29,38 +34,6 @@ const DownloadSection = ({ createdBy, projectId }: Props) => {
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const isAdminOrOwner = Number(user.id) === createdBy || user.is_superuser;
-  const textExtensions = [
-    ".doc",
-    ".docx",
-    ".odt",
-    ".txt",
-    ".csv",
-    ".md",
-    ".html",
-    ".log",
-    ".rtf",
-  ];
-  const imageExtensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".bmp",
-    ".svg",
-    ".raw",
-    ".webp",
-    ".ico",
-  ];
-  const zipExtensions = [
-    ".zip",
-    ".zipx",
-    ".7z",
-    ".rar",
-    ".tar.gz",
-    ".tgz",
-    ".tar.bz2",
-    ".tar.xz",
-  ];
 
   const loadData = useCallback(async () => {
     try {
