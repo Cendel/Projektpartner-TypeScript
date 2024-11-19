@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./downloadSection.scss";
 import {
   AiOutlineFileText,
@@ -16,12 +16,19 @@ import {
   deleteAttachment,
   listAttachments,
 } from "../../../api/project-service";
+import Attachment from "../../../entities/Attachment";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
-const DownloadSection = ({ createdBy, projectId }) => {
-  const user = useAppSelector((state) => state.auth.user);
-  const [attachments, setAttachments] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const isAdminOrOwner = user.id === createdBy || user.is_superuser;
+interface Props {
+  createdBy: number;
+  projectId: number;
+}
+
+const DownloadSection = ({ createdBy, projectId }: Props) => {
+  const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const isAdminOrOwner = Number(user.id) === createdBy || user.is_superuser;
   const textExtensions = [
     ".doc",
     ".docx",
@@ -60,14 +67,16 @@ const DownloadSection = ({ createdBy, projectId }) => {
       const result = await listAttachments(projectId);
       setAttachments(result.data);
     } catch (err) {
+      const { message, type } = handleAxiosError(err);
+      toast(message, type);
     } finally {
     }
   }, [projectId]);
 
-  const removeAttachment = async (fileId, file_name) => {
+  const removeAttachment = async (fileId: number, file_name: string) => {
     question(
-      `Die Datei ${file_name} wird gelöscht.`,
-      `Möchten Sie fortfahren?`
+      `Möchten Sie fortfahren?`,
+      `Die Datei ${file_name} wird gelöscht.`
     ).then((result) => {
       if (result.isConfirmed) {
         try {
@@ -83,14 +92,15 @@ const DownloadSection = ({ createdBy, projectId }) => {
     });
   };
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setSelectedFile(file);
   };
 
   const handleFileUpload = async () => {
     if (selectedFile) {
       const formData = new FormData();
-      formData.append("project", projectId);
+      formData.append("project", projectId.toString());
       formData.append("file", selectedFile);
       try {
         await createAttachment(formData);
@@ -118,7 +128,7 @@ const DownloadSection = ({ createdBy, projectId }) => {
 
         <div className="ul-div">
           <ul>
-            {attachments.map((file, index) => (
+            {attachments.map((file) => (
               <li key={file.id}>
                 {file.file_extension === ".pdf" ? (
                   <AiOutlineFilePdf />

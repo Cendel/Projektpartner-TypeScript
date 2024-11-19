@@ -420,7 +420,7 @@ const ProjectDetails = () => {
           <Container>
             <DownloadSection
               createdBy={project.createdBy}
-              projectId={projectId}
+              projectId={project.id}
             />
           </Container>
           <Spacer height={30} />
