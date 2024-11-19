@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import {
@@ -9,18 +9,40 @@ import {
 import { question, toast } from "../../../helpers/functions/swal";
 import SectionHeader from "../../user/common/section-header/SectionHeader";
 import AdminEditUser from "./AdminEditUser";
+import UserOverview from "../../../entities/UserOverview";
+import User from "../../../entities/User";
+
+const PAGINATION_CONFIG = {
+  paginationPerPage: 10,
+  paginationRowsPerPageOptions: [10, 20, 30],
+};
+
+const buttonStyle = (type: "delete" | "edit") => ({
+  color: type === "delete" ? "#ee6c4d" : "#9fad3c",
+  backgroundColor: "white",
+  fontSize: "0.7rem",
+  border: "none",
+});
+
+interface Column {
+  name?: string;
+  selector?: (row: UserOverview) => string;
+  sortable?: boolean;
+  cell?: (row: UserOverview) => JSX.Element;
+}
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserOverview[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-  const [showEditUser, setshowEditUser] = useState(false);
-  const [userToBeEdited, setUserToBeEdited] = useState();
+  const [showEditUser, setShowEditUser] = useState(false);
+  const [userToBeEdited, setUserToBeEdited] = useState<User>();
 
-  const columns = [
+  const columns: Column[] = [
     {
       name: "ID",
-      selector: (row) => row.id,
+      selector: (row) => row.id.toString(),
+      sortable: true,
     },
     {
       name: "Name",
@@ -32,18 +54,9 @@ const AdminUsers = () => {
     },
 
     {
-      name: "",
-      selector: (row) => (
+      cell: (row) => (
         <Button
-          //as={Link}
-          to={`/admin-share-edit/${row.id}`}
-          style={{
-            color: "#ee6c4d",
-            backgroundColor: "white",
-            fontSize: "0.7rem",
-            border: "none",
-          }}
-          className="deleteButton"
+          style={buttonStyle("delete")}
           onClick={() => handleDelete(row.id)}
           disabled={deleting}
         >
@@ -52,17 +65,10 @@ const AdminUsers = () => {
       ),
     },
     {
-      name: "",
-      selector: (row) => (
+      cell: (row) => (
         <Button
-          style={{
-            color: "#9fad3c",
-            backgroundColor: "white",
-            fontSize: "0.7rem",
-            border: "none",
-          }}
-          className="deleteButton"
-          onClick={() => HandleEditButton(row)}
+          style={buttonStyle("edit")}
+          onClick={() => handleEditButton(row)}
         >
           Bearbeiten
         </Button>
@@ -84,7 +90,7 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  const handleDelete = (idToDelete) => {
+  const handleDelete = (idToDelete: number) => {
     question(
       "Sind Sie sicher, dass Sie löschen möchten?",
       "Das können Sie nicht rückgängig machen!"
@@ -104,12 +110,12 @@ const AdminUsers = () => {
     });
   };
 
-  const HandleEditButton = async (userToBeEdited) => {
-    setshowEditUser(false);
+  const handleEditButton = async (userToBeEdited: UserOverview) => {
+    setShowEditUser(false);
     try {
       const response = await getUserAdmin(userToBeEdited.id);
       setUserToBeEdited(response.data);
-      setshowEditUser(true);
+      setShowEditUser(true);
     } catch (err) {
       toast("Benutzerdaten konnten nicht geladen werden.", "error");
     }
@@ -125,9 +131,10 @@ const AdminUsers = () => {
             data={users}
             progressPending={loading}
             pagination
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[10, 20, 30]}
-            //onRowClicked={handleRowClicked}
+            paginationPerPage={PAGINATION_CONFIG.paginationPerPage}
+            paginationRowsPerPageOptions={
+              PAGINATION_CONFIG.paginationRowsPerPageOptions
+            }
           />
         </Col>
       </Row>
