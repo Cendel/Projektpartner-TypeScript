@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
 import "./projectDetails.scss";
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import imageRounded from "../../../assets/img/rounded-bottom.svg";
 import { Accordion, Button, Col, Container, Nav, Row } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -7,13 +8,11 @@ import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
 import { TiLocationOutline } from "react-icons/ti";
 import {
-  deleteProject,
   getProject,
   updateProjectFollowerList,
   listSharesForProject,
 } from "../../../api/project-service";
-import { question, toast } from "../../../helpers/functions/swal";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { toast } from "../../../helpers/functions/swal";
 import Loading from "../../common/loading/Loading";
 import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
 import { sendMessage } from "../../../api/contact-service";
@@ -27,6 +26,7 @@ import {
   calculateDaysUntilImplementation,
   calculateTotalDays,
 } from "../../../helpers/functions/date-calculations";
+import { removeProject } from "./projectDetailHandlers";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -109,36 +109,6 @@ const ProjectDetails = () => {
     project?.estimatedImplementationDate ?? "",
     project?.createdDate ?? ""
   );
-
-  const removeProject = async () => {
-    question(
-      "Sind Sie sicher, dass Sie löschen möchten?",
-      "Das können Sie nicht rückgängig machen!"
-    ).then((firstResult) => {
-      if (firstResult.isConfirmed) {
-        question(
-          "Alle Inhalte und Mediendateien, die zu diesem Projekt gehören, werden gelöscht.",
-          "Möchten Sie fortfahren und das Projekt endgültig löschen?"
-        ).then((secondResult) => {
-          if (secondResult.isConfirmed) {
-            try {
-              deleteProject(Number(projectId));
-              toast(
-                "Das Projekt wurde erfolgreich gelöscht.",
-                "success",
-                10000,
-                true
-              );
-              navigate("/");
-            } catch (err) {
-              toast("Das Löschen konnte nicht durchgeführt werden", "warning");
-            } finally {
-            }
-          }
-        });
-      }
-    });
-  };
 
   const handleFollowClick = async () => {
     if (project)
@@ -446,8 +416,10 @@ const ProjectDetails = () => {
             {(user.is_superuser || user.name === project.createdByName) && (
               <>
                 <div className="project-details-edit-buttons">
-                  <Button onClick={removeProject}>PROJEKT LÖSCHEN</Button>
-                  <Button onClick={() => participantsListHandleClick()}>
+                  <Button onClick={() => removeProject(navigate, project.id)}>
+                    PROJEKT LÖSCHEN
+                  </Button>
+                  <Button onClick={participantsListHandleClick}>
                     PROJEKTTEILNEHMER
                   </Button>
                   <Nav.Link as={Link} to={`/project-edit/${project.id}`}>
