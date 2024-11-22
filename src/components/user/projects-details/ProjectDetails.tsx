@@ -25,8 +25,8 @@ import {
 import { handleInvestSubmit } from "./projectDetailHandlers";
 import InvestSection from "./InvestSection";
 import SupportSection from "./SupportSection";
-import AccordionInfo from "./AccordionInfo";
-import ProjectButtonBar from "./ProjectButtonBar";
+import AccordionInfoSection from "./AccordionInfoSection";
+import ButtonBarSection from "./ButtonBarSection";
 
 const ProjectDetails = () => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
@@ -224,11 +224,8 @@ const ProjectDetails = () => {
             />
           </Container>
           <Spacer height={30} />
-          <AccordionInfo project={project} />
-          <ProjectButtonBar
-            user={user}
-            project={project}
-          />
+          <AccordionInfoSection project={project} />
+          <ButtonBarSection user={user} project={project} />
 
           <Spacer />
         </div>

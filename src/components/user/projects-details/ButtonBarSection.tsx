@@ -36,7 +36,7 @@ const columns = [
   },
 ];
 
-const ProjectButtonBar = ({ user, project }: Props) => {
+const ButtonBarSection = ({ user, project }: Props) => {
   const paginationConfig = {
     paginationPerPage: 10,
     paginationRowsPerPageOptions: [10, 20, 30],
@@ -106,4 +106,4 @@ const ProjectButtonBar = ({ user, project }: Props) => {
   );
 };
 
-export default ProjectButtonBar;
+export default ButtonBarSection;

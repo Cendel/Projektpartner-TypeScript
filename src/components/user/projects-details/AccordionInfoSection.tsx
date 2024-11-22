@@ -5,7 +5,7 @@ interface Props {
   project: Project;
 }
 
-const AccordionInfo = ({ project }: Props) => {
+const AccordionInfoSection = ({ project }: Props) => {
   return (
     <Container>
       <Accordion className="accordion-info" alwaysOpen>
@@ -32,4 +32,4 @@ const AccordionInfo = ({ project }: Props) => {
   );
 };
 
-export default AccordionInfo;
+export default AccordionInfoSection;
