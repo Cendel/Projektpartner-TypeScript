@@ -2,7 +2,7 @@ import "./projectDetails.scss";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import imageRounded from "../../../assets/img/rounded-bottom.svg";
-import { Button, Col, Container, Nav, Row } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
@@ -10,30 +10,23 @@ import { TiLocationOutline } from "react-icons/ti";
 import {
   getProject,
   updateProjectFollowerList,
-  listSharesForProject,
 } from "../../../api/project-service";
 import { toast } from "../../../helpers/functions/swal";
 import Loading from "../../common/loading/Loading";
 import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
 import { useAppSelector } from "../../../store/hooks";
-import SectionHeader from "../common/section-header/SectionHeader";
-import DataTable from "react-data-table-component";
 import Project from "../../../entities/Project";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
-import ShareOwnershipList from "../../../entities/ShareOwnershipList";
+
 import {
   calculateDaysUntilImplementation,
   calculateTotalDays,
 } from "../../../helpers/functions/date-calculations";
-import { handleInvestSubmit, removeProject } from "./projectDetailHandlers";
+import { handleInvestSubmit } from "./projectDetailHandlers";
 import InvestSection from "./InvestSection";
 import SupportSection from "./SupportSection";
 import AccordionInfo from "./AccordionInfo";
-
-const paginationConfig = {
-  paginationPerPage: 10,
-  paginationRowsPerPageOptions: [10, 20, 30],
-};
+import ProjectButtonBar from "./ProjectButtonBar";
 
 const ProjectDetails = () => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
@@ -58,10 +51,6 @@ const ProjectDetails = () => {
   const [inputValue, setInputValue] = useState(""); //for the input field in invest class
   const [feedback, setFeedback] = useState(""); //for the input field in invest class
   const navigate = useNavigate();
-  const [showParticipantsList, setShowParticipantsList] = useState(false);
-  const [participantsList, setParticipantsList] = useState<
-    ShareOwnershipList[]
-  >([]);
 
   const loadData = useCallback(async () => {
     try {
@@ -127,40 +116,6 @@ const ProjectDetails = () => {
 
   const handleInvestSubmitClick = () =>
     handleInvestSubmit(inputValue, setInputValue, setFeedback, user, project);
-
-  const participantsListHandleClick = async () => {
-    try {
-      const result = await listSharesForProject(Number(projectId));
-      setParticipantsList(result.data);
-      window.scrollBy(0, 100);
-      setShowParticipantsList(true);
-    } catch (err) {
-      toast(handleAxiosError(err).message, "error");
-    } finally {
-    }
-  };
-
-  const columns = [
-    {
-      name: "Name",
-      selector: (row: ShareOwnershipList) => row.user_name,
-      sortable: true,
-    },
-    {
-      name: "Aktien in diesem Projekt",
-      selector: (row: ShareOwnershipList) => row.shares,
-      sortable: true,
-    },
-    {
-      name: "Wert der Aktien",
-      selector: (row: ShareOwnershipList) => {
-        return (row.shares * Number(row.share_value)).toLocaleString() + " €";
-      },
-    },
-  ];
-  const handleRowClicked = (row: ShareOwnershipList) => {
-    navigate(`/profile/${row.user}`);
-  };
 
   return (
     <>
@@ -270,46 +225,11 @@ const ProjectDetails = () => {
           </Container>
           <Spacer height={30} />
           <AccordionInfo project={project} />
-          <Container>
-            {(user.is_superuser || user.name === project.createdByName) && (
-              <>
-                <div className="project-details-edit-buttons">
-                  <Button onClick={() => removeProject(navigate, project.id)}>
-                    PROJEKT LÖSCHEN
-                  </Button>
-                  <Button onClick={participantsListHandleClick}>
-                    PROJEKTTEILNEHMER
-                  </Button>
-                  <Nav.Link as={Link} to={`/project-edit/${project.id}`}>
-                    <Button className="edit-button">
-                      PROJEKT AKTUALISIEREN
-                    </Button>
-                  </Nav.Link>
-                </div>
-              </>
-            )}
-          </Container>
-          <Spacer height={50} />
-          {showParticipantsList && (
-            <Container>
-              <Row>
-                <SectionHeader title="Projektbeteiligte" />
-                <Col>
-                  <DataTable
-                    columns={columns}
-                    data={participantsList}
-                    progressPending={loading}
-                    pagination
-                    paginationPerPage={paginationConfig.paginationPerPage}
-                    paginationRowsPerPageOptions={
-                      paginationConfig.paginationRowsPerPageOptions
-                    }
-                    onRowClicked={handleRowClicked}
-                  />
-                </Col>
-              </Row>
-            </Container>
-          )}
+          <ProjectButtonBar
+            user={user}
+            project={project}
+          />
+
           <Spacer />
         </div>
       )}

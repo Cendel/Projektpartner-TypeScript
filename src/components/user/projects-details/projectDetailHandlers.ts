@@ -79,5 +79,3 @@ export const handleInvestSubmit = async (
       setFeedback("");
     }
 };
-
-
