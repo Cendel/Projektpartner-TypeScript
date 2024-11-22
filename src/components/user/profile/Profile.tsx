@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getUserById } from "../../../api/user-service";
 import { Button } from "react-bootstrap";
 import SectionHeader from "../common/section-header/SectionHeader";
@@ -33,19 +33,20 @@ const Profile = () => {
     listToBeShowed: [],
   });
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const result = await getUserById(userId);
       setUser(result.data);
     } catch (err) {
+      console.error("Error fetching user:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   const handleClick = (sectionType: SectionType) => {
     if (!user) return;
