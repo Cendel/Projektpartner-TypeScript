@@ -1,5 +1,5 @@
 import "./projectDetails.scss";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
@@ -30,13 +30,9 @@ const ProjectDetails = () => {
 
   const navigate = useNavigate();
 
-  const loadData = useCallback(() => {
+  useEffect(() => {
     loadProjectData(Number(projectId), setProject, setLoading, navigate);
   }, [navigate, projectId]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
 
   return (
     <>
