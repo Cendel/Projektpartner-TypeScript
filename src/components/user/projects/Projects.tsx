@@ -72,7 +72,6 @@ const Projects = () => {
           </>
         )}
       </div>
-
       <Spacer />
     </Container>
   );

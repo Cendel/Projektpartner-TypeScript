@@ -76,7 +76,6 @@ const ProjectsUser = () => {
           </>
         )}
       </div>
-
       <Spacer />
     </Container>
   );

@@ -16,7 +16,7 @@ const ContactForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const formik = useContactFormFormik(setLoading, Number(senderId));
+  const formik = useContactFormFormik(setLoading, senderId);
 
   return (
     <Container className="contact-contact-form">
