@@ -3,18 +3,16 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
-import { getProject } from "../../../api/project-service";
-import { toast } from "../../../helpers/functions/swal";
 import Loading from "../../common/loading/Loading";
 import { useAppSelector } from "../../../store/hooks";
 import Project from "../../../entities/Project";
-import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 import InvestSection from "./InvestSection";
 import SupportSection from "./SupportSection";
 import AccordionInfoSection from "./AccordionInfoSection";
 import ButtonBarSection from "./ButtonBarSection";
 import OverviewSection from "./OverviewSection";
 import OpeningScreenSection from "./OpeningScreenSection";
+import { loadProjectData } from "./projectDetailHandlers";
 
 const ProjectDetails = () => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
@@ -32,16 +30,8 @@ const ProjectDetails = () => {
 
   const navigate = useNavigate();
 
-  const loadData = useCallback(async () => {
-    try {
-      const result = await getProject(Number(projectId));
-      setProject(result.data);
-    } catch (err) {
-      toast(handleAxiosError(err).message, "error");
-      navigate("/page-not-found");
-    } finally {
-      setLoading(false);
-    }
+  const loadData = useCallback(() => {
+    loadProjectData(Number(projectId), setProject, setLoading, navigate);
   }, [navigate, projectId]);
 
   useEffect(() => {

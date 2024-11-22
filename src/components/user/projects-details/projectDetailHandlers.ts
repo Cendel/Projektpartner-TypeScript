@@ -1,10 +1,27 @@
 import { NavigateFunction } from "react-router-dom";
-import { deleteProject } from "../../../api/project-service";
+import { deleteProject, getProject } from "../../../api/project-service";
 import { question, toast } from "../../../helpers/functions/swal";
 import { sendMessage } from "../../../api/contact-service";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 import Project from "../../../entities/Project";
 import User from "../../../entities/User";
+
+export const loadProjectData = async (
+  projectId: number,
+  setProject: React.Dispatch<React.SetStateAction<Project | undefined>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  navigate: NavigateFunction
+) => {
+  try {
+    const result = await getProject(projectId);
+    setProject(result.data);
+  } catch (err) {
+    toast(handleAxiosError(err).message, "error");
+    navigate("/page-not-found");
+  } finally {
+    setLoading(false);
+  }
+};
 
 export const removeProject = async (
   navigate: NavigateFunction,
