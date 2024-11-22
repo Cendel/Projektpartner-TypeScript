@@ -39,7 +39,7 @@ export const removeProject = async (
   });
 };
 
-export const handleInputSubmit = async (
+export const handleInvestSubmit = async (
   inputValue: string,
   setInputValue: React.Dispatch<React.SetStateAction<string>>,
   setFeedback: React.Dispatch<React.SetStateAction<string>>,
@@ -79,3 +79,5 @@ export const handleInputSubmit = async (
       setFeedback("");
     }
 };
+
+

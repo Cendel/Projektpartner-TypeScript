@@ -25,7 +25,8 @@ import {
   calculateDaysUntilImplementation,
   calculateTotalDays,
 } from "../../../helpers/functions/date-calculations";
-import { handleInputSubmit, removeProject } from "./projectDetailHandlers";
+import { handleInvestSubmit, removeProject } from "./projectDetailHandlers";
+import InvestSection from "./InvestSection";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -44,10 +45,12 @@ const ProjectDetails = () => {
     (value) => value
   );
 
-  const isFollowedProjectsIncludes =
-    project && followed_projects.includes(project.id);
-  const isParticipatedProjectsIncludes =
-    project && participated_projects.includes(project.id);
+  const isFollowedProjectsIncludes = project
+    ? followed_projects.includes(project.id)
+    : false;
+  const isParticipatedProjectsIncludes = project
+    ? participated_projects.includes(project.id)
+    : false;
 
   const [isFollowing, setIsFollowing] = useState(isFollowedProjectsIncludes);
   const [inputValue, setInputValue] = useState(""); //for the input field in invest class
@@ -128,8 +131,8 @@ const ProjectDetails = () => {
     window.scrollBy(0, 250);
   };
 
-  const handleInputSubmitClick = () =>
-    handleInputSubmit(inputValue, setInputValue, setFeedback, user, project);
+  const handleInvestSubmitClick = () =>
+    handleInvestSubmit(inputValue, setInputValue, setFeedback, user, project);
 
   const participantsListHandleClick = async () => {
     try {
@@ -295,63 +298,14 @@ const ProjectDetails = () => {
             </div>
           </Container>
           <Spacer height={30} />
-          <Container className="invest-container" style={{ display: "none" }}>
-            <div className="invest">
-              {isParticipatedProjectsIncludes ? (
-                <>
-                  <p>
-                    In diesem Projekt besitzen Sie bereits Aktien. Sie können
-                    Ihr Profil besuchen, um Ihre Aktieninformationen einzusehen.
-                  </p>
-                  <p>
-                    Für Aktualisierungen oder Stornierungen Ihrer Aktien können
-                    Sie Kontakt mit uns aufnehmen.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>Aktienwert:</p>
-                  <p>
-                    <span>{project.shareValue} €</span>
-                  </p>
-                  <p>
-                    Die maximale Anzahl an Anteilen, die erworben werden können:
-                  </p>
-                  <p>
-                    <span>{project.maxSharesPerPerson}</span>
-                  </p>
-
-                  <p>Anzahl verfügbarer Aktien:</p>
-                  <p>
-                    <span>{project.totalShares - project.sharesTaken}</span>
-                  </p>
-                  <p>
-                    Geben Sie die Anzahl der Aktien ein, die Sie kaufen möchten
-                  </p>
-                  <div>
-                    <div className="input">
-                      <form
-                        onSubmit={(event) => {
-                          handleInputSubmitClick();
-                          event.preventDefault();
-                        }}
-                      >
-                        <input
-                          type="number"
-                          value={inputValue}
-                          onChange={(event) =>
-                            setInputValue(event.target.value)
-                          }
-                        />
-                        <button type="submit">Anfrage senden</button>
-                      </form>
-                      {feedback && <p>{feedback}</p>}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </Container>
+          <InvestSection
+            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
+            project={project}
+            handleInvestSubmitClick={handleInvestSubmitClick}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            feedback={feedback}
+          />
           <Spacer height={30} />
           <Container>
             <DownloadSection
