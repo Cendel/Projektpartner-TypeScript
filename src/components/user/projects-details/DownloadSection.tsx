@@ -30,6 +30,14 @@ interface Props {
   projectId: number;
 }
 
+const getFileIcon = (extension: string) => {
+  if (extension === ".pdf") return <AiOutlineFilePdf />;
+  if (imageExtensions.includes(extension)) return <AiOutlineFileImage />;
+  if (textExtensions.includes(extension)) return <AiOutlineFileText />;
+  if (zipExtensions.includes(extension)) return <AiOutlineFileZip />;
+  return <AiOutlineFile />;
+};
+
 const DownloadSection = ({ createdBy, projectId }: Props) => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -46,6 +54,10 @@ const DownloadSection = ({ createdBy, projectId }: Props) => {
     } finally {
     }
   }, [projectId]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const removeAttachment = async (fileId: number, file_name: string) => {
     question(
@@ -86,10 +98,6 @@ const DownloadSection = ({ createdBy, projectId }: Props) => {
     }
   };
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
   return (
     <Container>
       <div>
@@ -105,17 +113,7 @@ const DownloadSection = ({ createdBy, projectId }: Props) => {
             <ul>
               {attachments.map((file) => (
                 <li key={file.id}>
-                  {file.file_extension === ".pdf" ? (
-                    <AiOutlineFilePdf />
-                  ) : imageExtensions.includes(file.file_extension) ? (
-                    <AiOutlineFileImage />
-                  ) : textExtensions.includes(file.file_extension) ? (
-                    <AiOutlineFileText />
-                  ) : zipExtensions.includes(file.file_extension) ? (
-                    <AiOutlineFileZip />
-                  ) : (
-                    <AiOutlineFile />
-                  )}
+                  {getFileIcon(file.file_extension)}
                   <a href={file.file} target="_blank" rel="noreferrer">
                     {file.file_name.substring(0, 50)}
                   </a>
