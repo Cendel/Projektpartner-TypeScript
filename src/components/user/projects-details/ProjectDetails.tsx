@@ -27,6 +27,7 @@ import {
 } from "../../../helpers/functions/date-calculations";
 import { handleInvestSubmit, removeProject } from "./projectDetailHandlers";
 import InvestSection from "./InvestSection";
+import SupportSection from "./SupportSection";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -121,14 +122,6 @@ const ProjectDetails = () => {
       } catch (err) {
       } finally {
       }
-  };
-
-  const handleSupportClick = () => {
-    const investContainer = document.querySelector(
-      ".invest-container"
-    ) as HTMLElement;
-    investContainer.style.display = "block";
-    window.scrollBy(0, 250);
   };
 
   const handleInvestSubmitClick = () =>
@@ -254,49 +247,10 @@ const ProjectDetails = () => {
             </div>
           </Container>
           <Spacer height={30} />
-          <Container>
-            <div className="support">
-              <div className="left">
-                <ProgressBar
-                  className="progress"
-                  animated={false}
-                  striped={true}
-                  now={project.sharesTaken}
-                  max={project.totalShares}
-                  label={""}
-                  variant={"success"}
-                />
-                <div className="numeric-info">
-                  <div>
-                    <h5>
-                      {(
-                        project.sharesTaken * Number(project.shareValue)
-                      ).toLocaleString()}
-                      €
-                    </h5>
-                    <span>Finanzierung bereitgestellt</span>
-                  </div>
-                  <div>
-                    <h5>{project.totalShares - project.sharesTaken}</h5>
-                    <span>Aktien noch verfügbar</span>
-                  </div>
-                  <div>
-                    <h5>{project.projectValue.toLocaleString()} €</h5>
-                    <span>Finanzierungsziel</span>
-                  </div>
-                </div>
-              </div>
-              <div className="right">
-                {isParticipatedProjectsIncludes ? (
-                  <Button className="participated" onClick={handleSupportClick}>
-                    Unterstützt
-                  </Button>
-                ) : (
-                  <Button onClick={handleSupportClick}>Unterstützen</Button>
-                )}
-              </div>
-            </div>
-          </Container>
+          <SupportSection
+            project={project}
+            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
+          />
           <Spacer height={30} />
           <InvestSection
             isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
