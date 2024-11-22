@@ -22,7 +22,12 @@ import ProjectsUserPage from "../pages/user/ProjectsUserPage";
 
 const CustomRoutes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <ScrollToTop />
       <Routes>
         <Route path="/">
