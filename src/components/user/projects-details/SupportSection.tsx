@@ -1,4 +1,3 @@
-import "./projectDetails.scss";
 import { Button, Container, ProgressBar } from "react-bootstrap";
 import Project from "../../../entities/Project";
 

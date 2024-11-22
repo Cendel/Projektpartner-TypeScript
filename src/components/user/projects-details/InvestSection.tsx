@@ -1,4 +1,3 @@
-import "./projectDetails.scss";
 import { Container } from "react-bootstrap";
 import Project from "../../../entities/Project";
 

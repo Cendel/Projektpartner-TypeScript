@@ -2,7 +2,7 @@ import "./projectDetails.scss";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import imageRounded from "../../../assets/img/rounded-bottom.svg";
-import { Accordion, Button, Col, Container, Nav, Row } from "react-bootstrap";
+import { Button, Col, Container, Nav, Row } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
@@ -28,6 +28,7 @@ import {
 import { handleInvestSubmit, removeProject } from "./projectDetailHandlers";
 import InvestSection from "./InvestSection";
 import SupportSection from "./SupportSection";
+import AccordionInfo from "./AccordionInfo";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -268,27 +269,8 @@ const ProjectDetails = () => {
             />
           </Container>
           <Spacer height={30} />
+          <AccordionInfo project={project} />
           <Container>
-            <Accordion className="accordion-info" alwaysOpen>
-              <Accordion.Item eventKey="0" className="item">
-                <Accordion.Header className="ada">
-                  <h5>Worum geht es in dem Projekt?</h5>
-                </Accordion.Header>
-                <Accordion.Body>{project.about}</Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>
-                  <h5>Was sind die Ziele und wer ist die Zielgruppe?</h5>
-                </Accordion.Header>
-                <Accordion.Body>{project.goal}</Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="2">
-                <Accordion.Header>
-                  <h5>Wer steht hinter dem Projekt?</h5>
-                </Accordion.Header>
-                <Accordion.Body>{project.support}</Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
             {(user.is_superuser || user.name === project.createdByName) && (
               <>
                 <div className="project-details-edit-buttons">
