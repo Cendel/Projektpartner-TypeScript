@@ -287,11 +287,6 @@
         &.participated {
           background-color: v.$color2;
           color: v.$color6;
-
-          &:hover {
-            color: v.$color6;
-            background-color: v.$color1;
-          }
         }
 
         @media (max-width: 879px) {
