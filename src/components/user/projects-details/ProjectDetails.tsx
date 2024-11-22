@@ -15,7 +15,6 @@ import {
 import { toast } from "../../../helpers/functions/swal";
 import Loading from "../../common/loading/Loading";
 import { convertCurrentDateToUserFormat } from "../../../helpers/functions/date-time";
-import { sendMessage } from "../../../api/contact-service";
 import { useAppSelector } from "../../../store/hooks";
 import SectionHeader from "../common/section-header/SectionHeader";
 import DataTable from "react-data-table-component";
@@ -26,7 +25,7 @@ import {
   calculateDaysUntilImplementation,
   calculateTotalDays,
 } from "../../../helpers/functions/date-calculations";
-import { removeProject } from "./projectDetailHandlers";
+import { handleInputSubmit, removeProject } from "./projectDetailHandlers";
 
 const paginationConfig = {
   paginationPerPage: 10,
@@ -129,40 +128,8 @@ const ProjectDetails = () => {
     window.scrollBy(0, 250);
   };
 
-  const handleInputSubmit = async () => {
-    if (project)
-      if (
-        Number(inputValue) <= 0 ||
-        Number(inputValue) > project.totalShares - project.sharesTaken ||
-        Number(inputValue) > project.maxSharesPerPerson
-      ) {
-        setFeedback("Bitte geben Sie eine gültige Nummer ein.");
-      } else {
-        const values = {
-          sender: user.id,
-          title: "KAUFANFRAGE",
-          text: `
-        Der Benutzer ${user.name} mit der ID-Nummer ${user.id} fordert ${inputValue} Anteile an dem Projekt  ${project.projectTitle} mit der ID ${project.id} an.
-
-        Projektinformationen:
-        - Projekttitel: ${project.projectTitle}
-        - Projekt-ID: ${project.id}
-      `,
-        };
-        setInputValue("");
-        try {
-          await sendMessage(values);
-          const investContainer = document.querySelector(
-            ".invest-container"
-          ) as HTMLElement;
-          investContainer.style.display = "none";
-          toast("Ihre Anfrage wurde erfolgreich gesendet.", "success");
-        } catch (err) {
-          alert(handleAxiosError(err));
-        }
-        setFeedback("");
-      }
-  };
+  const handleInputSubmitClick = () =>
+    handleInputSubmit(inputValue, setInputValue, setFeedback, user, project);
 
   const participantsListHandleClick = async () => {
     try {
@@ -365,7 +332,7 @@ const ProjectDetails = () => {
                     <div className="input">
                       <form
                         onSubmit={(event) => {
-                          handleInputSubmit();
+                          handleInputSubmitClick();
                           event.preventDefault();
                         }}
                       >

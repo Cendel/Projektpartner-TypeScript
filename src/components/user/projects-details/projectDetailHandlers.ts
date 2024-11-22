@@ -1,6 +1,10 @@
 import { NavigateFunction } from "react-router-dom";
 import { deleteProject } from "../../../api/project-service";
 import { question, toast } from "../../../helpers/functions/swal";
+import { sendMessage } from "../../../api/contact-service";
+import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
+import Project from "../../../entities/Project";
+import User from "../../../entities/User";
 
 export const removeProject = async (
   navigate: NavigateFunction,
@@ -33,4 +37,45 @@ export const removeProject = async (
       });
     }
   });
+};
+
+export const handleInputSubmit = async (
+  inputValue: string,
+  setInputValue: React.Dispatch<React.SetStateAction<string>>,
+  setFeedback: React.Dispatch<React.SetStateAction<string>>,
+  user: User,
+  project?: Project
+) => {
+  if (project)
+    if (
+      Number(inputValue) <= 0 ||
+      Number(inputValue) > project.totalShares - project.sharesTaken ||
+      Number(inputValue) > project.maxSharesPerPerson
+    ) {
+      setFeedback("Bitte geben Sie eine gültige Nummer ein.");
+    } else {
+      const values = {
+        sender: user.id,
+        title: "KAUFANFRAGE",
+        text: `
+        Der Benutzer ${user.name} mit der ID-Nummer ${user.id} fordert ${inputValue} Anteile an dem Projekt  ${project.projectTitle} mit der ID ${project.id} an.
+
+        Projektinformationen:
+        - Projekttitel: ${project.projectTitle}
+        - Projekt-ID: ${project.id}
+      `,
+      };
+      setInputValue("");
+      try {
+        await sendMessage(values);
+        const investContainer = document.querySelector(
+          ".invest-container"
+        ) as HTMLElement;
+        investContainer.style.display = "none";
+        toast("Ihre Anfrage wurde erfolgreich gesendet.", "success");
+      } catch (err) {
+        alert(handleAxiosError(err));
+      }
+      setFeedback("");
+    }
 };
