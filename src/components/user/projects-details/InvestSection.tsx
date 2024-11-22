@@ -1,23 +1,29 @@
 import { Container } from "react-bootstrap";
 import Project from "../../../entities/Project";
+import { handleInvestSubmit } from "./projectDetailHandlers";
+import { useState } from "react";
+import User from "../../../entities/User";
 
 interface Props {
-  isParticipatedProjectsIncludes: boolean;
   project: Project;
-  handleInvestSubmitClick(): Promise<void>;
+  user: User;
+  isParticipatedProjectsIncludes: boolean;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  feedback: string;
 }
 
 const InvestSection = ({
   isParticipatedProjectsIncludes,
   project,
-  handleInvestSubmitClick,
   inputValue,
   setInputValue,
-  feedback,
+  user,
 }: Props) => {
+  const [feedback, setFeedback] = useState(""); //for the input field in invest class
+
+  const handleInvestSubmitClick = () =>
+    handleInvestSubmit(inputValue, setInputValue, setFeedback, user, project);
+
   return (
     <Container className="invest-container" style={{ display: "none" }}>
       <div className="invest">

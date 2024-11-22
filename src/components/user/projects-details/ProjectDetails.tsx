@@ -11,7 +11,6 @@ import Loading from "../../common/loading/Loading";
 import { useAppSelector } from "../../../store/hooks";
 import Project from "../../../entities/Project";
 import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
-import { handleInvestSubmit } from "./projectDetailHandlers";
 import InvestSection from "./InvestSection";
 import SupportSection from "./SupportSection";
 import AccordionInfoSection from "./AccordionInfoSection";
@@ -33,7 +32,7 @@ const ProjectDetails = () => {
     : false;
 
   const [inputValue, setInputValue] = useState(""); //for the input field in invest class
-  const [feedback, setFeedback] = useState(""); //for the input field in invest class
+
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
@@ -76,9 +75,6 @@ const ProjectDetails = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleInvestSubmitClick = () =>
-    handleInvestSubmit(inputValue, setInputValue, setFeedback, user, project);
-
   return (
     <>
       {loading || !project ? (
@@ -111,12 +107,11 @@ const ProjectDetails = () => {
           />
           <Spacer height={30} />
           <InvestSection
-            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
             project={project}
-            handleInvestSubmitClick={handleInvestSubmitClick}
+            user={user}
+            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
             inputValue={inputValue}
             setInputValue={setInputValue}
-            feedback={feedback}
           />
           <Spacer height={30} />
           <Container>
