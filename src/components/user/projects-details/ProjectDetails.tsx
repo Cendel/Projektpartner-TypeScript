@@ -1,5 +1,5 @@
 import "./projectDetails.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
@@ -17,22 +17,23 @@ import { loadProjectData } from "./projectDetailHandlers";
 const ProjectDetails = () => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
   const { projectId } = useParams();
+  const navigate = useNavigate();
   const [project, setProject] = useState<Project>();
   const [loading, setLoading] = useState(true);
-
-  const participated_projects = Object.values(user.participated_projects).map(
-    (value) => value
-  );
-
-  const isParticipatedProjectsIncludes = project
-    ? participated_projects.includes(project.id)
-    : false;
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     loadProjectData(Number(projectId), setProject, setLoading, navigate);
   }, [navigate, projectId]);
+
+  const participatedProjects = useMemo(
+    () => Object.values(user.participated_projects),
+    [user.participated_projects]
+  );
+
+  const isParticipatedProjectsIncludes = useMemo(
+    () => (project ? participatedProjects.includes(project.id) : false),
+    [project, participatedProjects]
+  );
 
   return loading || !project ? (
     <Loading />
