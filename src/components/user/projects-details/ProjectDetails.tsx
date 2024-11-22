@@ -48,30 +48,6 @@ const ProjectDetails = () => {
     loadData();
   }, [loadData]);
 
-  //handles scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY;
-      const detailsEl = document.querySelector(
-        ".project-details"
-      ) as HTMLElement;
-      const detailsContainerEl = document.querySelector(
-        ".project-screen-image"
-      ) as HTMLElement;
-
-      if (window.innerHeight >= scrollPos) {
-        detailsEl.style.marginTop = `${window.innerHeight - scrollPos}px`;
-      } else {
-        detailsEl.style.marginTop = "0px";
-      }
-      detailsContainerEl.style.opacity = `0.${
-        scrollPos < 450 ? 999 - scrollPos : 549
-      }`;
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <>
       {loading || !project ? (
