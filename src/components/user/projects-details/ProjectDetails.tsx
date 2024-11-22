@@ -34,48 +34,41 @@ const ProjectDetails = () => {
     loadProjectData(Number(projectId), setProject, setLoading, navigate);
   }, [navigate, projectId]);
 
-  return (
-    <>
-      {loading || !project ? (
-        <Loading />
-      ) : (
-        <div className="project-details-main-component">
-          <OpeningScreenSection project={project} />
+  return loading || !project ? (
+    <Loading />
+  ) : (
+    <div className="project-details-main-component">
+      <OpeningScreenSection project={project} />
 
-          <OverviewSection user={user} project={project} />
+      <OverviewSection user={user} project={project} />
 
-          <Spacer height={30} />
+      <Spacer height={30} />
 
-          <SupportSection
-            project={project}
-            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
-          />
+      <SupportSection
+        project={project}
+        isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
+      />
 
-          <Spacer height={30} />
+      <Spacer height={30} />
 
-          <InvestSection
-            project={project}
-            user={user}
-            isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
-          />
+      <InvestSection
+        project={project}
+        user={user}
+        isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
+      />
 
-          <Spacer height={30} />
+      <Spacer height={30} />
 
-          <DownloadSection
-            createdBy={project.createdBy}
-            projectId={project.id}
-          />
+      <DownloadSection createdBy={project.createdBy} projectId={project.id} />
 
-          <Spacer height={30} />
+      <Spacer height={30} />
 
-          <AccordionInfoSection project={project} />
+      <AccordionInfoSection project={project} />
 
-          <ButtonBarSection user={user} project={project} />
+      <ButtonBarSection user={user} project={project} />
 
-          <Spacer />
-        </div>
-      )}
-    </>
+      <Spacer />
+    </div>
   );
 };
 
