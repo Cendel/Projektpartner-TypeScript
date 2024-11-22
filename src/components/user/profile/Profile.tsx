@@ -11,18 +11,27 @@ import Loading from "../../common/loading/Loading";
 import { useAppSelector } from "../../../store/hooks";
 import User from "../../../entities/User";
 
+type SectionType =
+  | "projectsCreated"
+  | "projectsParticipated"
+  | "projectsFollowed"
+  | "profile-edit"
+  | "shares";
+
 const Profile = () => {
   const { userId: userIdString } = useParams();
   const userId = Number(userIdString);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [showCreatedList, setshowCreatedList] = useState(false);
-  const [showParticipatedList, setShowParticipatedList] = useState(false);
-  const [showFollowedList, setShowFollowedList] = useState(false);
-  const [showProfileEdit, setShowProfileEdit] = useState(false);
-  const [showSharesList, setShowSharesList] = useState(false);
-  const [listToBeShowed, setListToBeShowed] = useState<number[]>([]);
   const visitor = useAppSelector((state) => state.auth.user!.id); // Non-null Assertion
+  const [loading, setLoading] = useState(true);
+
+  const [activeSection, setActiveSection] = useState<{
+    section: SectionType | null;
+    listToBeShowed: number[];
+  }>({
+    section: null,
+    listToBeShowed: [],
+  });
 
   const loadData = async () => {
     try {
@@ -38,45 +47,19 @@ const Profile = () => {
     loadData();
   }, []);
 
-  type SectionType =
-    | "projectsCreated"
-    | "projectsParticipated"
-    | "projectsFollowed"
-    | "profile-edit"
-    | "shares";
-
   const handleClick = (sectionType: SectionType) => {
     if (!user) return;
-    setshowCreatedList(false);
-    setShowParticipatedList(false);
-    setShowFollowedList(false);
-    setShowProfileEdit(false);
-    setShowSharesList(false);
-    if (sectionType === "projectsCreated") {
-      setListToBeShowed(user.created_projects);
-      setshowCreatedList(true);
-    }
-    if (sectionType === "projectsParticipated") {
-      setListToBeShowed(user.participated_projects);
-      setShowParticipatedList(true);
-    }
-    if (sectionType === "projectsFollowed") {
-      setListToBeShowed(user.followed_projects);
-      setShowFollowedList(true);
-    }
-    if (sectionType === "profile-edit") {
-      setShowProfileEdit(true);
-    }
-    if (sectionType === "shares") {
-      setShowSharesList(true);
-    }
-    const buttons = document.querySelectorAll("buttons");
-    buttons.forEach((button) => button.classList.remove("active"));
-
-    const clickedButton = document.getElementById(sectionType);
-    if (clickedButton) {
-      clickedButton.classList.add("active");
-    }
+    const newList = {
+      projectsCreated: user.created_projects,
+      projectsParticipated: user.participated_projects,
+      projectsFollowed: user.followed_projects,
+      "profile-edit": [],
+      shares: [],
+    };
+    setActiveSection({
+      section: sectionType,
+      listToBeShowed: newList[sectionType] || [],
+    });
   };
 
   return (
@@ -132,63 +115,68 @@ const Profile = () => {
             {user.about}
           </div>
           <div className="buttons">
-            <div className="three-buttons">
+            <div className="common-buttons">
               <Button
                 id="projectsCreated"
                 onClick={() => handleClick("projectsCreated")}
-                className={showCreatedList ? "active" : ""}
+                className={
+                  activeSection.section === "projectsCreated" ? "active" : ""
+                }
               >
                 Erstellte Projekte
               </Button>
               <Button
                 id="projectsParticipated"
                 onClick={() => handleClick("projectsParticipated")}
-                className={showParticipatedList ? "active" : ""}
+                className={
+                  activeSection.section === "projectsParticipated"
+                    ? "active"
+                    : ""
+                }
               >
                 Teilnehmende Projekte
               </Button>
               <Button
                 id="projectsFollowed"
                 onClick={() => handleClick("projectsFollowed")}
-                className={showFollowedList ? "active" : ""}
+                className={
+                  activeSection.section === "projectsFollowed" ? "active" : ""
+                }
               >
                 Verfolgte Projekte
               </Button>
             </div>
             {visitor === user.id && (
-              <div className="two-buttons">
+              <div className="private-buttons">
                 <Button
                   id="shares"
                   onClick={() => handleClick("shares")}
-                  className={showSharesList ? "active" : ""}
+                  className={activeSection.section === "shares" ? "active" : ""}
                 >
                   Meine Aktien
                 </Button>
                 <Button
                   id="shares"
                   onClick={() => handleClick("profile-edit")}
-                  className={showProfileEdit ? "active" : ""}
+                  className={
+                    activeSection.section === "profile-edit" ? "active" : ""
+                  }
                 >
                   Profil bearbeiten
                 </Button>
               </div>
             )}
           </div>
-          {showCreatedList && (
-            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
+          {activeSection.section && (
+            <UserProjectsList listToBeShowed={activeSection.listToBeShowed} />
           )}
-          {showParticipatedList && (
-            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
+          {activeSection.section === "profile-edit" && <ProfileEdit />}
+          {activeSection.section === "shares" && (
+            <UserSharesList userId={Number(user.id)} />
           )}
-          {showFollowedList && (
-            <UserProjectsList listToBeShowed={{ ...listToBeShowed }} />
-          )}
-          {showProfileEdit && <ProfileEdit />}
-          {showSharesList && <UserSharesList userId={Number(user.id)} />}
         </div>
       )}
     </>
   );
 };
-
 export default Profile;

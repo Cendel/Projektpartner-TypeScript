@@ -101,8 +101,8 @@
       color: v.$color1;
     }
 
-    .three-buttons,
-    .two-buttons {
+    .common-buttons,
+    .private-buttons {
       margin-bottom: 1rem;
       @include m.flexbox($gap: 1rem);
 
