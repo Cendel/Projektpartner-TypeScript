@@ -11,37 +11,29 @@ const LoginForm = () => {
     <Form noValidate onSubmit={formik.handleSubmit}>
       <h3>Anmelden</h3>
       <Form.Group>
-        <FloatingLabel label="EMail" className="">
-          <Form.Control
-            type="email"
-            {...formik.getFieldProps("email")}
-            isValid={formik.touched.email && !formik.errors.email}
-            isInvalid={formik.touched.email && !!formik.errors.email}
-          />
-          <Form.Control.Feedback
-            type="invalid"
-            style={{ marginBottom: "1rem" }}
-          >
-            {formik.errors.email}
-          </Form.Control.Feedback>
-        </FloatingLabel>
+        <Form.Control
+          placeholder="E-Mail"
+          type="email"
+          {...formik.getFieldProps("email")}
+          isValid={formik.touched.email && !formik.errors.email}
+          isInvalid={formik.touched.email && !!formik.errors.email}
+        />
+        <Form.Control.Feedback type="invalid" style={{ marginBottom: "1rem" }}>
+          {formik.errors.email}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
-        <FloatingLabel label="Passwort" className="">
-          <Form.Control
-            type="password"
-            {...formik.getFieldProps("password")}
-            isInvalid={formik.touched.password && !!formik.errors.password}
-            isValid={formik.touched.password && !formik.errors.password}
-          />
-          <Form.Control.Feedback
-            type="invalid"
-            style={{ marginBottom: "1rem" }}
-          >
-            {formik.errors.password}
-          </Form.Control.Feedback>
-        </FloatingLabel>
+        <Form.Control
+          type="password"
+          placeholder="Passwort"
+          {...formik.getFieldProps("password")}
+          isInvalid={formik.touched.password && !!formik.errors.password}
+          isValid={formik.touched.password && !formik.errors.password}
+        />
+        <Form.Control.Feedback type="invalid" style={{ marginBottom: "1rem" }}>
+          {formik.errors.password}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Button
