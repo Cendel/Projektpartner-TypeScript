@@ -8,18 +8,15 @@ interface Props {
   project: Project;
   user: User;
   isParticipatedProjectsIncludes: boolean;
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const InvestSection = ({
   isParticipatedProjectsIncludes,
   project,
-  inputValue,
-  setInputValue,
   user,
 }: Props) => {
   const [feedback, setFeedback] = useState(""); //for the input field in invest class
+  const [inputValue, setInputValue] = useState(""); //for the input field in invest class
 
   const handleInvestSubmitClick = () =>
     handleInvestSubmit(inputValue, setInputValue, setFeedback, user, project);

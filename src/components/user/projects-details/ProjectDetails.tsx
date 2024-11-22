@@ -30,8 +30,6 @@ const ProjectDetails = () => {
     ? participated_projects.includes(project.id)
     : false;
 
-  const [inputValue, setInputValue] = useState(""); //for the input field in invest class
-
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
@@ -97,8 +95,6 @@ const ProjectDetails = () => {
             project={project}
             user={user}
             isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
           />
 
           <Spacer height={30} />
