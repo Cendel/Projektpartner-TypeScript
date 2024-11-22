@@ -23,6 +23,7 @@ import {
   textExtensions,
   zipExtensions,
 } from "../../../helpers/attachmentExtensions";
+import { Container } from "react-bootstrap";
 
 interface Props {
   createdBy: number;
@@ -90,61 +91,63 @@ const DownloadSection = ({ createdBy, projectId }: Props) => {
   }, [loadData]);
 
   return (
-    <div>
-      <div className="download-media">
-        <div className="head">
-          <span>
-            <IoCloudDownloadSharp />
-          </span>
-          <h5>PROJEKTMEDIEN</h5>
-        </div>
+    <Container>
+      <div>
+        <div className="download-media">
+          <div className="head">
+            <span>
+              <IoCloudDownloadSharp />
+            </span>
+            <h5>PROJEKTMEDIEN</h5>
+          </div>
 
-        <div className="ul-div">
-          <ul>
-            {attachments.map((file) => (
-              <li key={file.id}>
-                {file.file_extension === ".pdf" ? (
-                  <AiOutlineFilePdf />
-                ) : imageExtensions.includes(file.file_extension) ? (
-                  <AiOutlineFileImage />
-                ) : textExtensions.includes(file.file_extension) ? (
-                  <AiOutlineFileText />
-                ) : zipExtensions.includes(file.file_extension) ? (
-                  <AiOutlineFileZip />
-                ) : (
-                  <AiOutlineFile />
-                )}
-                <a href={file.file} target="_blank" rel="noreferrer">
-                  {file.file_name.substring(0, 50)}
-                </a>
-                {isAdminOrOwner && (
-                  <button
-                    className="delete-button"
-                    onClick={() => removeAttachment(file.id, file.file_name)}
-                  >
-                    Löschen
+          <div className="ul-div">
+            <ul>
+              {attachments.map((file) => (
+                <li key={file.id}>
+                  {file.file_extension === ".pdf" ? (
+                    <AiOutlineFilePdf />
+                  ) : imageExtensions.includes(file.file_extension) ? (
+                    <AiOutlineFileImage />
+                  ) : textExtensions.includes(file.file_extension) ? (
+                    <AiOutlineFileText />
+                  ) : zipExtensions.includes(file.file_extension) ? (
+                    <AiOutlineFileZip />
+                  ) : (
+                    <AiOutlineFile />
+                  )}
+                  <a href={file.file} target="_blank" rel="noreferrer">
+                    {file.file_name.substring(0, 50)}
+                  </a>
+                  {isAdminOrOwner && (
+                    <button
+                      className="delete-button"
+                      onClick={() => removeAttachment(file.id, file.file_name)}
+                    >
+                      Löschen
+                    </button>
+                  )}
+                </li>
+              ))}
+              {isAdminOrOwner && (
+                <li>
+                  <AiOutlineFileAdd />
+                  <label className="upload-button add-button">
+                    <input type="file" onChange={handleFileChange} />
+                    Datei auswählen
+                  </label>
+                  <span>{selectedFile && selectedFile.name}</span>
+
+                  <button className="upload-button" onClick={handleFileUpload}>
+                    Datei hinzufügen
                   </button>
-                )}
-              </li>
-            ))}
-            {isAdminOrOwner && (
-              <li>
-                <AiOutlineFileAdd />
-                <label className="upload-button add-button">
-                  <input type="file" onChange={handleFileChange} />
-                  Datei auswählen
-                </label>
-                <span>{selectedFile && selectedFile.name}</span>
-
-                <button className="upload-button" onClick={handleFileUpload}>
-                  Datei hinzufügen
-                </button>
-              </li>
-            )}
-          </ul>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

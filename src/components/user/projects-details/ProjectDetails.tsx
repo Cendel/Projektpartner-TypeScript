@@ -1,8 +1,6 @@
 import "./projectDetails.scss";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import imageRounded from "../../../assets/img/rounded-bottom.svg";
-import { Container } from "react-bootstrap";
 import Spacer from "../../common/spacer/Spacer";
 import DownloadSection from "./DownloadSection";
 import { getProject } from "../../../api/project-service";
@@ -16,6 +14,7 @@ import SupportSection from "./SupportSection";
 import AccordionInfoSection from "./AccordionInfoSection";
 import ButtonBarSection from "./ButtonBarSection";
 import OverviewSection from "./OverviewSection";
+import OpeningScreenSection from "./OpeningScreenSection";
 
 const ProjectDetails = () => {
   const user = useAppSelector((state) => state.auth.user!); // Non-null Assertion
@@ -81,31 +80,19 @@ const ProjectDetails = () => {
         <Loading />
       ) : (
         <div className="project-details-main-component">
-          <div>
-            <img
-              src={project.projectImage}
-              alt={project.projectTitle}
-              className="project-screen-image"
-            />
-          </div>
-          <div className="project-details-container">
-            <div>
-              <img src={imageRounded} alt="" className="imageRounded" />
-            </div>
-          </div>
-          <div className="main-title">
-            <h1>{project.projectTitle}</h1>
-            <h4>{project.shortDesc}</h4>
-          </div>
+          <OpeningScreenSection project={project} />
 
           <OverviewSection user={user} project={project} />
 
           <Spacer height={30} />
+
           <SupportSection
             project={project}
             isParticipatedProjectsIncludes={isParticipatedProjectsIncludes}
           />
+
           <Spacer height={30} />
+
           <InvestSection
             project={project}
             user={user}
@@ -113,15 +100,18 @@ const ProjectDetails = () => {
             inputValue={inputValue}
             setInputValue={setInputValue}
           />
+
           <Spacer height={30} />
-          <Container>
-            <DownloadSection
-              createdBy={project.createdBy}
-              projectId={project.id}
-            />
-          </Container>
+
+          <DownloadSection
+            createdBy={project.createdBy}
+            projectId={project.id}
+          />
+
           <Spacer height={30} />
+
           <AccordionInfoSection project={project} />
+
           <ButtonBarSection user={user} project={project} />
 
           <Spacer />
