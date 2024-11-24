@@ -12,8 +12,8 @@ import { handleAxiosError } from "../../../helpers/functions/handleAxiosError";
 
 export const mapProjectToCreateUpdateRequest = (
   project: Project | ProjectCreateUpdateRequest,
-  edit?: boolean,
-  userId?: String
+  edit: boolean,
+  userId: String
 ): ProjectCreateUpdateRequest => {
   return {
     projectTitle: project.projectTitle || "",
@@ -91,10 +91,11 @@ const useProjectFormFormik = ({
         for (const key in values) {
           const value = values[key as keyof ProjectCreateUpdateRequest];
           formData.append(key, String(value));
-          if (image) {
-            formData.append("projectImage", image);
-          }
         }
+        if (image) {
+          formData.append("projectImage", image);
+        }
+
         await createProject(formData);
         formik.resetForm();
         toast(

@@ -15,11 +15,13 @@ import useProjectFormFormik, {
 import { getProject } from "../../../api/project-service";
 import ProjectCreateUpdateRequest from "../../../entities/ProjectCreateUpdateRequest";
 import Project from "../../../entities/Project";
+import { useAppSelector } from "../../../store/hooks";
 
 const ProjectForm = ({ edit = false, projectId = 0 }) => {
+  const userId = useAppSelector((state) => state.auth.user!.id); // Non-null Assertion
   const [loading, setLoading] = useState(false);
   const [project, setProject] = useState<Project | ProjectCreateUpdateRequest>(
-    mapProjectToCreateUpdateRequest({} as Project)
+    mapProjectToCreateUpdateRequest({} as Project, edit, userId)
   );
 
   useEffect(() => {
