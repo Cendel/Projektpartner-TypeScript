@@ -77,15 +77,32 @@ export const projectFormValidationSchema = Yup.object({
     .required(
       "Geben Sie eine detaillierte Beschreibung ein, die mindestens 200 Zeichen lang ist."
     ),
-  projectValue: Yup.number().required(
-    "Geben Sie den Gesamtbetrag in Euro ein, der für das Projekt benötigt wird."
-  ),
-  totalShares: Yup.number().required(
-    "Geben Sie die Gesamtzahl der Anteile ein, die für das Projekt verfügbar sind."
-  ),
-  maxSharesPerPerson: Yup.number().required(
-    "Geben Sie die maximale Anzahl von Anteilen ein, die eine Person kaufen kann."
-  ),
+  projectValue: Yup.number()
+    .min(10, "Der Gesamtbetrag muss mindestens 10 € betragen.")
+    .integer("Der Gesamtbetrag muss eine ganze Zahl sein.")
+    .required(
+      "Geben Sie den Gesamtbetrag in Euro ein, der für das Projekt benötigt wird."
+    ),
+  totalShares: Yup.number()
+    .min(1, "Die Gesamtzahl der Anteile muss mindestens 1 betragen.")
+    .integer("Die Gesamtzahl der Anteile muss eine ganze Zahl sein.")
+    .required(
+      "Geben Sie die Gesamtzahl der Anteile ein, die für das Projekt verfügbar sind."
+    ),
+  maxSharesPerPerson: Yup.number()
+    .min(1, "Die maximale Anzahl an Anteilen muss mindestens 1 betragen.")
+    .integer("Die maximale Anzahl an Anteilen muss eine ganze Zahl sein.")
+    .required(
+      "Geben Sie die maximale Anzahl an Anteilen ein, die eine Person kaufen kann."
+    )
+    .test(
+      "max-shares-per-person",
+      "Die maximale Anzahl an Anteilen darf nicht höher sein als die Gesamtzahl der Anteile.",
+      function (value) {
+        const { totalShares } = this.parent;
+        return value <= totalShares;
+      }
+    ),
 });
 
 export const adminEditUserValidationSchema = Yup.object({
