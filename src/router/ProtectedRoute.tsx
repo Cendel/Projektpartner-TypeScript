@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, admin }: Props) => {
   if (!isUserLogin || !user) return <Navigate to="/auth" />;
   if (admin && !user.is_superuser) return <Navigate to="/unauthorized" />;
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
