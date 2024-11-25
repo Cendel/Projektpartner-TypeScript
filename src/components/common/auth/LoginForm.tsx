@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Spinner, FloatingLabel } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import "./auth.scss";
 import useLoginFormFormik from "./useLoginFormFormik";
 

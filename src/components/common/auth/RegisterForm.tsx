@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import PasswordInput from "../password-input/PasswordInput";
 import useRegisterFormFormik from "./useRegisterFormFormik";
 
